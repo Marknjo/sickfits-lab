@@ -1,0 +1,22 @@
+services:
+  db: 
+    image: postgres:alpine
+    container_name: sickfits-db-cnt
+    restart: always
+    ports:
+      - 5434:5432
+    volumes:
+      - sickfits-data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/db.env
+
+  db-admin:
+    image: adminer
+    container_name: sickfits-admin-cnt
+    restart: always
+    ports:
+      - 8000:8080
+
+volumes:
+  sickfits-data:
+  
