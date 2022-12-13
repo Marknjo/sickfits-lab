@@ -6,8 +6,8 @@ build
 .vscode
 
 # next.js
-*.next
-/.next/
+.next
+.next/**
 /out/
 
 # vercel
