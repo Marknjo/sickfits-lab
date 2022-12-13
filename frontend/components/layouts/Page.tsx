@@ -1,10 +1,11 @@
 import { BasicProps } from "../../types/BasicProps";
+import Header from "../ui/Header";
 
 export default function Page({ children }: BasicProps) {
   return (
-    <div>
-      <h1>Sickfits E-commerce Site</h1>
+    <>
+      <Header />
       {children}
-    </div>
+    </>
   );
 }
