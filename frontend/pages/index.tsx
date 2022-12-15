@@ -1,9 +1,3 @@
-import Page from "../components/layouts/Page";
-
 export default function IndexPage() {
-  return (
-    <>
-      <h2>Home Page</h2>
-    </>
-  );
+  return <h2>Home Page</h2>;
 }
