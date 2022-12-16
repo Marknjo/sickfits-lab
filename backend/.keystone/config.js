@@ -37,8 +37,9 @@ import_dotenv.default.config({
 });
 
 // keystone.ts
-var import_crypto = require("crypto");
 var import_core = require("@keystone-6/core");
+var import_fields = require("@keystone-6/core/fields");
+var import_access = require("@keystone-6/core/access");
 
 // lib/buildDbUrl.ts
 var dbUrl = () => {
@@ -46,24 +47,49 @@ var dbUrl = () => {
   const DB_PASS = process.env.POSTGRES_PASSWORD;
   const DB_USER = process.env.POSTGRES_USER;
   const DB_PORT = process.env.POSTGRES_PORT;
-  if (!DB_URL || !DB_PASS || !DB_USER || !DB_PORT) {
-    throw new Error("DB settings not set in the ENV Vars \u{1F4A5}\u{1F4A5}\u{1F4A5}");
+  const DB_NAME = process.env.POSTGRES_DB;
+  if (!DB_URL || !DB_PASS || !DB_USER || !DB_PORT || !DB_NAME) {
+    throw new Error(
+      "CONFIG ERROR: DB settings (DATABASE_URL || POSTGRES_PASSWORD || POSTGRES_USER || POSTGRES_PORT || POSTGRES_DB) not set in the ENV Vars \u{1F4A5}\u{1F4A5}\u{1F4A5}"
+    );
   }
   DB_URL = DB_URL.replace(/{{POSTGRES_PASSWORD}}/g, DB_PASS);
   DB_URL = DB_URL.replace(/{{POSTGRES_USER}}/, DB_USER);
   DB_URL = DB_URL.replace(/{{POSTGRES_PORT}}/, DB_PORT);
+  DB_URL = DB_URL.replace(/{{POSTGRES_DB}}/, DB_NAME);
   return DB_URL;
 };
 
 // keystone.ts
-console.log((0, import_crypto.randomBytes)(32).toString("hex"));
-console.log({ dbURL: dbUrl() });
+var frontEndUrl = process.env.FRONTEND_URL;
+if (!frontEndUrl) {
+  throw new Error(
+    "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
+  );
+}
 var keystone_default = (0, import_core.config)({
+  server: {
+    cors: {
+      origin: [frontEndUrl],
+      credentials: true
+    }
+  },
   db: {
     provider: "postgresql",
     url: dbUrl()
   },
-  lists: {}
+  lists: {
+    User: (0, import_core.list)({
+      access: import_access.allowAll,
+      fields: {
+        name: (0, import_fields.text)(),
+        email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } })
+      }
+    })
+  },
+  ui: {
+    isAccessAllowed: () => true
+  }
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {});
