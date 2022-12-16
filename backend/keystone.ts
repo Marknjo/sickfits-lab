@@ -14,8 +14,8 @@ if (!frontEndUrl) {
   );
 }
 
-export default withAuth(
-  config({
+export default config(
+  withAuth({
     server: {
       cors: {
         origin: [frontEndUrl],
@@ -27,10 +27,11 @@ export default withAuth(
       url: dbUrl(),
       // @TODO: Add data seeding here
     },
-    session,
     lists,
+    session,
     ui: {
-      isAccessAllowed: () => true,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      isAccessAllowed: (context) => !!context.session?.data,
     },
   })
 );

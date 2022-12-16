@@ -105,8 +105,8 @@ if (!frontEndUrl) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = withAuth(
-  (0, import_core2.config)({
+var keystone_default = (0, import_core2.config)(
+  withAuth({
     server: {
       cors: {
         origin: [frontEndUrl],
@@ -117,10 +117,10 @@ var keystone_default = withAuth(
       provider: "postgresql",
       url: dbUrl()
     },
-    session,
     lists,
+    session,
     ui: {
-      isAccessAllowed: () => true
+      isAccessAllowed: (context) => !!context.session?.data
     }
   })
 );
