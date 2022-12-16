@@ -48,7 +48,7 @@ var User = (0, import_core.list)({
   fields: {
     name: (0, import_fields.text)(),
     email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } }),
-    password: (0, import_fields.password)({ bcrypt: true })
+    password: (0, import_fields.password)({ validation: { isRequired: true } })
   }
 });
 
@@ -76,6 +76,28 @@ var dbUrl = () => {
   return DB_URL;
 };
 
+// configs/auth.ts
+var import_crypto = require("crypto");
+var import_session = require("@keystone-6/core/session");
+var import_auth = require("@keystone-6/auth");
+var sessionMaxDuration = process.env.SESSION_MAX_DURATION || 60 * 60 * 24 * 30;
+var sessionSecret = process.env.SESSION_SECRET || (0, import_crypto.randomBytes)(22).toString("base64");
+var { withAuth } = (0, import_auth.createAuth)({
+  listKey: "User",
+  identityField: "email",
+  secretField: "password",
+  sessionData: "name id email",
+  initFirstItem: {
+    fields: ["name", "email", "password"],
+    skipKeystoneWelcome: true
+  }
+});
+var session = (0, import_session.statelessSessions)({
+  secret: sessionSecret,
+  maxAge: +sessionMaxDuration,
+  sameSite: "strict"
+});
+
 // keystone.ts
 var frontEndUrl = process.env.FRONTEND_URL;
 if (!frontEndUrl) {
@@ -83,21 +105,24 @@ if (!frontEndUrl) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = (0, import_core2.config)({
-  server: {
-    cors: {
-      origin: [frontEndUrl],
-      credentials: true
+var keystone_default = withAuth(
+  (0, import_core2.config)({
+    server: {
+      cors: {
+        origin: [frontEndUrl],
+        credentials: true
+      }
+    },
+    db: {
+      provider: "postgresql",
+      url: dbUrl()
+    },
+    session,
+    lists,
+    ui: {
+      isAccessAllowed: () => true
     }
-  },
-  db: {
-    provider: "postgresql",
-    url: dbUrl()
-  },
-  lists,
-  ui: {
-    isAccessAllowed: () => true
-  }
-});
+  })
+);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {});
