@@ -6,7 +6,7 @@ import { dbUrl } from './lib/buildDbUrl';
 const frontEndUrl = process.env.FRONTEND_URL;
 if (!frontEndUrl) {
   throw new Error(
-    'CONFIGURATION ERROR: Must Provide a FRONTEND_URL environmental variable',
+    'CONFIGURATION ERROR: Must Provide a FRONTEND_URL environmental variable'
   );
 }
 
