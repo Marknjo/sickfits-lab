@@ -37,9 +37,24 @@ import_dotenv.default.config({
 });
 
 // keystone.ts
+var import_core2 = require("@keystone-6/core");
+
+// schemas/User.ts
 var import_core = require("@keystone-6/core");
-var import_fields = require("@keystone-6/core/fields");
 var import_access = require("@keystone-6/core/access");
+var import_fields = require("@keystone-6/core/fields");
+var User = (0, import_core.list)({
+  access: import_access.allowAll,
+  fields: {
+    name: (0, import_fields.text)(),
+    email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } })
+  }
+});
+
+// schemas/schema.ts
+var lists = {
+  User
+};
 
 // lib/buildDbUrl.ts
 var dbUrl = () => {
@@ -67,7 +82,7 @@ if (!frontEndUrl) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = (0, import_core.config)({
+var keystone_default = (0, import_core2.config)({
   server: {
     cors: {
       origin: [frontEndUrl],
@@ -78,15 +93,7 @@ var keystone_default = (0, import_core.config)({
     provider: "postgresql",
     url: dbUrl()
   },
-  lists: {
-    User: (0, import_core.list)({
-      access: import_access.allowAll,
-      fields: {
-        name: (0, import_fields.text)(),
-        email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } })
-      }
-    })
-  },
+  lists,
   ui: {
     isAccessAllowed: () => true
   }

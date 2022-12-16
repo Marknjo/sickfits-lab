@@ -1,8 +1,6 @@
 import './configs/dotenv.config';
-import { config, list } from '@keystone-6/core';
-import { text } from '@keystone-6/core/fields';
-import { allowAll } from '@keystone-6/core/access';
-
+import { config } from '@keystone-6/core';
+import { lists } from './schemas/schema';
 import { dbUrl } from './lib/buildDbUrl';
 
 const frontEndUrl = process.env.FRONTEND_URL;
@@ -24,15 +22,7 @@ export default config({
     url: dbUrl(),
     // @TODO: Add data seeding here
   },
-  lists: {
-    User: list({
-      access: allowAll,
-      fields: {
-        name: text(),
-        email: text({ isIndexed: 'unique', validation: { isRequired: true } }),
-      },
-    }),
-  },
+  lists,
   ui: {
     isAccessAllowed: () => true,
   },
