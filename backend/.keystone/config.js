@@ -47,7 +47,8 @@ var User = (0, import_core.list)({
   access: import_access.allowAll,
   fields: {
     name: (0, import_fields.text)(),
-    email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } })
+    email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } }),
+    password: (0, import_fields.password)({ bcrypt: true })
   }
 });
 
