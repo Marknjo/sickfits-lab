@@ -18,3 +18,11 @@ model User {
   email    String @unique @default("")
   password String
 }
+
+model Product {
+  id          String  @id @default(cuid())
+  name        String  @default("")
+  description String  @default("")
+  status      String? @default("DRAFT")
+  price       Int?
+}

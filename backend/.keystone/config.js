@@ -37,7 +37,7 @@ import_dotenv.default.config({
 });
 
 // keystone.ts
-var import_core2 = require("@keystone-6/core");
+var import_core3 = require("@keystone-6/core");
 
 // schemas/User.ts
 var import_core = require("@keystone-6/core");
@@ -52,9 +52,39 @@ var User = (0, import_core.list)({
   }
 });
 
+// schemas/Product.ts
+var import_core2 = require("@keystone-6/core");
+var import_access2 = require("@keystone-6/core/access");
+var import_fields2 = require("@keystone-6/core/fields");
+var Product = (0, import_core2.list)({
+  access: import_access2.allowAll,
+  fields: {
+    name: (0, import_fields2.text)({ validation: { isRequired: true } }),
+    description: (0, import_fields2.text)({
+      ui: {
+        displayMode: "textarea"
+      }
+    }),
+    status: (0, import_fields2.select)({
+      options: [
+        { label: "Draft", value: "DRAFT " },
+        { label: "Available", value: "AVAILABLE" },
+        { label: "Unavailable", value: "UNAVAILABLE" }
+      ],
+      defaultValue: "DRAFT",
+      ui: {
+        displayMode: "segmented-control",
+        createView: { fieldMode: "hidden" }
+      }
+    }),
+    price: (0, import_fields2.integer)()
+  }
+});
+
 // schemas/schema.ts
 var lists = {
-  User
+  User,
+  Product
 };
 
 // lib/buildDbUrl.ts
@@ -105,7 +135,7 @@ if (!frontEndUrl) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = (0, import_core2.config)(
+var keystone_default = (0, import_core3.config)(
   withAuth({
     server: {
       cors: {

@@ -17,6 +17,7 @@ export const { withAuth } = createAuth({
   initFirstItem: {
     fields: ['name', 'email', 'password'],
     skipKeystoneWelcome: true,
+    // @TODO: Add in initial roles here
   },
 });
 
