@@ -1,10 +1,10 @@
 import type { Lists } from '.keystone/types';
-import { User } from './User';
-import { Product } from './Product';
-import { ProductImage } from './ProductImage';
+import { User, Product, ProductImage } from '.';
 
 export const lists: Lists = {
   User,
   Product,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   ProductImage,
 };

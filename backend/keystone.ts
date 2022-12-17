@@ -4,6 +4,7 @@ import { lists } from './schemas/schema';
 import { dbUrl } from './lib/buildDbUrl';
 import { session, withAuth } from './configs/auth';
 import { MyImageStorage } from './configs/storage';
+import { insertSeedData } from './seed-data';
 
 // import { randomBytes } from 'crypto';
 // console.log(randomBytes(32).toString('base64'));
@@ -27,12 +28,19 @@ export default config(
       provider: 'postgresql',
       url: dbUrl(),
       // @TODO: Add data seeding here
+      onConnect: async (context) => {
+        console.log('Connecting to the database');
+
+        if (process.argv.includes('--seed-data')) {
+          await insertSeedData(context);
+        }
+      },
     },
-    lists,
-    session,
     storage: {
       my_images: MyImageStorage,
     },
+    lists,
+    session,
     ui: {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       isAccessAllowed: (context) => !!context.session?.data,

@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "keystone dev",
-    "seed-data": "keystone-next --seed-data"
+    "seed-data": "keystone --seed-data",
+    "reset-data": "keystone dev --reset-db"
   },
   "eslintConfig": {
     "extends": "wesbos/typescript.js",
@@ -64,5 +65,8 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "repository": "https://github.com/wesbos/advanced-react"
+  "repository": "https://github.com/wesbos/advanced-react",
+  "prisma": {
+    "seed": "node --require esbuild-register seed-data/index.ts"
+  }
 }
