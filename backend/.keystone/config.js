@@ -77,7 +77,16 @@ var Product = (0, import_core2.list)({
         createView: { fieldMode: "hidden" }
       }
     }),
-    price: (0, import_fields2.integer)()
+    price: (0, import_fields2.integer)({ validation: { isRequired: true } }),
+    photo: (0, import_fields2.relationship)({
+      ref: "ProductImage.product",
+      ui: {
+        displayMode: "cards",
+        cardFields: ["image", "altText"],
+        inlineCreate: { fields: ["image", "altText"] },
+        inlineEdit: { fields: ["image", "altText"] }
+      }
+    })
   }
 });
 
@@ -89,7 +98,17 @@ var ProductImage = (0, import_core3.list)({
   access: import_access3.allowAll,
   fields: {
     altText: (0, import_fields3.text)({ validation: { isRequired: true } }),
-    image: (0, import_fields3.image)({ storage: "my_images", label: "Source" })
+    image: (0, import_fields3.image)({ storage: "my_images", label: "Source" }),
+    product: (0, import_fields3.relationship)({ ref: "Product.photo" })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["image", "altText", "product"],
+      initialSort: {
+        field: "altText",
+        direction: "DESC"
+      }
+    }
   }
 });
 

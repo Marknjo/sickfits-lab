@@ -1,6 +1,6 @@
 import { list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
-import { integer, select, text } from '@keystone-6/core/fields';
+import { integer, relationship, select, text } from '@keystone-6/core/fields';
 
 export const Product = list({
   /// @TODO: Add Access control
@@ -25,7 +25,15 @@ export const Product = list({
       },
     }),
 
-    price: integer(),
-    /// @TODO: Add Photo
+    price: integer({ validation: { isRequired: true } }),
+    photo: relationship({
+      ref: 'ProductImage.product',
+      ui: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
+      },
+    }),
   },
 });

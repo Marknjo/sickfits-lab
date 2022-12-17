@@ -105,6 +105,7 @@ type Product {
   description: String
   status: String
   price: Int
+  photo: ProductImage
 }
 
 input ProductWhereUniqueInput {
@@ -119,7 +120,8 @@ input ProductWhereInput {
   name: StringFilter
   description: StringFilter
   status: StringNullableFilter
-  price: IntNullableFilter
+  price: IntFilter
+  photo: ProductImageWhereInput
 }
 
 input StringNullableFilter {
@@ -151,7 +153,7 @@ input NestedStringNullableFilter {
   not: NestedStringNullableFilter
 }
 
-input IntNullableFilter {
+input IntFilter {
   equals: Int
   in: [Int!]
   notIn: [Int!]
@@ -159,7 +161,7 @@ input IntNullableFilter {
   lte: Int
   gt: Int
   gte: Int
-  not: IntNullableFilter
+  not: IntFilter
 }
 
 input ProductOrderByInput {
@@ -175,6 +177,13 @@ input ProductUpdateInput {
   description: String
   status: String
   price: Int
+  photo: ProductImageRelateToOneForUpdateInput
+}
+
+input ProductImageRelateToOneForUpdateInput {
+  create: ProductImageCreateInput
+  connect: ProductImageWhereUniqueInput
+  disconnect: Boolean
 }
 
 input ProductUpdateArgs {
@@ -187,12 +196,19 @@ input ProductCreateInput {
   description: String
   status: String
   price: Int
+  photo: ProductImageRelateToOneForCreateInput
+}
+
+input ProductImageRelateToOneForCreateInput {
+  create: ProductImageCreateInput
+  connect: ProductImageWhereUniqueInput
 }
 
 type ProductImage {
   id: ID!
   altText: String
   image: ImageFieldOutput
+  product: Product
 }
 
 type ImageFieldOutput {
@@ -221,6 +237,7 @@ input ProductImageWhereInput {
   NOT: [ProductImageWhereInput!]
   id: IDFilter
   altText: StringFilter
+  product: ProductWhereInput
 }
 
 input ProductImageOrderByInput {
@@ -231,6 +248,7 @@ input ProductImageOrderByInput {
 input ProductImageUpdateInput {
   altText: String
   image: ImageFieldInput
+  product: ProductRelateToOneForUpdateInput
 }
 
 input ImageFieldInput {
@@ -240,6 +258,12 @@ input ImageFieldInput {
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
+input ProductRelateToOneForUpdateInput {
+  create: ProductCreateInput
+  connect: ProductWhereUniqueInput
+  disconnect: Boolean
+}
+
 input ProductImageUpdateArgs {
   where: ProductImageWhereUniqueInput!
   data: ProductImageUpdateInput!
@@ -248,6 +272,12 @@ input ProductImageUpdateArgs {
 input ProductImageCreateInput {
   altText: String
   image: ImageFieldInput
+  product: ProductRelateToOneForCreateInput
+}
+
+input ProductRelateToOneForCreateInput {
+  create: ProductCreateInput
+  connect: ProductWhereUniqueInput
 }
 
 """
