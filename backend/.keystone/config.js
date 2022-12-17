@@ -37,7 +37,7 @@ import_dotenv.default.config({
 });
 
 // keystone.ts
-var import_core3 = require("@keystone-6/core");
+var import_core4 = require("@keystone-6/core");
 
 // schemas/User.ts
 var import_core = require("@keystone-6/core");
@@ -81,10 +81,23 @@ var Product = (0, import_core2.list)({
   }
 });
 
+// schemas/ProductImage.ts
+var import_core3 = require("@keystone-6/core");
+var import_access3 = require("@keystone-6/core/access");
+var import_fields3 = require("@keystone-6/core/fields");
+var ProductImage = (0, import_core3.list)({
+  access: import_access3.allowAll,
+  fields: {
+    altText: (0, import_fields3.text)({ validation: { isRequired: true } }),
+    image: (0, import_fields3.image)({ storage: "my_images", label: "Source" })
+  }
+});
+
 // schemas/schema.ts
 var lists = {
   User,
-  Product
+  Product,
+  ProductImage
 };
 
 // lib/buildDbUrl.ts
@@ -128,6 +141,18 @@ var session = (0, import_session.statelessSessions)({
   sameSite: "strict"
 });
 
+// configs/storage.ts
+var baseUrl = `http://localhost:3000`;
+var MyImageStorage = {
+  kind: "local",
+  type: "image",
+  generateUrl: (path) => `${baseUrl}/images${path}`,
+  serverRoute: {
+    path: "/images"
+  },
+  storagePath: "public/images"
+};
+
 // keystone.ts
 var frontEndUrl = process.env.FRONTEND_URL;
 if (!frontEndUrl) {
@@ -135,7 +160,7 @@ if (!frontEndUrl) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = (0, import_core3.config)(
+var keystone_default = (0, import_core4.config)(
   withAuth({
     server: {
       cors: {
@@ -149,6 +174,9 @@ var keystone_default = (0, import_core3.config)(
     },
     lists,
     session,
+    storage: {
+      my_images: MyImageStorage
+    },
     ui: {
       isAccessAllowed: (context) => !!context.session?.data
     }
