@@ -1,7 +1,9 @@
-export default function OrdersPage() {
-  return (
-    <div>
-      <h1>Orders Page</h1>
-    </div>
-  );
-}
+import type { NextPage } from 'next'
+
+const OrdersPage: NextPage = () => (
+  <div>
+    <h1>Orders Page</h1>
+  </div>
+)
+
+export default OrdersPage
