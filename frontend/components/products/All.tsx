@@ -1,33 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
-import { NextPage } from 'next'
 import styled from 'styled-components'
-
-interface ProductImageInterface {
-  id: string
-  altText: string
-  image: {
-    id: string
-    filesize: number
-    width: number
-    height: number
-    extension: 'jpg' | 'png' | 'webp' | 'gif'
-    url: string
-  }
-  product: ProductInterface
-}
-
-interface ProductInterface {
-  id: string
-  name: string
-  description: string
-  status: string
-  price: number
-  photo: ProductImageInterface
-}
-
-interface ProductsInterface {
-  products: Array<ProductInterface>
-}
+import { ProductsInterface } from './ProductTypes'
 
 const ALL_PRODUCTS_QUERY = gql`
   query GetAllProducts {
