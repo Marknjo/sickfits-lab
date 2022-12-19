@@ -1,26 +1,17 @@
-import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import Products from '../components/products/AllProducts'
-import { productsPaginationConfig } from '../graphql/hooks/useProducts'
+import { ssrProducts } from '../lib/ssrProducts'
 
-import { ALL_PRODUCTS_QUERY } from '../graphql/types'
-import { addApolloState, initializeApollo } from '../lib/apolloClient'
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const apolloClient = initializeApollo()
-
-  await apolloClient.query({
-    query: ALL_PRODUCTS_QUERY,
-    variables: productsPaginationConfig,
-  })
-
-  return addApolloState(apolloClient, {
-    props: {},
-  })
+export const getServerSideProps = async () => {
+  return ssrProducts()
 }
 
 const ProductsPage = () => {
   return (
     <main>
+      <Head>
+        <title>Sick Fits | Products Page</title>
+      </Head>
       <Products />
     </main>
   )

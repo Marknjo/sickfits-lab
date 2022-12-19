@@ -1,5 +1,9 @@
 import { AppProps } from 'next/app'
-import { ApolloProvider } from '@apollo/client'
+import {
+  ApolloClient,
+  ApolloProvider,
+  NormalizedCacheObject,
+} from '@apollo/client'
 import nProgress from 'nprogress'
 import { Router } from 'next/router'
 
@@ -9,12 +13,13 @@ import '../components/styles/nprogress.css'
 
 import Page from '../components/layouts/Page'
 import { useApollo } from '../lib/apolloClient'
+import { NextComponentType, NextPageContext } from 'next'
 
 Router.events.on('routeChangeStart', () => nProgress.start())
 Router.events.on('routeChangeComplete', () => nProgress.done())
 Router.events.on('routeChangeError', () => nProgress.done())
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps)
 
   return (
@@ -25,3 +30,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ApolloProvider>
   )
 }
+
+export default App

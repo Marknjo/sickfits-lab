@@ -89,3 +89,11 @@ export function useApollo(pageProps: any) {
 
   return store
 }
+
+export function apolloServerInit(pageProps: any) {
+  const state = pageProps[APOLLO_STATE_PROP_NAME]
+
+  const store = initializeApollo(state)
+
+  return store
+}
