@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import Products from '../components/products/All'
+import Products from '../components/products/AllProducts'
 
 const ProductsPage: NextPage = () => (
   <main>

@@ -1,9 +1,9 @@
-import { ProductInterface } from './ProductTypes'
+import { ProductInterface } from '../../types/ProductTypes'
 
-const ProductItem = ({ id, name }: ProductInterface) => (
+const Product = ({ id, name }: ProductInterface) => (
   <article key={id}>
     <h3>{name}</h3>
   </article>
 )
 
-export default ProductItem
+export default Product
