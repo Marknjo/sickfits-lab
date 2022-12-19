@@ -29,8 +29,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts", 
-    "components/styles/GlobalStyles.js"  
-   ],
+    "components/styles/GlobalStyles.js"],
   "exclude": [
     "node_modules"
   ]
