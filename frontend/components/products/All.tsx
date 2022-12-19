@@ -1,26 +1,8 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import styled from 'styled-components'
+import { ALL_PRODUCTS_QUERY } from '../../graphql/types'
 import ProductItem from './ProductItem'
 import { ProductsInterface } from './ProductTypes'
-
-const ALL_PRODUCTS_QUERY = gql`
-  query GetAllProducts {
-    products {
-      id
-      name
-      description
-      price
-      photo {
-        id
-        altText
-        image {
-          id
-          url
-        }
-      }
-    }
-  }
-`
 
 const ProductsListStyles = styled.section`
   display: grid;
