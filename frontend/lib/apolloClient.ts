@@ -38,7 +38,6 @@ function createApolloClient() {
         },
       },
     }),
-    // }).restore(initialState || {}),
   })
 }
 
@@ -63,8 +62,10 @@ export function initializeApollo(initialState = null) {
     // Restore the cache with the merged data
     _apolloClient.cache.restore(data)
   }
+
   // For SSG and SSR always create a new Apollo Client
   if (typeof window === 'undefined') return _apolloClient
+
   // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = _apolloClient
 
@@ -86,14 +87,6 @@ export function useApollo(pageProps: any) {
   const state = pageProps[APOLLO_STATE_PROP_NAME]
 
   const store = useMemo(() => initializeApollo(state), [state])
-
-  return store
-}
-
-export function apolloServerInit(pageProps: any) {
-  const state = pageProps[APOLLO_STATE_PROP_NAME]
-
-  const store = initializeApollo(state)
 
   return store
 }
