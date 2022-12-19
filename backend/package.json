@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "keystone dev",
-    "seed-data": "keystone --seed-data",
-    "reset-data": "keystone dev --reset-db"
+    "data:seed": "keystone --seed-data",
+    "data:reset": "keystone dev --reset-db"
   },
   "eslintConfig": {
     "extends": "wesbos/typescript.js",

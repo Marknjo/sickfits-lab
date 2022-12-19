@@ -27,7 +27,6 @@ export default config(
     db: {
       provider: 'postgresql',
       url: dbUrl(),
-      // @TODO: Add data seeding here
       onConnect: async (context) => {
         console.log('Connecting to the database');
 
