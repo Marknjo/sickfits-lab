@@ -1,11 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { useMemo } from 'react'
 import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client'
 import type { NormalizedCacheObject } from '@apollo/client'
@@ -13,7 +5,6 @@ import { onError } from '@apollo/client/link/error'
 import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash.isequal'
-import { AppProps } from 'next/app'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -31,11 +22,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:3000/api/graphql', // Server URL (must be absolute)
-  // uri: "https://nextjs-graphql-with-prisma-simple.vercel.app/api", // Server URL (must be absolute)
   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
 })
 
-function createApolloClient(initialState: any) {
+function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: from([errorLink, httpLink]),
@@ -43,16 +33,17 @@ function createApolloClient(initialState: any) {
       typePolicies: {
         Query: {
           fields: {
-            // allPosts: concatPagination(),
+            products: concatPagination(),
           },
         },
       },
-    }).restore(initialState || {}),
+    }),
+    // }).restore(initialState || {}),
   })
 }
 
 export function initializeApollo(initialState = null) {
-  const _apolloClient = apolloClient ?? createApolloClient(initialState)
+  const _apolloClient = apolloClient ?? createApolloClient()
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -80,13 +71,11 @@ export function initializeApollo(initialState = null) {
   return _apolloClient
 }
 
-export function addApolloState<T extends { ['key']: string }>(
+export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: AppProps<T>
+  pageProps: any
 ) {
-  // @ts-ignore
   if (pageProps?.props) {
-    // @ts-ignore
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
   }
 
@@ -94,7 +83,6 @@ export function addApolloState<T extends { ['key']: string }>(
 }
 
 export function useApollo(pageProps: any) {
-  // @ts-ignore
   const state = pageProps[APOLLO_STATE_PROP_NAME]
 
   const store = useMemo(() => initializeApollo(state), [state])
