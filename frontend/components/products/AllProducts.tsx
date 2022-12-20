@@ -22,7 +22,6 @@ const Products = () => {
 
   return (
     <ProductsListStyles>
-      <h2>All Products</h2>
       {products.map(product => (
         <Product key={product.id} {...product} />
       ))}

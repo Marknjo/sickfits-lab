@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const PriceTag = styled.span`
+export const PriceTag = styled.span`
   background: var(--red);
   transform: rotate(3deg);
   color: white;
@@ -10,8 +10,7 @@ const PriceTag = styled.span`
   font-size: 3rem;
   display: inline-block;
   position: absolute;
-  top: -3px;
+  top: -1rem;
   right: -3px;
+  z-index: 5;
 `;
-
-export default PriceTag;

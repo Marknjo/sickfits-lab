@@ -1,15 +1,20 @@
 import styled from 'styled-components';
 
-const Item = styled.div`
+export const Item = styled.article`
   background: white;
   border: 1px solid var(--offWhite);
   box-shadow: var(--bs);
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 2fr 1fr;
+  grid-auto-rows: 0;
+
   img {
-    width: 100%;
-    height: 400px;
+    width: auto;
+    height: 100%;
+    /* width: 100%; 
+    height: 400px;  */
     object-fit: cover;
   }
   p {
@@ -35,4 +40,4 @@ const Item = styled.div`
   }
 `;
 
-export default Item;
+
