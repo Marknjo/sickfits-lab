@@ -25,8 +25,8 @@ function useForm<T extends object>(options: T) {
     }
 
     if (type === 'file') {
-      //@ts-ignore
-      ;[value] = event.currentTarget.files
+      // @ts-ignore
+      value = event.currentTarget.files[0]
     }
 
     setInputs({

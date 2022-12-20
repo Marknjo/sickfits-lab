@@ -24,15 +24,15 @@ export const CREATE_PRODUCT = gql`
     $name: String
     $description: String
     $price: Int
-    $photo: Upload
+    $image: Upload!
   ) {
     createProduct(
       data: {
         name: $name
         description: $description
-        price: $price
         status: "AVAILABLE"
-        photo: { create: { image: $photo, altText: $name } }
+        price: $price
+        photo: { create: { image: { upload: $image }, altText: $name } }
       }
     ) {
       id

@@ -9,7 +9,7 @@ interface FormOutputs {
   name: string
   price: number
   description: string
-  // photo: any
+  image: any
 }
 
 const CreateProduct = () => {
@@ -23,7 +23,7 @@ const CreateProduct = () => {
     name: 'Nice Shoes',
     price: 34234,
     description: 'These are the best shoes',
-    // photo: '',
+    image: '',
   })
 
   const { error, loading, handleProductCreate } = useCreateProduct(inputs)
@@ -32,8 +32,6 @@ const CreateProduct = () => {
     event.preventDefault()
 
     handleProductCreate(clearForm)
-
-    console.table(inputs)
   }
 
   return (
@@ -60,9 +58,9 @@ const CreateProduct = () => {
           <input
             required
             aria-required
-            id='photo'
+            id='image'
             type='file'
-            name='photo'
+            name='image'
             onChange={inputChangeHandler}
           />
         </label>

@@ -21,7 +21,7 @@ export function useCreateProduct<T extends object>(inputs: T) {
 
     // Redirect To
     Router.push({
-      pathname: `/product/${response.data?.createProduct.id}`,
+      pathname: `/products/${response.data?.createProduct.id}`,
     })
   }
 
