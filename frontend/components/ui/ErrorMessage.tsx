@@ -18,10 +18,9 @@ const ErrorStyles = styled.div`
 `
 
 const DisplayError = ({ error }: { error: any }) => {
-  console.log({ error })
-
   if (!error || !error.message) return null
 
+  console.log({ error })
   if (
     error.networkError &&
     error.networkError.result &&

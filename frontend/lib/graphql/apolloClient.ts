@@ -1,10 +1,12 @@
 import { useMemo } from 'react'
 import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
 import type { NormalizedCacheObject } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash.isequal'
+import { endpoint, prodEndpoint } from '../../config'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -20,15 +22,28 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
-const httpLink = new HttpLink({
-  uri: 'http://localhost:3000/api/graphql', // Server URL (must be absolute)
-  credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+// this uses apollo-link-http under the hood, so all the options here come from that package
+
+const uploadLink = createUploadLink({
+  uri: process.env.NODE_ENV === 'development' ? endpoint : prodEndpoint,
+  fetchOptions: {
+    credentials: 'include',
+  },
+  // pass the headers along from this request. This enables SSR with logged in state
+  // headers,
+  credentials: 'same-origin',
 })
+
+// const httpLink = new HttpLink({
+//   uri: 'http://localhost:3000/api/graphql', // Server URL (must be absolute)
+//   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+// })
 
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: from([errorLink, httpLink]),
+    // link: from([errorLink, httpLink]),
+    link: from([errorLink, uploadLink]),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
