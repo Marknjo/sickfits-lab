@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const NavStyles = styled.ul`
+export const NavStyles = styled.nav`
   margin: 0;
   padding: 0;
   display: flex;
@@ -57,12 +57,10 @@ const NavStyles = styled.ul`
       }
     }
   }
-  @media (max-width: 1300px) {
+  @media (max-width: 90em) {
     border-top: 1px solid var(--lightGray);
     width: 100%;
     justify-content: center;
     font-size: 1.5rem;
   }
 `;
-
-export default NavStyles;
