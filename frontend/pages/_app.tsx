@@ -4,7 +4,7 @@ import nProgress from 'nprogress'
 import { Router } from 'next/router'
 
 /// Local
-import { useApollo } from '../lib/apolloClient'
+import { useApollo } from '../lib/graphql/apolloClient'
 import '../components/styles/nprogress.css'
 import Page from '../components/layouts/Page'
 

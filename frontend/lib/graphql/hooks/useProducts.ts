@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { ProductsInterface } from '../../types/ProductTypes'
+import { ProductsInterface } from '../../../types/ProductTypes'
 import { ALL_PRODUCTS_QUERY } from '../types'
 
 export const productsPaginationConfig = {
