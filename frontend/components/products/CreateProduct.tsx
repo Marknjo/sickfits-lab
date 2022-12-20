@@ -1,11 +1,15 @@
+import { gql } from '@apollo/client'
 import { FormEvent } from 'react'
+import { useCreateProduct } from '../../lib/graphql/hooks/useCreateProduct'
 import useForm from '../../lib/hooks/useForm'
 import { Form } from '../styles'
+import DisplayError from '../ui/ErrorMessage'
 
 interface FormOutputs {
   name: string
   price: number
   description: string
+  // photo: any
 }
 
 const CreateProduct = () => {
@@ -13,23 +17,30 @@ const CreateProduct = () => {
     inputs,
     inputChangeHandler,
     textAreaChangeHandler,
-    // clearForm,
+    clearForm,
     // resetForm,
   } = useForm<FormOutputs>({
     name: 'Nice Shoes',
     price: 34234,
     description: 'These are the best shoes',
+    // photo: '',
   })
+
+  const { error, loading, handleProductCreate } = useCreateProduct(inputs)
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    handleProductCreate(clearForm)
 
     console.table(inputs)
   }
 
   return (
     <Form method='POST' onSubmit={submitHandler}>
-      <fieldset>
+      <DisplayError error={error} />
+
+      <fieldset disabled={loading} aria-busy={loading}>
         <label>
           Name
           <input
@@ -49,9 +60,9 @@ const CreateProduct = () => {
           <input
             required
             aria-required
-            id='image'
+            id='photo'
             type='file'
-            name='image'
+            name='photo'
             onChange={inputChangeHandler}
           />
         </label>
