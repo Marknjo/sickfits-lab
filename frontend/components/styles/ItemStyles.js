@@ -7,14 +7,10 @@ export const Item = styled.article`
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 2fr 1fr;
-  grid-auto-rows: 0;
-
+  grid-template-rows: 2fr repeat(auto-fit, 1fr);
   img {
     width: auto;
-    height: 100%;
-    /* width: 100%; 
-    height: 400px;  */
+    height: auto;
     object-fit: cover;
   }
   p {
@@ -24,19 +20,34 @@ export const Item = styled.article`
     padding: 0 3rem;
     font-size: 1.5rem;
   }
-  .buttonList {
+  .button-list {
     display: grid;
     width: 100%;
     border-top: 1px solid var(--lightGray);
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     grid-gap: 1px;
     background: var(--lightGray);
+    background: white;
     & > * {
-      background: white;
       border: 0;
-      font-size: 1rem;
+      font-size: 1.2rem;
       padding: 1rem;
     }
+
+    & > :not(:first-of-type){
+      border-left: 1px solid var(--lightGray);
+    }
+
+    & > :not(:first-of-type) a {
+      display: flex;
+      justify-content: center;
+    }
+
+    & > :last-of-type a {
+      display: flex;
+      justify-content: end;
+    }
+
   }
 `;
 

@@ -17,8 +17,9 @@ const ImageBoxStyle = styled.div`
 `
 
 const TitleBoxStyle = styled.div`
-  grid-row: 3 / -1;
   grid-column: 1 / -1;
+  grid-row: 2 / -1;
+  align-self: end;
   z-index: 5;
 `
 
@@ -43,6 +44,33 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
       </Title>
     </TitleBoxStyle>
     <PriceTag>{formatMoney(price)}</PriceTag>
+
+    <div className='button-list'>
+      <div>
+        <Link
+          href={{
+            pathname: 'update',
+            query: {
+              id,
+            },
+          }}
+        >
+          Edit ✏️
+        </Link>
+      </div>
+      <div>
+        <Link
+          href={{
+            pathname: 'update',
+            query: {
+              id,
+            },
+          }}
+        >
+          Delete 🗑️
+        </Link>
+      </div>
+    </div>
   </Item>
 )
 

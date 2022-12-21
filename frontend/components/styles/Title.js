@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Title = styled.h3`
   margin: 0 1rem;
   text-align: center;
-  transform: skew(-5deg) rotate(-1deg) translateY(-50%);
+  transform: skew(-5deg) rotate(-1deg) translateY(-5%);
   margin-top: -3rem;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
   a {
