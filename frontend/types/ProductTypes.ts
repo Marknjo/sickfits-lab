@@ -24,3 +24,7 @@ export interface ProductInterface {
 export interface ProductsInterface {
   products: Array<ProductInterface>
 }
+
+export interface SingleProductInterface {
+  product: ProductInterface
+}
