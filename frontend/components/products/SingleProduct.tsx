@@ -1,10 +1,8 @@
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { formatMoney } from '../../lib/formatMoney'
-import { useProduct } from '../../lib/graphql/hooks/useProduct'
+import { ProductInterface } from '../../types/ProductTypes'
 import { SickButton } from '../styles'
-import DisplayError from '../ui/ErrorMessage'
 
 const ProductStyles = styled.section`
   display: grid;
@@ -55,32 +53,7 @@ const ActionBoxStyles = styled.div`
   gap: 4rem;
 `
 
-function SingleProduct() {
-  const router = useRouter()
-
-  const {
-    query: { pid },
-  } = router
-
-  const productId = (pid as string) || ''
-
-  const { product, loading, error } = useProduct(productId)
-
-  if (error) {
-    return <DisplayError error={error} />
-  }
-
-  if (loading) {
-    return <p></p>
-  }
-
-  if (!product) {
-    router.push('/404')
-    return <p>Product ${productId} not found!</p>
-  }
-
-  console.log(product)
-
+function SingleProduct({ product }: { product: ProductInterface }) {
   const { photo, price, description, name } = product
 
   return (
