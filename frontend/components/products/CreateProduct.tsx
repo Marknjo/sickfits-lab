@@ -18,6 +18,7 @@ const CreateProduct = () => {
     inputChangeHandler,
     textAreaChangeHandler,
     clearForm,
+    // blurInputHandler,
     // resetForm,
   } = useForm<FormOutputs>({
     name: 'Nice Shoes',
@@ -50,6 +51,7 @@ const CreateProduct = () => {
             value={inputs.name}
             placeholder='product title'
             onChange={inputChangeHandler}
+            // onBlur={blurInputHandler}
           />
         </label>
 

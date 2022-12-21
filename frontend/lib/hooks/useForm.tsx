@@ -43,6 +43,32 @@ function useForm<T extends object>(options: T) {
     formInputHandler<HTMLTextAreaElement>(event)
   }
 
+  function onInputBlur<I>(event: FormEvent<I>): void {
+    // @ts-ignore
+    const { name } = event.currentTarget
+
+    const updatedInputs = Object.fromEntries(
+      Object.entries(inputs).map(([inputName, inputValue]) => {
+        if (inputName === name) {
+          return [inputName, '']
+        }
+        return [inputName, inputValue]
+      })
+    )
+    setInputs({
+      ...inputs,
+      ...(updatedInputs as T),
+    })
+  }
+
+  function blurInputHandler(event: FormEvent<HTMLInputElement>) {
+    onInputBlur(event)
+  }
+
+  function blurTextAreaHandler(event: FormEvent<HTMLTextAreaElement>) {
+    onInputBlur(event)
+  }
+
   const resetForm = () => {
     setInputs(options)
   }
@@ -59,6 +85,8 @@ function useForm<T extends object>(options: T) {
     inputs,
     inputChangeHandler,
     textAreaChangeHandler,
+    blurTextAreaHandler,
+    blurInputHandler,
     resetForm,
     clearForm,
   }
