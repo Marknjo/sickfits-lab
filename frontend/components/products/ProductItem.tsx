@@ -39,7 +39,7 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
 
     <TitleBoxStyle>
       <Title>
-        <Link href={`/product/${id}`}>{name}</Link>
+        <Link href={`./products/${id}`}>{name}</Link>
       </Title>
     </TitleBoxStyle>
     <PriceTag>{formatMoney(price)}</PriceTag>
