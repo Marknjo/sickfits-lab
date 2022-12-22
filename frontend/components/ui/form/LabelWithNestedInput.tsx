@@ -1,9 +1,5 @@
 import { uppercaseFirstLetter } from '../../../lib'
-import { GenericProps } from '../../../types'
-
-interface GenericInputsProps extends GenericProps {
-  uniqueName: string
-}
+import { GenericInputsProps } from '../../../types'
 
 export function LabelWithNestedInput({
   uniqueName,
