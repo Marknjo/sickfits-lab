@@ -23,9 +23,7 @@ export function Textarea({
         placeholder={generatedPlaceholder}
         onChange={onChangeHandler}
         {...options}
-      >
-        {generatedPlaceholder}
-      </textarea>
+      ></textarea>
     </label>
   )
 }
