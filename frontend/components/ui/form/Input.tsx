@@ -1,18 +1,5 @@
-import { DetailedHTMLProps, FormEvent, InputHTMLAttributes } from 'react'
 import { uppercaseFirstLetter } from '../../../lib'
-
-interface FormInputProps {
-  isRequired?: boolean
-  uniqueName: string
-  type?: string
-  value?: string
-  placeholder?: string
-  onChangeHandler: (event: FormEvent<HTMLInputElement>) => void
-  options?: DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >
-}
+import { FormInputProps } from '../../../types'
 
 export function Input({
   isRequired,

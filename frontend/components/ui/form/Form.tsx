@@ -1,14 +1,7 @@
 import { FormEvent } from 'react'
-import { BasicProps } from '../../../types/BasicProps'
+import { FormPropsInterface } from '../../../types'
 import { FormStyles } from '../../styles'
 import DisplayError from '../ErrorMessage'
-
-interface FormPropsInterface extends BasicProps {
-  onSubmitHandler: (event: FormEvent<HTMLFormElement>) => void
-  error?: any
-  method?: 'POST' | 'GET'
-  loading?: boolean
-}
 
 export function Form({
   method,

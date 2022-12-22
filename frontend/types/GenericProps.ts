@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
 
-export interface BasicProps {
+export interface GenericProps {
   children: ReactNode
 }
