@@ -1,7 +1,7 @@
 import { FormEvent } from 'react'
 import { useCreateProduct } from '../../lib/graphql/hooks/useCreateProduct'
 import useForm from '../../lib/hooks/useForm'
-import { Form } from '../ui'
+import { Form, Input } from '../ui'
 import DisplayError from '../ui/ErrorMessage'
 
 interface FormOutputs {
@@ -34,46 +34,31 @@ const CreateProduct = () => {
 
   return (
     <Form onSubmitHandler={submitHandler} error={error} loading={loading}>
-      <label>
-        Name
-        <input
-          required
-          aria-required
-          id='name'
-          type='text'
-          name='name'
-          value={inputs.name}
-          placeholder='product title'
-          onChange={inputChangeHandler}
-          // onBlur={blurInputHandler}
-        />
-      </label>
+      <Input
+        uniqueName='name'
+        value={inputs.name}
+        placeholder='product title'
+        onChangeHandler={inputChangeHandler}
+        isRequired={true}
+      />
 
-      <label>
-        Image
-        <input
-          required
-          aria-required
-          id='image'
-          type='file'
-          name='image'
-          onChange={inputChangeHandler}
-        />
-      </label>
+      <Input
+        uniqueName='image'
+        type='file'
+        onChangeHandler={inputChangeHandler}
+        isRequired={true}
+      />
 
-      <label>
-        Price
-        <input
-          required
-          aria-required
-          id='price'
-          type='text'
-          name='price'
-          value={inputs.price}
-          placeholder='100'
-          onChange={inputChangeHandler}
-        />
-      </label>
+      <Input
+        uniqueName='price'
+        type='number'
+        onChangeHandler={inputChangeHandler}
+        isRequired={true}
+        placeholder={'100'}
+        options={{
+          min: 1,
+        }}
+      />
 
       <label>
         Description

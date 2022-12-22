@@ -1,0 +1,1 @@
+export { uppercaseFirstLetter } from './uppercaseFirstLetter'
