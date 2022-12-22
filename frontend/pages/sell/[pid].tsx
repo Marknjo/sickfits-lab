@@ -1,4 +1,4 @@
-import UpdateProduct from '../components/products/UpdateProduct'
+import UpdateProduct from '../../components/sell/UpdateProduct'
 
 function UpdateProductPage() {
   return (

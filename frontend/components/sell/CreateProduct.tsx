@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client'
 import { FormEvent } from 'react'
 import { useCreateProduct } from '../../lib/graphql/hooks/useCreateProduct'
 import useForm from '../../lib/hooks/useForm'
