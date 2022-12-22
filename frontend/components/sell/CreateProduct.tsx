@@ -1,8 +1,7 @@
-import { FormEvent } from 'react'
 import { useCreateProduct } from '../../lib/graphql/hooks/useCreateProduct'
 import useForm from '../../lib/hooks/useForm'
 import { Form, Input } from '../ui'
-import DisplayError from '../ui/ErrorMessage'
+import { Textarea } from '../ui/form/Textarea'
 
 interface FormOutputs {
   name: string
@@ -60,16 +59,12 @@ const CreateProduct = () => {
         }}
       />
 
-      <label>
-        Description
-        <textarea
-          id='description'
-          name='description'
-          value={inputs.description}
-          placeholder='Add your Description'
-          onChange={textAreaChangeHandler}
-        ></textarea>
-      </label>
+      <Textarea
+        uniqueName='description'
+        onChangeHandler={textAreaChangeHandler}
+        isRequired={true}
+        placeholder={'Add your Description'}
+      />
 
       {/* <button onClick={clearForm} type='button'>
           Clear Form
