@@ -5,6 +5,8 @@ import { ProductInterface } from '../../types/ProductTypes'
 import { SickButton } from '../styles'
 
 const ProductStyles = styled.section`
+  padding-top: 2.4rem;
+  padding-bottom: 2.4rem;
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;

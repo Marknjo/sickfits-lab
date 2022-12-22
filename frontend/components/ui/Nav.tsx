@@ -4,10 +4,18 @@ import { NavStyles } from '../styles'
 export default function Nav() {
   return (
     <NavStyles>
-      <Link href='./'>Products</Link>
-      <Link href='./sell'>Sell</Link>
-      <Link href='./orders'>Orders</Link>
-      <Link href='./account'>Account</Link>
+      <Link href='/products' replace>
+        Products
+      </Link>
+      <Link href='/sell' replace>
+        Sell
+      </Link>
+      <Link href='/orders' replace>
+        Orders
+      </Link>
+      <Link href='/account' replace>
+        Account
+      </Link>
     </NavStyles>
   )
 }
