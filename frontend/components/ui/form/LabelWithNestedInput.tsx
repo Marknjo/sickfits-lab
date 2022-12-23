@@ -4,10 +4,12 @@ import { GenericInputsProps } from '../../../types'
 export function LabelWithNestedInput({
   uniqueName,
   children,
+  label,
+  type,
 }: GenericInputsProps) {
   return (
     <label>
-      {uppercaseFirstLetter(uniqueName)}
+      {type !== 'hidden' ? label || uppercaseFirstLetter(uniqueName) : ''}
       {children}
     </label>
   )

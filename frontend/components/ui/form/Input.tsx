@@ -8,15 +8,18 @@ export function Input({
   value,
   placeholder,
   onChangeHandler,
+  label,
   options,
 }: FormInputProps) {
+  const useType = type || 'text'
+
   return (
-    <LabelWithNestedInput uniqueName={uniqueName}>
+    <LabelWithNestedInput label={label} uniqueName={uniqueName} type={useType}>
       <input
         required={isRequired || !!isRequired}
         aria-required={isRequired || !!isRequired}
         id={uniqueName}
-        type={type || 'text'}
+        type={useType}
         name={uniqueName}
         onChange={onChangeHandler}
         {...(type === 'file' ? {} : { value })}

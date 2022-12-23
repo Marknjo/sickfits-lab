@@ -16,7 +16,7 @@ export interface ProductInterface {
   id: string
   name: string
   description: string
-  status: string
+  status: ProductStatusesEnum
   price: number
   photo: ProductImageInterface
 }
@@ -30,10 +30,11 @@ export interface SingleProductInterface {
 }
 
 export interface ProductFormOutputs {
+  id?: string
   name: string
   price: number
   description: string
-  image: any
+  image?: any
   status?: ProductStatusesEnum
 }
 

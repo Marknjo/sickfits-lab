@@ -1,9 +1,15 @@
 import { useUpdateProduct } from '../../lib/graphql'
 import { useForm } from '../../lib'
-import { ProductInterface } from '../../types'
-import { Form } from '../ui'
+import type {
+  ProductFormOutputs,
+  ProductInterface,
+  ProductStatusesEnum,
+} from '../../types'
+import { Form, Input } from '../ui'
+import { Textarea } from '../ui/form/Textarea'
 
 function UpdateProduct({ product }: { product: ProductInterface }) {
+  const { id, price, description, name, status } = product
   const {
     inputs,
     inputChangeHandler,
@@ -11,20 +17,58 @@ function UpdateProduct({ product }: { product: ProductInterface }) {
     clearForm,
     // blurInputHandler,
     // resetForm,
-  } = useForm<FormOutputs>({
-    name: 'Nice Shoes',
-    price: 34234,
-    description: 'These are the best shoes',
-    image: '',
+  } = useForm<ProductFormOutputs>({
+    name: name || '',
+    price: price || 1,
+    description: description || '',
+    status: status || 'DRAFT',
+    id: id || '',
   })
 
-  const { id, photo, price, description, name, status } = product
-  const {} = useForm()
-  const {} = useUpdateProduct(inputs)
+  const { handleProductUpdate, error, loading } = useUpdateProduct(inputs)
+
+  const submitHandler = () => {
+    handleProductUpdate(clearForm)
+  }
 
   return (
-    <Form>
-      <h2>Update Product Page</h2>
+    <Form loading={loading} error={error} onSubmitHandler={submitHandler}>
+      <Input
+        uniqueName='name'
+        value={inputs.name}
+        placeholder='product title'
+        onChangeHandler={inputChangeHandler}
+        isRequired={true}
+      />
+
+      <Input
+        uniqueName='id'
+        value={id}
+        type='hidden'
+        onChangeHandler={inputChangeHandler}
+      />
+
+      <Input
+        label='Price (USD Cents)'
+        uniqueName='price'
+        type='number'
+        value={`${inputs.price}`}
+        onChangeHandler={inputChangeHandler}
+        isRequired={true}
+        placeholder={'100'}
+        options={{
+          min: 1,
+        }}
+      />
+
+      <Textarea
+        uniqueName='description'
+        onChangeHandler={textAreaChangeHandler}
+        isRequired={true}
+        placeholder={'Add your Description'}
+      />
+
+      <button type='submit'>Update Product</button>
     </Form>
   )
 }

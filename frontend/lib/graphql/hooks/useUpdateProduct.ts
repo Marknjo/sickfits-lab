@@ -1,32 +1,32 @@
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { ALL_PRODUCTS_QUERY, CREATE_PRODUCT } from '../types'
+import { ALL_PRODUCTS_QUERY, UPDATE_PRODUCT_MUTATION } from '../types'
 
 export function useUpdateProduct<T extends object>(inputs: T) {
   const Router = useRouter()
 
-  const [createProduct, { loading, error, data }] = useMutation(
-    CREATE_PRODUCT,
+  const [updateProduct, { loading, error, data }] = useMutation(
+    UPDATE_PRODUCT_MUTATION,
     {
       variables: inputs,
       refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
     }
   )
 
-  const handleProductCreate = async (clearForm: () => void) => {
-    const response = await createProduct()
+  const handleProductUpdate = async (clearForm: () => void) => {
+    const response = await updateProduct()
 
     // Create form
     clearForm()
 
     // Redirect To
     Router.push({
-      pathname: `/products/${response.data?.createProduct.id}`,
+      pathname: `/products/${response.data?.updateProduct.id}`,
     })
   }
 
   return {
-    handleProductCreate,
+    handleProductUpdate,
     loading,
     error,
     data,

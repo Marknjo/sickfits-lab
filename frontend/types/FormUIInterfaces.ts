@@ -8,6 +8,7 @@ import {
 import { GenericProps } from './GenericProps'
 
 export interface FormCommonProps {
+  label?: string
   isRequired?: boolean
   uniqueName: string
   value?: string
@@ -18,6 +19,8 @@ export interface FormCommonProps {
 
 export interface GenericInputsProps extends GenericProps {
   uniqueName: string
+  label?: string
+  type: HTMLInputTypeAttribute
 }
 
 export interface FormPropsInterface extends GenericProps {
