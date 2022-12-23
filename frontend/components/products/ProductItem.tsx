@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { formatMoney } from '../../lib/formatMoney'
 import { ProductInterface } from '../../types'
 import { Item, PriceTag, Title } from '../styles'
+import { DeleteProductBtn } from '../ui'
 
 const ImageBoxStyle = styled.div`
   position: relative;
@@ -56,16 +57,7 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
         </Link>
       </div>
       <div>
-        <Link
-          href={{
-            pathname: 'sell',
-            query: {
-              id,
-            },
-          }}
-        >
-          Delete 🗑️
-        </Link>
+        <DeleteProductBtn />
       </div>
     </div>
   </Item>

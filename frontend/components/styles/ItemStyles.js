@@ -38,14 +38,27 @@ export const Item = styled.article`
       border-left: 1px solid var(--lightGray);
     }
 
-    & > :not(:first-of-type) a {
+    & > :not(:first-of-type) a, 
+    & > :not(:first-of-type) button {
       display: flex;
       justify-content: center;
     }
 
-    & > :last-of-type a {
+    & > :last-of-type a, 
+    & > :last-of-type button {
       display: flex;
       justify-content: end;
+      margin-left: auto;
+    }
+
+    & button {
+      border:  0;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
   }
