@@ -3,7 +3,7 @@ import { useForm } from '../../lib'
 import type {
   ProductFormOutputs,
   ProductInterface,
-  ProductStatusesEnum,
+  // @TODO: implement select options for status - ProductStatusesEnum,
 } from '../../types'
 import { Form, Input } from '../ui'
 import { Textarea } from '../ui/form/Textarea'

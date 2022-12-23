@@ -18,7 +18,7 @@ const ProductStyles = styled.section`
   img {
     width: auto;
     height: auto;
-    /* object-fit: contain; */
+    object-fit: cover;
   }
 
   .details {
