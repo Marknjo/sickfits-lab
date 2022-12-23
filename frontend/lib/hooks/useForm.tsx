@@ -1,4 +1,4 @@
-import { FormEvent, SyntheticEvent, useState } from 'react'
+import { FormEvent, SyntheticEvent, useEffect, useState } from 'react'
 
 // interface FormInputsOptions {
 //   [key: string]: string | number | boolean | File
@@ -14,6 +14,12 @@ import { FormEvent, SyntheticEvent, useState } from 'react'
 
 export function useForm<T extends object>(options: T) {
   const [inputs, setInputs] = useState<T>(options || {})
+  const initialState = Object.values(options).join(' ')
+
+  useEffect(() => {
+    setInputs(options)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialState])
 
   function formInputHandler<E>(event: FormEvent<E>): void {
     // @ts-ignore
