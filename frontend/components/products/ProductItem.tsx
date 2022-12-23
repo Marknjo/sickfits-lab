@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { formatMoney } from '../../lib/formatMoney'
-import { ProductInterface } from '../../types/ProductTypes'
+import { ProductInterface } from '../../types'
 import { Item, PriceTag, Title } from '../styles'
 
 const ImageBoxStyle = styled.div`
@@ -49,10 +49,7 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
       <div>
         <Link
           href={{
-            pathname: 'update',
-            query: {
-              id,
-            },
+            pathname: `sell/${id}/update`,
           }}
         >
           Edit ✏️
@@ -61,7 +58,7 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
       <div>
         <Link
           href={{
-            pathname: 'update',
+            pathname: 'sell',
             query: {
               id,
             },

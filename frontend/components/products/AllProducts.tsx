@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Product from './ProductItem'
-import { useProducts } from '../../lib/graphql/hooks/useProducts'
+import { useProducts } from '../../lib/graphql'
 
 const ProductsListStyles = styled.section`
   display: grid;

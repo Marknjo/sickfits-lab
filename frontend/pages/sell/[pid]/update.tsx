@@ -1,11 +1,10 @@
-import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import SingleProduct from '../../components/products/SingleProduct'
-import { DisplayError } from '../../components/ui'
-import { useProduct } from '../../lib/graphql/hooks/useProduct'
+import UpdateProduct from '../../../components/sell/UpdateProduct'
+import { DisplayError } from '../../../components/ui'
+import { useProduct } from '../../../lib/graphql'
 
-const ProductPage: NextPage = () => {
+function UpdateProductPage() {
   const router = useRouter()
 
   const {
@@ -33,11 +32,12 @@ const ProductPage: NextPage = () => {
     <main>
       <Head>
         <meta name='description' content={product.description} />
-        <title>Sick Fits | {product.name}</title>
+        <title>Sick Fits | Update {product.name}</title>
       </Head>
-      <SingleProduct product={product} />
+      <h2>Update {product.name}</h2>
+      <UpdateProduct product={product} />
     </main>
   )
 }
 
-export default ProductPage
+export default UpdateProductPage

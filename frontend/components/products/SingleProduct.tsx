@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 import { formatMoney } from '../../lib/formatMoney'
-import { ProductInterface } from '../../types/ProductTypes'
+import { ProductInterface } from '../../types'
 import { SickButton } from '../styles'
 
 const ProductStyles = styled.section`

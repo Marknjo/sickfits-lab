@@ -17,7 +17,7 @@ const ErrorStyles = styled.div`
   }
 `
 
-const DisplayError = ({ error }: { error: any }) => {
+export const DisplayError = ({ error }: { error: any }) => {
   if (!error || !error.message) return null
 
   if (
@@ -45,5 +45,3 @@ const DisplayError = ({ error }: { error: any }) => {
     </ErrorStyles>
   )
 }
-
-export default DisplayError

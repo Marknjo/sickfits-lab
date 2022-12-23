@@ -28,3 +28,9 @@ export interface ProductsInterface {
 export interface SingleProductInterface {
   product: ProductInterface
 }
+
+export enum ProductStatusesEnum {
+  Available = 'AVAILABLE',
+  Unavailable = 'UNAVAILABLE',
+  Draft = 'DRAFT',
+}
