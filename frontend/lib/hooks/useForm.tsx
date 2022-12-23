@@ -12,7 +12,7 @@ import { FormEvent, SyntheticEvent, useState } from 'react'
 //   clearForm: () => void
 // }
 
-function useForm<T extends object>(options: T) {
+export function useForm<T extends object>(options: T) {
   const [inputs, setInputs] = useState<T>(options || {})
 
   function formInputHandler<E>(event: FormEvent<E>): void {
@@ -91,5 +91,3 @@ function useForm<T extends object>(options: T) {
     clearForm,
   }
 }
-
-export default useForm

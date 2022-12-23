@@ -16,5 +16,6 @@ export type {
   ProductInterface,
   ProductsInterface,
   SingleProductInterface,
+  ProductFormOutputs,
   ProductStatusesEnum,
 } from './ProductTypes'

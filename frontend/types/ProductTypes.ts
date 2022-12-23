@@ -29,6 +29,14 @@ export interface SingleProductInterface {
   product: ProductInterface
 }
 
+export interface ProductFormOutputs {
+  name: string
+  price: number
+  description: string
+  image: any
+  status?: ProductStatusesEnum
+}
+
 export enum ProductStatusesEnum {
   Available = 'AVAILABLE',
   Unavailable = 'UNAVAILABLE',

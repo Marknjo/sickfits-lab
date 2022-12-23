@@ -1,14 +1,8 @@
 import { useCreateProduct } from '../../lib/graphql/hooks/useCreateProduct'
-import useForm from '../../lib/hooks/useForm'
+import { useForm } from '../../lib'
 import { Form, Input } from '../ui'
 import { Textarea } from '../ui/form/Textarea'
-
-interface FormOutputs {
-  name: string
-  price: number
-  description: string
-  image: any
-}
+import { ProductFormOutputs } from '../../types'
 
 const CreateProduct = () => {
   const {
@@ -18,7 +12,7 @@ const CreateProduct = () => {
     clearForm,
     // blurInputHandler,
     // resetForm,
-  } = useForm<FormOutputs>({
+  } = useForm<ProductFormOutputs>({
     name: 'Nice Shoes',
     price: 34234,
     description: 'These are the best shoes',
