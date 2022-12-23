@@ -57,7 +57,7 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
         </Link>
       </div>
       <div>
-        <DeleteProductBtn />
+        <DeleteProductBtn id={id} />
       </div>
     </div>
   </Item>

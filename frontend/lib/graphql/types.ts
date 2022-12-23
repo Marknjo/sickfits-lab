@@ -89,3 +89,11 @@ export const UPDATE_PRODUCT_MUTATION = gql`
     }
   }
 `
+export const DELETE_PRODUCT_MUTATION = gql`
+  mutation DeleteProductMutation($id: ID) {
+    deleteProduct(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`

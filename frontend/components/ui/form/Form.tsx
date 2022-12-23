@@ -1,7 +1,7 @@
 import { FormEvent } from 'react'
 import { FormPropsInterface } from '../../../types'
 import { FormStyles } from '../../styles'
-import DisplayError from '../ErrorMessage'
+import { DisplayError } from '../ErrorMessage'
 
 export function Form({
   method,

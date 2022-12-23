@@ -1,4 +1,8 @@
-export const DeleteProductBtn = () => {
+import { useDeleteProduct } from '../../lib/graphql'
+
+export const DeleteProductBtn = ({ id }: { id: string }) => {
+  const { error, loading, handleProductDelete } = useDeleteProduct(id)
+
   return (
     <button
       type='button'
@@ -6,11 +10,10 @@ export const DeleteProductBtn = () => {
         const confirmResponse = confirm(
           'Are sure you want to delete this product?'
         )
-        /// @TODO: Delete Product
-        console.table({ confirmResponse })
+        confirmResponse && handleProductDelete()
       }}
     >
-      Delete 🗑️
+      {error || loading ? (error ? 'Delete ⛔!' : 'Deleting...') : 'Delete 🗑️'}
     </button>
   )
 }
