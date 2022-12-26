@@ -41,7 +41,7 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
 
     <TitleBoxStyle>
       <Title>
-        <Link href={`./products/${id}`}>{name}</Link>
+        <Link href={`/products/${id}`}>{name}</Link>
       </Title>
     </TitleBoxStyle>
     <PriceTag>{formatMoney(price)}</PriceTag>
@@ -50,7 +50,7 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
       <div>
         <Link
           href={{
-            pathname: `sell/${id}/update`,
+            pathname: `/sell/${id}/update`,
           }}
         >
           Edit ✏️
