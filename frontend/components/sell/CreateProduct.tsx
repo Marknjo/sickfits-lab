@@ -13,9 +13,9 @@ const CreateProduct = () => {
     // blurInputHandler,
     // resetForm,
   } = useForm<ProductFormOutputs>({
-    name: 'Nice Shoes',
-    price: 34234,
-    description: 'These are the best shoes',
+    name: '',
+    price: 0,
+    description: '',
     image: '',
   })
 
@@ -43,11 +43,13 @@ const CreateProduct = () => {
       />
 
       <Input
+        label='Price (in USD Cents)'
         uniqueName='price'
         type='number'
+        value={`${inputs.price}`}
         onChangeHandler={inputChangeHandler}
         isRequired={true}
-        placeholder={'100'}
+        placeholder={'$100'}
         options={{
           min: 1,
         }}
@@ -58,6 +60,7 @@ const CreateProduct = () => {
         onChangeHandler={textAreaChangeHandler}
         isRequired={true}
         placeholder={'Add your Description'}
+        value={inputs.description}
       />
 
       {/* <button onClick={clearForm} type='button'>
