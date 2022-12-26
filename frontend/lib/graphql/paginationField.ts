@@ -1,38 +1,33 @@
-import { InMemoryCache } from '@apollo/client'
-import { ProductInterface } from '../../types'
+import { FieldFunctionOptions, FieldPolicy } from '@apollo/client'
 
-interface Args {
+interface PaginationArgs {
   skip?: number
   take?: number
-}
-
-interface Arguments {
-  args: Args
-  cache: InMemoryCache
 }
 
 // FieldPolicy<any, any, any,
 // FieldFunctionOptions<Record<string, any>,
 // Record<string, any>>> |
 // FieldReadFunction<any, any, FieldFunctionOptions<...>>
-
-export function paginationField() {
+export function paginationField(): FieldPolicy {
   return {
     keyArgs: false,
 
+    /// @ts-ignore
     read(
-      existing: [{ _ref: string }],
+      existing: [{ _ref: string }] | [],
       {
         args: { skip = 0, take = existing?.length } = {},
-      }: { cache: InMemoryCache; args: Args }
+      }: { args: PaginationArgs }
     ) {
       return existing && existing.slice(skip, skip + take)
     },
 
+    /// @ts-ignore
     merge(
-      existing: ProductInterface[] = [],
-      incoming: ProductInterface[],
-      { args }: { args: Args }
+      existing: [{ _ref: string }] | [] = [],
+      incoming: [{ _ref: string }],
+      { args }: { args: PaginationArgs }
     ) {
       const { skip } = args
 
@@ -44,7 +39,7 @@ export function paginationField() {
         merged[i] = incoming[i - skipWithDefault]
       }
 
-      return merged
+      return merged as FieldPolicy
     },
   }
 }

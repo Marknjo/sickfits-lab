@@ -52,7 +52,6 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            // @ts-ignore
             products: paginationField(),
           },
         },
