@@ -35,33 +35,14 @@ export const GET_SINGLE_PRODUCT_QUERY = gql`
   }
 `
 
-// export const ALL_PRODUCTS_QUERY = gql`
-//   ${PRODUCT_IMAGE_DETAILS_FRAGMENT}
-//   ${SLIM_PRODUCT_DETAILS_FRAGMENT}
-//   query GetAllProducts($take: Int, $skip: Int!) {
-//     products(take: $take, skip: $skip) {
-//       ...SlimProductDetails
-//       photo {
-//         ...ImageDetails
-//       }
-//     }
-//   }
-// `
-
-export const ALL_PRODUCTS_QUERY = gql`
+export const PRODUCTS_PAGINATION_QUERY = gql`
+  ${PRODUCT_IMAGE_DETAILS_FRAGMENT}
+  ${SLIM_PRODUCT_DETAILS_FRAGMENT}
   query GetAllProducts($take: Int, $skip: Int) {
-    products(take: $take, skip: $skip, orderBy: { name: asc }) {
-      id
-      name
-      description
-      price
+    products(take: $take, skip: $skip) {
+      ...SlimProductDetails
       photo {
-        id
-        altText
-        image {
-          id
-          url
-        }
+        ...ImageDetails
       }
     }
   }

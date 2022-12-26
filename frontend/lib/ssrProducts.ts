@@ -1,12 +1,12 @@
 import { productsPaginationConfig } from './graphql/hooks/useProducts'
-import { ALL_PRODUCTS_QUERY } from './graphql/types'
+import { PRODUCTS_PAGINATION_QUERY } from './graphql/types'
 import { addApolloState, initializeApollo } from './graphql/apolloClient'
 
 export async function ssrProducts<T extends object>(props?: T) {
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
-    query: ALL_PRODUCTS_QUERY,
+    query: PRODUCTS_PAGINATION_QUERY,
     variables: productsPaginationConfig,
   })
 

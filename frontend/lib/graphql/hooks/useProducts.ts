@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client'
 import { perPage } from '../../../config'
 import { ProductsInterface } from '../../../types/ProductTypes'
-import { ALL_PRODUCTS_QUERY } from '../types'
+import { PRODUCTS_PAGINATION_QUERY } from '../types'
 
 export const useProducts = (skip: number = 0) => {
-  const { data, error, loading, fetchMore } = useQuery(ALL_PRODUCTS_QUERY, {
+  const { data, error, loading } = useQuery(PRODUCTS_PAGINATION_QUERY, {
     variables: {
       orderBy: 'desc',
       take: perPage,
@@ -19,6 +19,5 @@ export const useProducts = (skip: number = 0) => {
     products: response?.products || [],
     error,
     loading,
-    fetchMore,
   }
 }

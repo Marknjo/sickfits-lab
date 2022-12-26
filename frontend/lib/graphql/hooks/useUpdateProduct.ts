@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { ALL_PRODUCTS_QUERY, UPDATE_PRODUCT_MUTATION } from '../types'
+import { PRODUCTS_PAGINATION_QUERY, UPDATE_PRODUCT_MUTATION } from '../types'
 
 export function useUpdateProduct<T extends object>(inputs: T) {
   const Router = useRouter()
@@ -9,7 +9,7 @@ export function useUpdateProduct<T extends object>(inputs: T) {
     UPDATE_PRODUCT_MUTATION,
     {
       variables: inputs,
-      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
+      refetchQueries: [{ query: PRODUCTS_PAGINATION_QUERY }],
     }
   )
 

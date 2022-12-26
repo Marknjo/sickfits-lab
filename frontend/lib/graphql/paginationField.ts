@@ -1,7 +1,5 @@
-import { InMemoryCache, InMemoryCacheConfig } from '@apollo/client'
-import { read } from 'fs'
+import { InMemoryCache } from '@apollo/client'
 import { ProductInterface } from '../../types'
-import { ALL_PRODUCTS_QUERY, PRODUCTS_COUNT_QUERY } from './types'
 
 interface Args {
   skip?: number

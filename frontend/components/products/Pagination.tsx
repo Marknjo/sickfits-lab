@@ -27,8 +27,6 @@ function Pagination({ page }: { page: number }) {
 
   const totalPages = Math.ceil(productsCount / perPage)
 
-  console.log(totalPages)
-
   return (
     <PaginationBoxStyles>
       <PaginationStyles>

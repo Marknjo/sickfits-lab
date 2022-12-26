@@ -17,7 +17,7 @@ const ProductsPage = () => {
   const pageQueryResults = query.page || 1
   const currentPage = parseInt(pageQueryResults as string, 10)
   const skip = perPage * (currentPage - 1)
-  const { products, loading, fetchMore } = useProducts(skip)
+  const { products, loading } = useProducts(skip)
 
   if (loading) {
     return <p>Loading...</p>
