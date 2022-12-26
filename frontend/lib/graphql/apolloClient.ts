@@ -3,7 +3,10 @@ import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import type { NormalizedCacheObject } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
-import { concatPagination } from '@apollo/client/utilities'
+import {
+  concatPagination,
+  offsetLimitPagination,
+} from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash.isequal'
 import { endpoint, prodEndpoint } from '../../config'
@@ -48,7 +51,7 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            products: concatPagination(),
+            // products: offsetLimitPagination(),
           },
         },
       },

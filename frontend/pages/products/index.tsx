@@ -1,4 +1,5 @@
 // import Head from 'next/head'
+import { useRouter } from 'next/router'
 import Products from '../../components/products/AllProducts'
 import Pagination from '../../components/products/Pagination'
 import { ssrProducts } from '../../lib/ssrProducts'
@@ -8,11 +9,16 @@ export const getServerSideProps = async () => {
 }
 
 const ProductsPage = () => {
+  const router = useRouter()
+  const { query } = router
+  const pageQueryResults = query.page || 1
+  const currentPage = parseInt(pageQueryResults as string, 10)
+
   return (
     <main>
-      <Pagination page={1} />
-      <Products />
-      <Pagination page={1} />
+      <Pagination page={currentPage} />
+      <Products page={currentPage} />
+      <Pagination page={currentPage} />
     </main>
   )
 }

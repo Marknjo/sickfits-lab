@@ -27,6 +27,8 @@ function Pagination({ page }: { page: number }) {
 
   const totalPages = Math.ceil(productsCount / perPage)
 
+  console.log(totalPages)
+
   return (
     <PaginationBoxStyles>
       <PaginationStyles>
@@ -36,14 +38,17 @@ function Pagination({ page }: { page: number }) {
           </title>
         </Head>
 
-        <Link href={`/products/${page - 1}`} aria-disabled={page <= 1}>
+        <Link href={`/products/page/${page - 1}`} aria-disabled={page <= 1}>
           &#8672; Prev
         </Link>
         <p>
-          Page {page} of {totalPages}
+          Page {page || 1} of {totalPages}
         </p>
         <p>{productsCount} Products Found</p>
-        <Link href={`/products/${page + 1}`} aria-disabled={page >= totalPages}>
+        <Link
+          href={`/products/page/${totalPages === page ? page : page + 1}`}
+          aria-disabled={page >= totalPages}
+        >
           {' '}
           Next &#8674;
         </Link>
