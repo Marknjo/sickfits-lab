@@ -4,8 +4,10 @@ import {
   MutationUpdaterFunction,
   useMutation,
 } from '@apollo/client'
-import { DELETE_PRODUCT_MUTATION } from '../types'
+import { ALL_PRODUCTS_QUERY, DELETE_PRODUCT_MUTATION } from '../types'
 
+/// Useful where we do not have pagination
+/// Affects pagination as the cache store still holds old data
 const update:
   | MutationUpdaterFunction<
       any,
@@ -18,7 +20,12 @@ const update:
   | undefined = function (cache, payload) {
   const cacheId = cache.identify(payload.data.deleteProduct)
   cache.evict({ id: cacheId })
-  cache.gc()
+
+  // @ts-ignore
+  cache.gc({
+    resetResultCache: true,
+    resetResultIdentities: true,
+  })
 }
 
 export const useDeleteProduct = (id: string) => {
@@ -28,7 +35,8 @@ export const useDeleteProduct = (id: string) => {
       variables: {
         id,
       },
-      update,
+      // update,
+      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }, 'GetAllProducts'],
     }
   )
 

@@ -10,6 +10,7 @@ import {
 import merge from 'deepmerge'
 import isEqual from 'lodash.isequal'
 import { endpoint, prodEndpoint } from '../../config'
+import { paginationField } from './paginationField'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -51,7 +52,8 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            // products: offsetLimitPagination(),
+            // @ts-ignore
+            products: paginationField(),
           },
         },
       },

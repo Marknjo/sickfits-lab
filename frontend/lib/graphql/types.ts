@@ -50,7 +50,7 @@ export const GET_SINGLE_PRODUCT_QUERY = gql`
 
 export const ALL_PRODUCTS_QUERY = gql`
   query GetAllProducts($take: Int, $skip: Int) {
-    products(take: $take, skip: $skip) {
+    products(take: $take, skip: $skip, orderBy: { name: asc }) {
       id
       name
       description
