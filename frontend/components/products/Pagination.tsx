@@ -36,12 +36,17 @@ function Pagination({ page }: { page: number }) {
           </title>
         </Head>
 
-        <Link href={`/products/${page - 1}`}>&#8672; Prev</Link>
+        <Link href={`/products/${page - 1}`} aria-disabled={page <= 1}>
+          &#8672; Prev
+        </Link>
         <p>
           Page {page} of {totalPages}
         </p>
         <p>{productsCount} Products Found</p>
-        <Link href={`/products/${page + 1}`}> Next &#8674;</Link>
+        <Link href={`/products/${page + 1}`} aria-disabled={page >= totalPages}>
+          {' '}
+          Next &#8674;
+        </Link>
       </PaginationStyles>
     </PaginationBoxStyles>
   )
