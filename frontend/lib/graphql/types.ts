@@ -97,3 +97,23 @@ export const DELETE_PRODUCT_MUTATION = gql`
     }
   }
 `
+
+// export const PRODUCTS_PRODUCTS_QUERY = gql`
+//   ${PRODUCT_IMAGE_DETAILS_FRAGMENT}
+//   ${SLIM_PRODUCT_DETAILS_FRAGMENT}
+//   query ProductsPagination($take: Int, $skip: Int!) {
+//     products(take: $take, skip: $skip) {
+//       products {
+//         ...SlimProductDetails
+//         photo {
+//           ...ImageDetails
+//         }
+//       }
+//     }
+//   }
+// `
+export const PRODUCTS_COUNT_QUERY = gql`
+  query getAllProductsCount {
+    productsCount
+  }
+`

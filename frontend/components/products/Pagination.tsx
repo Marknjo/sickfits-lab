@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styled from 'styled-components'
+import { perPage } from '../../config'
+import { useProductCount } from '../../lib/graphql'
 import { PaginationStyles } from '../styles'
 
 const PaginationBoxStyles = styled.section`
@@ -9,17 +11,37 @@ const PaginationBoxStyles = styled.section`
 `
 
 function Pagination({ page }: { page: number }) {
+  const { productsCount, error, loading } = useProductCount()
+
+  if (error) {
+    return (
+      <p>
+        <small>Pagination Error!</small>
+      </p>
+    )
+  }
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
+  const totalPages = Math.ceil(productsCount / perPage)
+
   return (
     <PaginationBoxStyles>
       <PaginationStyles>
         <Head>
-          <title>Sick Fits - Page {page} of ___</title>
+          <title>
+            Sick Fits - Page {page} of {totalPages}
+          </title>
         </Head>
 
-        <Link href='#'> ⬅️ Prev</Link>
-        <p>Page __ of __</p>
-        <p>__ Items Total</p>
-        <Link href='#'> Next ➡️</Link>
+        <Link href={`/products/${page - 1}`}>&#8672; Prev</Link>
+        <p>
+          Page {page} of {totalPages}
+        </p>
+        <p>{productsCount} Products Found</p>
+        <Link href={`/products/${page + 1}`}> Next &#8674;</Link>
       </PaginationStyles>
     </PaginationBoxStyles>
   )
