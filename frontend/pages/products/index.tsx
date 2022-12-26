@@ -1,5 +1,6 @@
-import Head from 'next/head'
+// import Head from 'next/head'
 import Products from '../../components/products/AllProducts'
+import Pagination from '../../components/products/Pagination'
 import { ssrProducts } from '../../lib/ssrProducts'
 
 export const getServerSideProps = async () => {
@@ -9,10 +10,9 @@ export const getServerSideProps = async () => {
 const ProductsPage = () => {
   return (
     <main>
-      <Head>
-        <title>Sick Fits | Products Page</title>
-      </Head>
+      <Pagination page={1} />
       <Products />
+      <Pagination page={1} />
     </main>
   )
 }
