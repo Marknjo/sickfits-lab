@@ -22,7 +22,17 @@ export function useSignin() {
       },
     })
 
-    if (res.data) {
+    const {
+      authenticateUserWithPassword: { message },
+      authenticateUserWithPassword: { item: user },
+    } = res.data
+
+    /// Handle case of error
+    if (message) {
+      return { message }
+    }
+
+    if (user) {
       clearForm()
 
       /// Redirect user to homepage
@@ -34,7 +44,6 @@ export function useSignin() {
   return {
     handleSignIn,
     error,
-    data,
     loading,
   }
 }
