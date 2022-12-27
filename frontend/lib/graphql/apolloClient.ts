@@ -1,12 +1,9 @@
 import { useMemo } from 'react'
-import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client'
+import { ApolloClient, InMemoryCache, from } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import type { NormalizedCacheObject } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
-import {
-  concatPagination,
-  offsetLimitPagination,
-} from '@apollo/client/utilities'
+
 import merge from 'deepmerge'
 import isEqual from 'lodash.isequal'
 import { endpoint, prodEndpoint } from '../../config'
@@ -34,7 +31,6 @@ const uploadLink = createUploadLink({
     credentials: 'include',
   },
   // pass the headers along from this request. This enables SSR with logged in state
-  // headers,
   credentials: 'same-origin',
 })
 
@@ -43,7 +39,7 @@ const uploadLink = createUploadLink({
 //   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
 // })
 
-function createApolloClient() {
+function createApolloClient(headers?: { [key: string]: any }) {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     // link: from([errorLink, httpLink]),
@@ -57,11 +53,15 @@ function createApolloClient() {
         },
       },
     }),
+    headers,
   })
 }
 
-export function initializeApollo(initialState = null) {
-  const _apolloClient = apolloClient ?? createApolloClient()
+export function initializeApollo(
+  headers?: { [key: string]: any },
+  initialState = null
+) {
+  const _apolloClient = apolloClient ?? createApolloClient(headers)
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -105,7 +105,7 @@ export function addApolloState(
 export function useApollo(pageProps: any) {
   const state = pageProps[APOLLO_STATE_PROP_NAME]
 
-  const store = useMemo(() => initializeApollo(state), [state])
+  const store = useMemo(() => initializeApollo(undefined, state), [state])
 
   return store
 }

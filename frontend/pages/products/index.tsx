@@ -1,10 +1,11 @@
 // import Head from 'next/head'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import Products from '../../components/products/AllProducts'
 import Pagination from '../../components/products/Pagination'
 import { ssrProducts } from '../../lib/ssrProducts'
 
-export const getServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   return ssrProducts()
 }
 
