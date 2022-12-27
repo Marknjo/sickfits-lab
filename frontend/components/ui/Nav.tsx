@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useUser } from '../../lib/graphql'
 import { NavStyles } from '../styles'
+import LogoutBtn from '../users/LogoutBtn'
 
 export default function Nav() {
   const { user, loading, error } = useUser()
@@ -21,7 +22,7 @@ export default function Nav() {
           <Link href='/sell'>Sell</Link>
           <Link href='/orders'>Orders</Link>
           <Link href='/account'>Account</Link>
-          <Link href='/logout'>Logout</Link>
+          <LogoutBtn />
         </>
       )}
 

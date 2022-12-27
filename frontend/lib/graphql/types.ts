@@ -135,3 +135,9 @@ export const GET_USER_CREDENTIALS = gql`
     }
   }
 `
+
+export const LOGOUT_MUTATION = gql`
+  mutation LogoutUser {
+    endSession
+  }
+`
