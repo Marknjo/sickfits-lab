@@ -31,7 +31,7 @@ const uploadLink = createUploadLink({
     credentials: 'include',
   },
   // pass the headers along from this request. This enables SSR with logged in state
-  credentials: 'same-origin',
+  // credentials: 'same-origin',
 })
 
 // const httpLink = new HttpLink({
@@ -102,10 +102,13 @@ export function addApolloState(
   return pageProps
 }
 
-export function useApollo(pageProps: any) {
+export function useApollo(pageProps: any, headers?: { [key: string]: any }) {
   const state = pageProps[APOLLO_STATE_PROP_NAME]
 
-  const store = useMemo(() => initializeApollo(undefined, state), [state])
+  const store = useMemo(
+    () => initializeApollo(headers, state),
+    [state, headers]
+  )
 
   return store
 }

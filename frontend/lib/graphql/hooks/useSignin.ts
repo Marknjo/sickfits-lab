@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
-import { SIGNIN_USER_MUTATION } from '../types'
+import { GET_USER_CREDENTIALS, SIGNIN_USER_MUTATION } from '../types'
 
 interface UserSignInDetails {
   email: string
@@ -20,6 +20,7 @@ export function useSignin() {
       variables: {
         ...signInInputs,
       },
+      refetchQueries: [{ query: GET_USER_CREDENTIALS }],
     })
 
     const {
