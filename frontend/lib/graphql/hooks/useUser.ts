@@ -2,13 +2,11 @@ import { useQuery } from '@apollo/client'
 import { GET_USER_CREDENTIALS } from '../types'
 
 interface AuthenticatedUser {
-  data: {
-    authenticatedItem: {
-      id: string
-      email: string
-      name: 'mark'
-    } | null
-  }
+  authenticatedItem: {
+    id: string
+    email: string
+    name: 'mark'
+  } | null
 }
 
 export function useUser() {
@@ -19,7 +17,7 @@ export function useUser() {
   } = useQuery<AuthenticatedUser>(GET_USER_CREDENTIALS)
 
   return {
-    user: response?.data.authenticatedItem,
+    user: response?.authenticatedItem,
     error,
     loading,
   }
