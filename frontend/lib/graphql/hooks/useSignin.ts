@@ -7,7 +7,7 @@ interface UserSignInDetails {
   password: string
 }
 
-export function useUser() {
+export function useSignin() {
   const router = useRouter()
   const [signinUser, { loading, error, data }] =
     useMutation(SIGNIN_USER_MUTATION)
