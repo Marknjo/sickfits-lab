@@ -39,7 +39,7 @@ export function paginationField(): FieldPolicy {
         merged[i] = incoming[i - skipWithDefault]
       }
 
-      return merged as FieldPolicy
+      return merged
     },
   }
 }

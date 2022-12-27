@@ -11,7 +11,18 @@ const ProductsListStyles = styled.section`
 `
 
 /// FetchAllProducts
-const Products = ({ products }: { products: ProductInterface[] }) => {
+const Products = ({ page }: { page: number }) => {
+  const skip = perPage * (page - 1)
+  const { products, loading } = useProducts(skip)
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
+  if (products?.length === 0) {
+    return <p>No Products in the Collection</p>
+  }
+
   return (
     <ProductsListStyles>
       {products.map(product => (
