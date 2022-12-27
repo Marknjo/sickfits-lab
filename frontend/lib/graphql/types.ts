@@ -104,3 +104,22 @@ export const PRODUCTS_COUNT_QUERY = gql`
     productsCount
   }
 `
+
+/// Handle Authentication
+
+export const SIGNIN_USER_MUTATION = gql`
+  mutation SigninUser($email: String!, $password: String!) {
+    authenticateUserWithPassword(email: $email, password: $password) {
+      ... on UserAuthenticationWithPasswordSuccess {
+        item {
+          id
+          email
+        }
+        sessionToken
+      }
+      ... on UserAuthenticationWithPasswordFailure {
+        message
+      }
+    }
+  }
+`
