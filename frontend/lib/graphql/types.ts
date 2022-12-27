@@ -123,3 +123,15 @@ export const SIGNIN_USER_MUTATION = gql`
     }
   }
 `
+
+export const GET_USER_CREDENTIALS = gql`
+  query GetUserCredentials {
+    authenticatedItem {
+      ... on User {
+        id
+        email
+        name
+      }
+    }
+  }
+`
