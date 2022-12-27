@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { perPage } from '../../config'
 
 const PRODUCT_IMAGE_DETAILS_FRAGMENT = gql`
   fragment ImageDetails on ProductImage {
@@ -38,8 +37,8 @@ export const GET_SINGLE_PRODUCT_QUERY = gql`
 export const PRODUCTS_PAGINATION_QUERY = gql`
   ${PRODUCT_IMAGE_DETAILS_FRAGMENT}
   ${SLIM_PRODUCT_DETAILS_FRAGMENT}
-  query GetAllProducts($take: Int, $skip: Int) {
-    products(take: $take, skip: $skip) {
+  query GetAllProducts($limit: Int, $offset: Int) {
+    products(take: $limit, skip: $offset, orderBy: { name: asc }) {
       ...SlimProductDetails
       photo {
         ...ImageDetails

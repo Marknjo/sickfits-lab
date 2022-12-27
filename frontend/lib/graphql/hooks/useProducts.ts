@@ -7,8 +7,8 @@ export const useProducts = (skip: number = 0) => {
   const { data, error, loading } = useQuery(PRODUCTS_PAGINATION_QUERY, {
     variables: {
       orderBy: 'desc',
-      take: perPage,
-      skip,
+      limit: perPage,
+      offset: skip,
     },
   })
 
