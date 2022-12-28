@@ -63,7 +63,7 @@ const UserPageTab = styled.div`
   }
 `
 
-export default function SigninPage() {
+export default function UserAppAccessPage() {
   const query = useSearchParams()
 
   const requestType = query.get('type') as FormType
