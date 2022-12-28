@@ -148,3 +148,9 @@ export const SIGNUP_USER_MUTATION = gql`
     }
   }
 `
+
+export const PASSWORD_RESET_MUTATION = gql`
+  mutation ResetUserPassword($email: String!) {
+    sendUserPasswordResetLink(email: $email)
+  }
+`
