@@ -58,13 +58,13 @@ export default function Signin() {
         isRequired={true}
       />
 
-      <button>Signin In</button>
+      <button>Sign In</button>
 
       <div className='extras'>
         <p>
           <small>
             Do not have an account, yet?
-            <Link href='/app-access?type=signup'> Signup here</Link>
+            <Link href='/app-access?type=signup'> Signup Here</Link>
           </small>
         </p>
       </div>

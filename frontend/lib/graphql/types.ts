@@ -140,3 +140,11 @@ export const LOGOUT_MUTATION = gql`
     endSession
   }
 `
+
+export const SIGNUP_USER_MUTATION = gql`
+  mutation SignUpUser($name: String, $email: String, $password: String) {
+    createUser(data: { name: $name, email: $email, password: $password }) {
+      id
+    }
+  }
+`

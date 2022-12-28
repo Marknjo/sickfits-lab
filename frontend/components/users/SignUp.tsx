@@ -1,37 +1,24 @@
 import Link from 'next/link'
-import { useState } from 'react'
 import { useForm } from '../../lib'
-import { useSignin } from '../../lib/graphql'
+import { useSignUp } from '../../lib/graphql'
 import { Form, Input } from '../ui'
 
 export default function Signup() {
-  const [isFailedLogin, setIsFailedLogin] = useState(false)
-
   const { inputs, clearForm, inputChangeHandler } = useForm({
     email: '',
     password: '',
     name: '',
   })
 
-  const { loading, error, handleSignIn } = useSignin()
+  const { loading, error, handleUserSignup } = useSignUp()
 
   async function userSigninHandler() {
-    const res = await handleSignIn(inputs, clearForm)
-
-    if (res?.message) {
-      setIsFailedLogin(true)
-    }
+    await handleUserSignup(inputs, clearForm)
   }
-
-  const formErrors = error
-    ? error
-    : isFailedLogin
-    ? { message: 'Password or Email Invalid!' }
-    : ''
 
   return (
     <Form
-      error={formErrors}
+      error={error}
       onSubmitHandler={userSigninHandler}
       loading={loading}
       method='POST'
@@ -67,13 +54,13 @@ export default function Signup() {
         isRequired={true}
       />
 
-      <button>Signup In</button>
+      <button>Sign Up</button>
 
       <div className='extras'>
         <p>
           <small>
             Have an account?
-            <Link href='/app-access?type=login'> Signin here</Link>
+            <Link href='/app-access?type=signin'> Signin Here</Link>
           </small>
         </p>
       </div>

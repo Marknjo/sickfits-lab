@@ -2,7 +2,6 @@ import { GetServerSideProps } from 'next'
 import { useSearchParams } from 'next/navigation'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import Signin from '../components/users/Signin'
 import { ssrProducts } from '../lib/ssrProducts'
 import Signup from '../components/users/SignUp'
@@ -81,7 +80,7 @@ export default function UserAppAccessPage() {
             </button>
           )}
 
-          {/* if it's signin, Show signup form */}
+          {/* if it's signin, Show signup button */}
           {isLoginRequest && (
             <button type='button' onClick={formTypeHandler}>
               Sign Up
