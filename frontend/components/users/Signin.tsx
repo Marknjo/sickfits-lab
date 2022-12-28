@@ -11,14 +11,24 @@ export function SignInExtras({
   onClickHandler: () => void
 }) {
   return (
-    <p>
-      <small>
-        Do not have an account, yet?
-        <BtnText type='button' onClick={onClickHandler}>
-          Signup Here
-        </BtnText>
-      </small>
-    </p>
+    <>
+      <p>
+        <small>
+          Do not have an account, yet?
+          <BtnText type='button' onClick={onClickHandler}>
+            Signup Here
+          </BtnText>
+        </small>
+      </p>
+      <p>
+        <small className='password-reset'>
+          Forgot Password?
+          <BtnText type='button'>
+            <Link href='/password-reset'>Reset Password</Link>
+          </BtnText>
+        </small>
+      </p>
+    </>
   )
 }
 
