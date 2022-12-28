@@ -51,8 +51,13 @@ export const AppAccessPageStyles = styled.div`
 
     opacity: 0.7;
 
-    button {
+    button,
+    a {
       color: red;
+    }
+
+    a {
+      padding: 0;
     }
   }
 
@@ -62,9 +67,5 @@ export const AppAccessPageStyles = styled.div`
     margin: 0;
     padding: 0;
     font-size: 12px;
-    a {
-      padding: 0;
-      color: red;
-    }
   }
 `
