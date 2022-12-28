@@ -152,6 +152,12 @@ var { withAuth } = (0, import_auth.createAuth)({
   initFirstItem: {
     fields: ["name", "email", "password"],
     skipKeystoneWelcome: true
+  },
+  passwordResetLink: {
+    tokensValidForMins: 10,
+    sendToken({ itemId, identity, token }) {
+      console.log({ itemId, identity, token });
+    }
   }
 });
 var session = (0, import_session.statelessSessions)({
