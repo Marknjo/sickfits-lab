@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import Signin, { SignInExtras } from '../components/users/Signin'
 import { ssrProducts } from '../lib/ssrProducts'
 import Signup, { SignUpExtras } from '../components/users/SignUp'
-import { AppAccessPageStyles } from '../components/styles'
+import { AppAccessPageStyles, GenericBgStyles } from '../components/styles'
 import Link from 'next/link'
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -91,7 +91,7 @@ export default function UserAppAccessPage() {
           {/* if it's signin, Show signup button */}
           {isLoginRequest || <h2>Fill Your Details to Join Sickfits</h2>}
         </div>
-        <div className='tab-content'>
+        <GenericBgStyles>
           {/* if it's signin show signin form */}
           {isLoginRequest && <Signin />}
 
@@ -106,7 +106,7 @@ export default function UserAppAccessPage() {
               <SignUpExtras onClickHandler={formTypeHandler} />
             )}
           </div>
-        </div>
+        </GenericBgStyles>
       </AppAccessPageStyles>
     </>
   )
