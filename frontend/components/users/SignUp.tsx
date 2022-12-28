@@ -4,12 +4,13 @@ import { useForm } from '../../lib'
 import { useSignin } from '../../lib/graphql'
 import { Form, Input } from '../ui'
 
-export default function Signin() {
+export default function Signup() {
   const [isFailedLogin, setIsFailedLogin] = useState(false)
 
   const { inputs, clearForm, inputChangeHandler } = useForm({
     email: '',
     password: '',
+    name: '',
   })
 
   const { loading, error, handleSignIn } = useSignin()
@@ -43,6 +44,14 @@ export default function Signin() {
 
       {/* Implementation of the form with unique names capitalized does not work */}
       <Input
+        uniqueName='name'
+        type='name'
+        value={inputs.name}
+        onChangeHandler={inputChangeHandler}
+        isRequired={true}
+      />
+
+      <Input
         uniqueName='email'
         type='email'
         value={inputs.email}
@@ -58,13 +67,13 @@ export default function Signin() {
         isRequired={true}
       />
 
-      <button>Signin In</button>
+      <button>Signup In</button>
 
       <div className='extras'>
         <p>
           <small>
-            Do not have an account, yet?
-            <Link href='/app-access?type=signup'> Signup here</Link>
+            Have an account?
+            <Link href='/app-access?type=login'> Signin here</Link>
           </small>
         </p>
       </div>

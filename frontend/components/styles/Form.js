@@ -38,6 +38,7 @@ export const FormStyles = styled.form`
   }
   button,
   input[type='submit'] {
+    margin-top: 1.5rem;
     width: auto;
     background: red;
     color: white;
@@ -45,6 +46,12 @@ export const FormStyles = styled.form`
     font-size: 2rem;
     font-weight: 600;
     padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3 ease-out;
+      
+      &:hover {
+        background-color: #e00000;
+      }
   }
   fieldset {
     border: 0;
@@ -67,6 +74,20 @@ export const FormStyles = styled.form`
     &[aria-busy='true']::before {
       background-size: 50% auto;
       animation: ${loading} 0.5s linear infinite;
+    }
+  }
+
+  .extras {
+    margin-top: 1.6rem;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 4rem;
+    p {
+      padding: 0.5rem 1.6rem;
+    }
+
+    opacity: 0.7;
+    a {
+      color: red;
     }
   }
 `;
