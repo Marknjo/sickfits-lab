@@ -1,13 +1,13 @@
 import Head from 'next/head'
-import PasswordReset from '../components/users/PasswordReset'
+import PasswordForget from '../components/users/PasswordForget'
 
-export default function PasswordResetPage() {
+export default function PasswordForgetPage() {
   return (
     <main>
       <Head>
         <title>Sickfits | Password Reset Page</title>
       </Head>
-      <PasswordReset />
+      <PasswordForget />
     </main>
   )
 }

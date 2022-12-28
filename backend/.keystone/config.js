@@ -9,11 +9,11 @@ var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
+var __copyProps = (to, from2, except, desc) => {
+  if (from2 && typeof from2 === "object" || typeof from2 === "function") {
+    for (let key of __getOwnPropNames(from2))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, { get: () => from2[key], enumerable: !(desc = __getOwnPropDesc(from2, key)) || desc.enumerable });
   }
   return to;
 };
@@ -142,6 +142,71 @@ var dbUrl = () => {
 var import_crypto = require("crypto");
 var import_session = require("@keystone-6/core/session");
 var import_auth = require("@keystone-6/auth");
+
+// lib/emailHandler.ts
+var import_process = require("process");
+var import_nodemailer = require("nodemailer");
+var host = import_process.env.MAIL_HOST;
+var from = import_process.env.MAIL_FROM;
+var user = import_process.env.MAIL_USER;
+var pass = import_process.env.MAIL_PASS;
+var portNo = import_process.env.MAIL_PORT;
+var defaultMail = import_process.env.MAIL_DEFAULT_EMAIL;
+var frontEndUrl = import_process.env.FRONTEND_URL;
+if (!host || !from || !user || !pass || !defaultMail || !portNo || !frontEndUrl) {
+  throw new Error(
+    "Email setup arguments incorrect, ensure you have set (MAIL_HOST | MAIL_FROM | MAIL_HOST | MAIL_PASS | MAIL_DEFAULT_EMAIL | MAIL_PORT | FRONTEND_URL) correctly"
+  );
+}
+var transporter = (0, import_nodemailer.createTransport)({
+  port: +portNo,
+  host,
+  auth: {
+    user,
+    pass
+  }
+});
+function makeNiceEmail(text4, from2) {
+  return `
+    <div
+      style="
+        border: 1px solid black;
+        padding: 20px;
+        font-family: sans-serif;
+        line-height: 2;
+        font-size: 20px
+      "
+    >
+      <h2>Hello There!</h2>
+      <p>Here is your password reset token. Hurry, it will expire in the next 10mins</p>
+      <p>
+        Your Reset Token. Click <a 
+          style="
+            background-color: red;
+            color: white;
+            padding: 8px 15px;
+          "
+          href="${frontEndUrl}/password-reset/?token=${text4}"
+        >
+      </p>
+      <p>\u{1F618}, ${from2}</p>
+    </div>
+  `;
+}
+async function sendPasswordResetEmail(resetToken, to) {
+  const message = {
+    from: `${from} <${defaultMail}>`,
+    to,
+    subject: "Your Password Reset Token (Expires in 10min)",
+    html: makeNiceEmail(resetToken, from)
+  };
+  const info = await transporter.sendMail(message);
+  if (user?.includes("ethereal.email")) {
+    console.log(`\u{1F48C} Message Sent! Preview it at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
+  }
+}
+
+// configs/auth.ts
 var sessionMaxDuration = process.env.SESSION_MAX_DURATION || 60 * 60 * 24 * 30;
 var sessionSecret = process.env.SESSION_SECRET || (0, import_crypto.randomBytes)(22).toString("base64");
 var { withAuth } = (0, import_auth.createAuth)({
@@ -155,8 +220,9 @@ var { withAuth } = (0, import_auth.createAuth)({
   },
   passwordResetLink: {
     tokensValidForMins: 10,
-    sendToken({ itemId, identity, token }) {
+    async sendToken({ itemId, identity, token }) {
       console.log({ itemId, identity, token });
+      await sendPasswordResetEmail(token, identity);
     }
   }
 });
@@ -282,8 +348,8 @@ async function insertSeedData(ctx) {
 }
 
 // keystone.ts
-var frontEndUrl = process.env.FRONTEND_URL;
-if (!frontEndUrl) {
+var frontEndUrl2 = process.env.FRONTEND_URL;
+if (!frontEndUrl2) {
   throw new Error(
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
@@ -292,7 +358,7 @@ var keystone_default = (0, import_core4.config)(
   withAuth({
     server: {
       cors: {
-        origin: [frontEndUrl],
+        origin: [frontEndUrl2],
         credentials: true
       }
     },

@@ -4,7 +4,7 @@ import { AppAccessPageStyles, GenericBgStyles } from '../styles'
 import { Form, Input } from '../ui'
 import { PasswordResetExtras } from './PasswordResetExtras'
 
-export default function PasswordReset() {
+export default function PasswordForget() {
   const { inputs, clearForm, inputChangeHandler } = useForm({
     email: '',
   })
@@ -18,7 +18,7 @@ export default function PasswordReset() {
   return (
     <AppAccessPageStyles>
       <div className='tab-name'>
-        <h2>Reset Your Password</h2>
+        <h2>Enter Your Email</h2>
       </div>
       <GenericBgStyles>
         <Form
@@ -43,7 +43,7 @@ export default function PasswordReset() {
             isRequired={true}
           />
 
-          <button>Reset &rarr;</button>
+          <button>Send Request &rarr;</button>
         </Form>
 
         <div className='extras'>

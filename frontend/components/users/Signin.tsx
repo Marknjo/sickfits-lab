@@ -24,7 +24,7 @@ export function SignInExtras({
         <small className='password-reset'>
           Forgot Password?
           <BtnText type='button'>
-            <Link href='/password-reset'>Reset Password</Link>
+            <Link href='/password-forget'>Request Reset</Link>
           </BtnText>
         </small>
       </p>
