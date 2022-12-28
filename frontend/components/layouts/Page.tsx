@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BasicProps } from '../../types/GenericProps'
+import { GenericProps } from '../../types'
 import { GlobalStyles } from '../styles/GlobalStyles'
 import Header from '../ui/Header'
 
@@ -9,7 +9,7 @@ const InnerStyles = styled.div`
   padding: 2rem;
 `
 
-export default function Page({ children }: BasicProps) {
+export default function Page({ children }: GenericProps) {
   return (
     <>
       <GlobalStyles />
