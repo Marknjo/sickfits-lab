@@ -13,13 +13,7 @@ const loading = keyframes`
 `;
 
 export const FormStyles = styled.form`
-  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
-  background: rgba(0, 0, 0, 0.02);
-  border: 5px solid white;
-  padding: 20px;
-  font-size: 1.5rem;
-  line-height: 1.5;
-  font-weight: 600;
+  
   label {
     display: block;
     margin-bottom: 1rem;
@@ -77,18 +71,6 @@ export const FormStyles = styled.form`
     }
   }
 
-  .extras {
-    margin-top: 1.6rem;
-    background-color: rgba(0, 0, 0, 0.04);
-    border-radius: 4rem;
-    p {
-      padding: 0.5rem 1.6rem;
-    }
-
-    opacity: 0.7;
-    a {
-      color: red;
-    }
-  }
+  
 `;
 

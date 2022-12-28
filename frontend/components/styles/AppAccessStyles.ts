@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const AppAccessPageLayout = styled.div`
+export const AppAccessPageStyles = styled.div`
   margin: 0 auto;
   max-width: 60vw;
   display: flex;
@@ -10,6 +10,16 @@ export const AppAccessPageLayout = styled.div`
     width: 100%;
   }
 
+  .tab-content {
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.02);
+    border: 5px solid white;
+    padding: 20px;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
   .tab-name {
     padding-left: 1.5rem;
     display: flex;
@@ -17,12 +27,10 @@ export const AppAccessPageLayout = styled.div`
     align-self: flex-start;
     text-align: left;
 
-    button,
-    input[type='button'] {
+    h2 {
+      margin: 0;
       box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
       width: auto;
-      /* background: red;
-    color: white; */
       color: red;
       background: rgba(0, 0, 0, 0.02);
       border: 0;
@@ -39,6 +47,21 @@ export const AppAccessPageLayout = styled.div`
         /* background-color: #e00000; */
         background-color: rgba(0, 0, 0, 0.05);
       }
+    }
+  }
+
+  .extras {
+    margin-top: 3rem;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 4rem;
+    p {
+      padding: 0.2rem 1.6rem;
+    }
+
+    opacity: 0.7;
+
+    button {
+      color: red;
     }
   }
 `

@@ -2,7 +2,25 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from '../../lib'
 import { useSignin } from '../../lib/graphql'
+import { BtnText } from '../styles'
 import { Form, Input } from '../ui'
+
+export function SignInExtras({
+  onClickHandler,
+}: {
+  onClickHandler: () => void
+}) {
+  return (
+    <p>
+      <small>
+        Do not have an account, yet?
+        <BtnText type='button' onClick={onClickHandler}>
+          Signup Here
+        </BtnText>
+      </small>
+    </p>
+  )
+}
 
 export default function Signin() {
   const [isFailedLogin, setIsFailedLogin] = useState(false)
@@ -59,15 +77,6 @@ export default function Signin() {
       />
 
       <button>Sign In</button>
-
-      <div className='extras'>
-        <p>
-          <small>
-            Do not have an account, yet?
-            <Link href='/app-access?type=signup'> Signup Here</Link>
-          </small>
-        </p>
-      </div>
     </Form>
   )
 }

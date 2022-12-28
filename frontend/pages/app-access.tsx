@@ -2,10 +2,11 @@ import { GetServerSideProps } from 'next'
 import { useSearchParams } from 'next/navigation'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import Signin from '../components/users/Signin'
+import Signin, { SignInExtras } from '../components/users/Signin'
 import { ssrProducts } from '../lib/ssrProducts'
-import Signup from '../components/users/SignUp'
-import { AppAccessPageLayout } from '../components/styles'
+import Signup, { SignUpExtras } from '../components/users/SignUp'
+import { AppAccessPageStyles } from '../components/styles'
+import Link from 'next/link'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return ssrProducts()
@@ -32,6 +33,8 @@ export default function UserAppAccessPage() {
 
   /// Set default form type
   useEffect(() => {
+    console.log({ requestedFormType })
+
     let defaultTypes = requestedFormType
 
     const types = [FormType.SIGNIN, FormType.SIGNUP]
@@ -41,16 +44,17 @@ export default function UserAppAccessPage() {
       defaultTypes = FormType.SIGNIN
     }
 
-    setUserFormType({
-      type: defaultTypes,
+    setUserFormType(prev => {
+      if (prev.type === FormType.SIGNIN && defaultTypes) {
+        return {
+          type: FormType.SIGNUP,
+        }
+      }
+      return {
+        type: FormType.SIGNIN,
+      }
     })
   }, [requestedFormType])
-
-  const titleDetails =
-    userFormType.type === FormType.SIGNIN
-      ? 'Sickfits | Sign In'
-      : 'Sickfits | Sign Up'
-  const isLoginRequest = userFormType.type === FormType.SIGNIN ? true : false
 
   function formTypeHandler() {
     setUserFormType(prev => {
@@ -65,27 +69,27 @@ export default function UserAppAccessPage() {
     })
   }
 
+  const titleDetails =
+    userFormType.type === FormType.SIGNIN
+      ? 'Sickfits | Sign In'
+      : 'Sickfits | Sign Up'
+  const isLoginRequest = userFormType.type === FormType.SIGNIN ? true : false
+
+  console.log({ isLoginRequest })
+
   return (
     <>
       <Head>
         <meta name='description' content='Sickfits Signin page' />
         <title>{titleDetails}</title>
       </Head>
-      <AppAccessPageLayout>
+      <AppAccessPageStyles>
         <div className='tab-name'>
           {/* if it's signup, Show signin button */}
-          {isLoginRequest || (
-            <button type='button' onClick={formTypeHandler}>
-              Sign In
-            </button>
-          )}
+          {isLoginRequest && <h2>Fill Your Details To Sign In</h2>}
 
           {/* if it's signin, Show signup button */}
-          {isLoginRequest && (
-            <button type='button' onClick={formTypeHandler}>
-              Sign Up
-            </button>
-          )}
+          {isLoginRequest || <h2>Fill Your Details to Join Sickfits</h2>}
         </div>
         <div className='tab-content'>
           {/* if it's signin show signin form */}
@@ -93,8 +97,17 @@ export default function UserAppAccessPage() {
 
           {/* if it's not signin show signup form */}
           {isLoginRequest || <Signup />}
+
+          <div className='extras'>
+            {isLoginRequest && (
+              <SignInExtras onClickHandler={formTypeHandler} />
+            )}
+            {isLoginRequest || (
+              <SignUpExtras onClickHandler={formTypeHandler} />
+            )}
+          </div>
         </div>
-      </AppAccessPageLayout>
+      </AppAccessPageStyles>
     </>
   )
 }

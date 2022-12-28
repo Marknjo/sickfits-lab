@@ -1,7 +1,24 @@
-import Link from 'next/link'
 import { useForm } from '../../lib'
 import { useSignUp } from '../../lib/graphql'
+import { BtnText } from '../styles'
 import { Form, Input } from '../ui'
+
+export function SignUpExtras({
+  onClickHandler,
+}: {
+  onClickHandler: () => void
+}) {
+  return (
+    <p>
+      <small>
+        Have an account?
+        <BtnText type='button' onClick={onClickHandler}>
+          Signin Here
+        </BtnText>
+      </small>
+    </p>
+  )
+}
 
 export default function Signup() {
   const { inputs, clearForm, inputChangeHandler } = useForm({
@@ -55,15 +72,6 @@ export default function Signup() {
       />
 
       <button>Sign Up</button>
-
-      <div className='extras'>
-        <p>
-          <small>
-            Have an account?
-            <Link href='/app-access?type=signin'> Signin Here</Link>
-          </small>
-        </p>
-      </div>
     </Form>
   )
 }
