@@ -1,5 +1,5 @@
 import { useForm } from '../../lib'
-import { usePasswordReset } from '../../lib/graphql'
+import { usePasswordForget } from '../../lib/graphql'
 import { AppAccessPageStyles, GenericBgStyles } from '../styles'
 import { Form, Input } from '../ui'
 import { PasswordResetExtras } from './PasswordResetExtras'
@@ -9,7 +9,7 @@ export default function PasswordForget() {
     email: '',
   })
 
-  const { loading, error, handlePasswordReset } = usePasswordReset()
+  const { loading, error, handlePasswordReset } = usePasswordForget()
 
   async function userSigninHandler() {
     handlePasswordReset(inputs.email, clearForm)

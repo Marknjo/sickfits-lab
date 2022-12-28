@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client'
-import { PASSWORD_RESET_MUTATION } from '../types'
+import { PASSWORD_FORGET_MUTATION } from '../types'
 
-export function usePasswordReset() {
+export function usePasswordForget() {
   const [resetUserPassword, { loading, error }] = useMutation(
-    PASSWORD_RESET_MUTATION
+    PASSWORD_FORGET_MUTATION
   )
 
   async function handlePasswordReset(
