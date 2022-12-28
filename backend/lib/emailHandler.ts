@@ -36,6 +36,8 @@ const transporter = createTransport({
 });
 
 function makeNiceEmail(text: string, from: string) {
+  console.log(from);
+
   return `
     <div
       style="
@@ -46,7 +48,7 @@ function makeNiceEmail(text: string, from: string) {
         font-size: 20px
       "
     >
-      <h2>Hello There!</h2>
+      <h4>Hello There!</h4>
       <p>Here is your password reset token. Hurry, it will expire in the next 10mins</p>
       <p>
         Your Reset Token. Click <a 
@@ -55,9 +57,10 @@ function makeNiceEmail(text: string, from: string) {
             color: white;
             padding: 8px 15px;
           "
-          href="${frontEndUrl}/password-reset/?token=${text}"
-        >
+          href="${frontEndUrl}/password-reset/?token=${text}" target="_blank"
+        >Reset</a>
       </p>
+      <p><small>PS: Ignore this message if you did not send the request.</small></p>
       <p>😘, ${from}</p>
     </div>
   `;

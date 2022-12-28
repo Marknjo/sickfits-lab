@@ -167,6 +167,7 @@ var transporter = (0, import_nodemailer.createTransport)({
   }
 });
 function makeNiceEmail(text4, from2) {
+  console.log(from2);
   return `
     <div
       style="
@@ -177,7 +178,7 @@ function makeNiceEmail(text4, from2) {
         font-size: 20px
       "
     >
-      <h2>Hello There!</h2>
+      <h4>Hello There!</h4>
       <p>Here is your password reset token. Hurry, it will expire in the next 10mins</p>
       <p>
         Your Reset Token. Click <a 
@@ -186,9 +187,10 @@ function makeNiceEmail(text4, from2) {
             color: white;
             padding: 8px 15px;
           "
-          href="${frontEndUrl}/password-reset/?token=${text4}"
-        >
+          href="${frontEndUrl}/password-reset/?token=${text4}" target="_blank"
+        >Reset</a>
       </p>
+      <p><small>PS: Ignore this message if you did not send the request.</small></p>
       <p>\u{1F618}, ${from2}</p>
     </div>
   `;
@@ -220,8 +222,7 @@ var { withAuth } = (0, import_auth.createAuth)({
   },
   passwordResetLink: {
     tokensValidForMins: 10,
-    async sendToken({ itemId, identity, token }) {
-      console.log({ itemId, identity, token });
+    async sendToken({ identity, token }) {
       await sendPasswordResetEmail(token, identity);
     }
   }

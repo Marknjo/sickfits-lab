@@ -22,9 +22,7 @@ export const { withAuth } = createAuth({
   },
   passwordResetLink: {
     tokensValidForMins: 10,
-    async sendToken({ itemId, identity, token }) {
-      console.log({ itemId, identity, token });
-
+    async sendToken({ identity, token }) {
       await sendPasswordResetEmail(token, identity);
     },
   },
