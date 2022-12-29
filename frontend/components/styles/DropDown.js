@@ -3,24 +3,35 @@ import styled, { keyframes } from 'styled-components';
 const DropDown = styled.div`
   position: absolute;
   width: 100%;
-  z-index: 2;
+  z-index: 10;
   border: 1px solid var(--lightGray);
 `;
 
 const DropDownItem = styled.div`
   border-bottom: 1px solid var(--lightGray);
-  background: ${(props) => (props.highlighted ? '#f7f7f7' : 'white')};
-  padding: 1rem;
+  background: ${(props) => (props.highlighted  ? '#f7f7f7' : 'white')};
   transition: all 0.2s;
-  ${(props) => (props.highlighted ? 'padding-left: 2rem;' : null)};
-  display: flex;
-  align-items: center;
-  border-left: 10px solid
-    ${(props) => (props.highlighted ? props.theme.lightgrey : 'white')};
-  img {
-    margin-right: 10px;
+  border-left: 10px solid transparent;
+  ${(props) => (props.highlighted || props['aria-selected'] ? 'padding-left: 2rem;' : null)};
+  ${(props) => (props.highlighted ? props.theme.lightgrey : 'white')};
+  ${(props) => (props.highlighted ? "border-left-color: red" : "border-left-color: transparent")};
+
+  a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 1rem;
+
+    &:hover, 
+    &:active {
+      background-color: #f7f7f7
+    }
+
+    img {
+      margin-right: 10px;
+    }
   }
-`;
+`
 
 const glow = keyframes`
   from {
@@ -39,9 +50,19 @@ const SearchStyles = styled.div`
     padding: 10px;
     border: 0;
     font-size: 2rem;
+    border-color: transparent;
+    outline-color: rgb(255 0 0 / 10%);
     &.loading {
       animation: ${glow} 0.5s ease-in-out infinite alternate;
     }
+  }
+
+  .selected {
+    border: 2px solid red;
+  }
+
+  .highlighted {
+    background-color: #fff;
   }
 `;
 

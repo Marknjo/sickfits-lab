@@ -106,6 +106,29 @@ export const PRODUCTS_COUNT_QUERY = gql`
   }
 `
 
+/// Products Search
+export const PRODUCTS_SEARCH_QUERY = gql`
+  ${PRODUCT_IMAGE_DETAILS_FRAGMENT}
+  ${SLIM_PRODUCT_DETAILS_FRAGMENT}
+
+  query SearchProductsByNameDescription($searchTerm: String) {
+    searchTerms: products(
+      where: {
+        OR: [
+          { name: { contains: $searchTerm, mode: insensitive } }
+          { description: { contains: $searchTerm, mode: insensitive } }
+        ]
+      }
+    ) {
+      ...SlimProductDetails
+      status
+      photo {
+        ...ImageDetails
+      }
+    }
+  }
+`
+
 /// Handle USER Authentication (CRU)
 export const SIGNIN_USER_MUTATION = gql`
   mutation SigninUser($email: String!, $password: String!) {

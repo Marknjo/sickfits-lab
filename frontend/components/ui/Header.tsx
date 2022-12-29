@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import styled from 'styled-components'
+import SearchProducts from '../products/SearchProducts'
 import Nav from './Nav'
 
 const LogoStyles = styled.h1`
@@ -46,7 +47,7 @@ export default function Header() {
         <Nav />
       </div>
       <div className='sub-bar'>
-        <p>Search</p>
+        <SearchProducts />
       </div>
     </HeaderStyles>
   )
