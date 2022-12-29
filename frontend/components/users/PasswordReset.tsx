@@ -1,11 +1,16 @@
 import { useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from '../../lib'
-import { usePasswordForget } from '../../lib/graphql'
+import { usePasswordRedeem } from '../../lib/graphql'
 import { AppAccessPageStyles, GenericBgStyles } from '../styles'
 import { Form, Input } from '../ui'
 import { PasswordResetExtras } from './PasswordResetExtras'
 
 export default function PasswordReset() {
+  const [genericErrorMessage, setGenericErrorMessage] = useState<{
+    message: string
+  } | null>()
+
   const param = useSearchParams()
 
   const token = param.get('token')
@@ -16,11 +21,20 @@ export default function PasswordReset() {
     password: '',
   })
 
-  const { loading, error, handlePasswordReset } = usePasswordForget()
+  const { loading, error, handlePasswordRedeem } = usePasswordRedeem()
 
   async function passwordResetHandler() {
-    handlePasswordReset(inputs.email, clearForm)
+    const res = await handlePasswordRedeem(inputs, clearForm)
+    if (res?.message) {
+      setGenericErrorMessage(res)
+    }
   }
+
+  const formErrors = error
+    ? error
+    : genericErrorMessage
+    ? genericErrorMessage
+    : ''
 
   return (
     <AppAccessPageStyles>
@@ -29,7 +43,7 @@ export default function PasswordReset() {
       </div>
       <GenericBgStyles>
         <Form
-          error={error}
+          error={formErrors}
           onSubmitHandler={passwordResetHandler}
           loading={loading}
           method='POST'
@@ -43,7 +57,7 @@ export default function PasswordReset() {
           {/* Implementation of the form with unique names capitalized does not work */}
 
           <Input
-            uniqueName='hidden'
+            uniqueName='token'
             type='hidden'
             value={inputs.token}
             onChangeHandler={inputChangeHandler}

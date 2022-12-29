@@ -6,7 +6,7 @@ export function usePasswordForget() {
     PASSWORD_FORGET_MUTATION
   )
 
-  async function handlePasswordReset(
+  async function handlePasswordForget(
     email: string,
     clearFormInputs: () => void
   ) {
@@ -16,8 +16,7 @@ export function usePasswordForget() {
       },
     })
 
-    console.log(res)
-
+    /// @TODO: Implement proper feedback after successful email password reset request
     if (res.data?.sendUserPasswordResetLink) {
       clearFormInputs()
 
@@ -30,7 +29,7 @@ export function usePasswordForget() {
   }
 
   return {
-    handlePasswordReset,
+    handlePasswordForget,
     error,
     loading,
   }

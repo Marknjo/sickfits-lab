@@ -9,10 +9,10 @@ export default function PasswordForget() {
     email: '',
   })
 
-  const { loading, error, handlePasswordReset } = usePasswordForget()
+  const { loading, error, handlePasswordForget } = usePasswordForget()
 
-  async function userSigninHandler() {
-    handlePasswordReset(inputs.email, clearForm)
+  async function passwordForgetHandler() {
+    handlePasswordForget(inputs.email, clearForm)
   }
 
   return (
@@ -23,7 +23,7 @@ export default function PasswordForget() {
       <GenericBgStyles>
         <Form
           error={error}
-          onSubmitHandler={userSigninHandler}
+          onSubmitHandler={passwordForgetHandler}
           loading={loading}
           method='POST'
         >

@@ -10,3 +10,5 @@ export { useSignUp } from './hooks/useSignUp'
 export { useUser } from './hooks/useUser'
 export { useLogout } from './hooks/useLogout'
 export { usePasswordForget } from './hooks/usePasswordForget'
+
+export { usePasswordRedeem } from './hooks/usePasswordRedeem'

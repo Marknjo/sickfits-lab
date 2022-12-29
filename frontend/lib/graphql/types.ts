@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 
+/// Handle Products CRUD
 const PRODUCT_IMAGE_DETAILS_FRAGMENT = gql`
   fragment ImageDetails on ProductImage {
     id
@@ -89,6 +90,7 @@ export const UPDATE_PRODUCT_MUTATION = gql`
     }
   }
 `
+
 export const DELETE_PRODUCT_MUTATION = gql`
   mutation DeleteProductMutation($id: ID) {
     deleteProduct(where: { id: $id }) {
@@ -104,8 +106,7 @@ export const PRODUCTS_COUNT_QUERY = gql`
   }
 `
 
-/// Handle Authentication
-
+/// Handle USER Authentication (CRU)
 export const SIGNIN_USER_MUTATION = gql`
   mutation SigninUser($email: String!, $password: String!) {
     authenticateUserWithPassword(email: $email, password: $password) {
@@ -150,7 +151,24 @@ export const SIGNUP_USER_MUTATION = gql`
 `
 
 export const PASSWORD_FORGET_MUTATION = gql`
-  mutation ResetUserPassword($email: String!) {
+  mutation ForgetUserPassword($email: String!) {
     sendUserPasswordResetLink(email: $email)
+  }
+`
+
+export const PASSWORD_REDEEM_MUTATION = gql`
+  mutation ResetUserPassword(
+    $email: String!
+    $token: String!
+    $password: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      token: $token
+      password: $password
+    ) {
+      code
+      message
+    }
   }
 `

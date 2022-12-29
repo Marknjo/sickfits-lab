@@ -167,7 +167,6 @@ var transporter = (0, import_nodemailer.createTransport)({
   }
 });
 function makeNiceEmail(text4, from2) {
-  console.log(from2);
   return `
     <div
       style="
@@ -187,7 +186,7 @@ function makeNiceEmail(text4, from2) {
             color: white;
             padding: 8px 15px;
           "
-          href="${frontEndUrl}/password-reset/?token=${text4}" target="_blank"
+          href="${frontEndUrl}/password-reset/${text4}" target="_blank"
         >Reset</a>
       </p>
       <p><small>PS: Ignore this message if you did not send the request.</small></p>
