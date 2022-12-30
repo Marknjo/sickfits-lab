@@ -17,19 +17,21 @@ model User {
   name                    String    @default("")
   email                   String    @unique @default("")
   password                String
+  cart                    CartItem? @relation("CartItem_customer")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
 }
 
 model Product {
-  id          String        @id @default(cuid())
-  name        String        @default("")
-  description String        @default("")
-  status      String?       @default("DRAFT")
-  price       Int
-  photo       ProductImage? @relation("Product_photo", fields: [photoId], references: [id])
-  photoId     String?       @unique @map("photo")
+  id                    String        @id @default(cuid())
+  name                  String        @default("")
+  description           String        @default("")
+  status                String?       @default("DRAFT")
+  price                 Int
+  photo                 ProductImage? @relation("Product_photo", fields: [photoId], references: [id])
+  photoId               String?       @unique @map("photo")
+  from_CartItem_product CartItem[]    @relation("CartItem_product")
 }
 
 model ProductImage {
@@ -41,4 +43,15 @@ model ProductImage {
   image_height    Int?
   image_id        String?
   product         Product? @relation("Product_photo")
+}
+
+model CartItem {
+  id         String   @id @default(cuid())
+  quantity   Int      @default(1)
+  product    Product? @relation("CartItem_product", fields: [productId], references: [id])
+  productId  String?  @map("product")
+  customer   User?    @relation("CartItem_customer", fields: [customerId], references: [id])
+  customerId String?  @unique @map("customer")
+
+  @@index([productId])
 }

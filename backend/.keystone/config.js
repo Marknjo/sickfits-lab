@@ -37,7 +37,7 @@ import_dotenv.default.config({
 });
 
 // keystone.ts
-var import_core4 = require("@keystone-6/core");
+var import_core5 = require("@keystone-6/core");
 
 // schemas/User.ts
 var import_core = require("@keystone-6/core");
@@ -48,7 +48,8 @@ var User = (0, import_core.list)({
   fields: {
     name: (0, import_fields.text)(),
     email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } }),
-    password: (0, import_fields.password)({ validation: { isRequired: true } })
+    password: (0, import_fields.password)({ validation: { isRequired: true } }),
+    cart: (0, import_fields.relationship)({ ref: "CartItem.customer" })
   }
 });
 
@@ -112,11 +113,43 @@ var ProductImage = (0, import_core3.list)({
   }
 });
 
+// schemas/CartItem.ts
+var import_core4 = require("@keystone-6/core");
+var import_access4 = require("@keystone-6/core/access");
+var import_fields4 = require("@keystone-6/core/fields");
+var CartItem = (0, import_core4.list)({
+  access: import_access4.allowAll,
+  ui: {
+    listView: {
+      initialColumns: ["product", "quantity", "customer"]
+    }
+  },
+  fields: {
+    quantity: (0, import_fields4.integer)({
+      defaultValue: 1,
+      validation: { isRequired: true, min: 1 }
+    }),
+    product: (0, import_fields4.relationship)({
+      ref: "Product",
+      ui: {
+        hideCreate: true
+      }
+    }),
+    customer: (0, import_fields4.relationship)({
+      ref: "User.cart",
+      ui: {
+        hideCreate: true
+      }
+    })
+  }
+});
+
 // schemas/schema.ts
 var lists = {
   User,
   Product,
-  ProductImage
+  ProductImage,
+  CartItem
 };
 
 // lib/buildDbUrl.ts
@@ -354,7 +387,7 @@ if (!frontEndUrl2) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = (0, import_core4.config)(
+var keystone_default = (0, import_core5.config)(
   withAuth({
     server: {
       cors: {

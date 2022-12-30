@@ -1,6 +1,6 @@
 import { list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
-import { password, text } from '@keystone-6/core/fields';
+import { password, relationship, text } from '@keystone-6/core/fields';
 
 export const User = list({
   access: allowAll,
@@ -11,6 +11,7 @@ export const User = list({
     // @TODO: Add validation.rejectCommon: true
     password: password({ validation: { isRequired: true } }),
 
-    /// @TODO: Add roles, cart, and orders
+    /// @TODO: Add roles, and orders
+    cart: relationship({ ref: 'CartItem.customer' }),
   },
 });
