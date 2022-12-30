@@ -25,6 +25,7 @@ export const Item = styled.article`
     width: 100%;
     border-top: 1px solid var(--lightGray);
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    justify-content: center;
     grid-gap: 1px;
     background: var(--lightGray);
     background: white;
@@ -32,25 +33,18 @@ export const Item = styled.article`
       border: 0;
       font-size: 1.2rem;
       padding: 1rem;
+      display: flex;
+      justify-content: center;
     }
+
+
 
     & > :not(:first-of-type){
       border-left: 1px solid var(--lightGray);
     }
 
-    & > :not(:first-of-type) a, 
-    & > :not(:first-of-type) button {
-      display: flex;
-      justify-content: center;
-    }
-
-    & > :last-of-type a, 
-    & > :last-of-type button {
-      display: flex;
-      justify-content: end;
-      margin-left: auto;
-    }
-
+ 
+    
     & button {
       border:  0;
       background-color: transparent;

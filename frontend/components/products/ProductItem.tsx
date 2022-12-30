@@ -3,6 +3,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { formatMoney } from '../../lib/formatMoney'
 import { ProductInterface } from '../../types'
+import AddToCartBtn from '../orders/AddToCartBtn'
 import { Item, PriceTag, Title } from '../styles'
 import { DeleteProductBtn } from '../ui'
 
@@ -55,6 +56,9 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
         >
           Edit ✏️
         </Link>
+      </div>
+      <div>
+        <AddToCartBtn productId={id} productName={name} />
       </div>
       <div>
         <DeleteProductBtn id={id} />

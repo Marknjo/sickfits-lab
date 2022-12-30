@@ -207,3 +207,13 @@ export const PASSWORD_REDEEM_MUTATION = gql`
     }
   }
 `
+
+/// CART & Orders
+export const ADD_TO_CART_MUTATION = gql`
+  mutation IncreaseCartItems($productId: ID) {
+    addToCart(productId: $productId) {
+      id
+      quantity
+    }
+  }
+`
