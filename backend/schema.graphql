@@ -6,7 +6,8 @@ type User {
   name: String
   email: String
   password: PasswordState
-  cart: CartItem
+  cart(where: CartItemWhereInput! = {}, orderBy: [CartItemOrderByInput!]! = [], take: Int, skip: Int! = 0): [CartItem!]
+  cartCount(where: CartItemWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -30,7 +31,7 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  cart: CartItemWhereInput
+  cart: CartItemManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -81,6 +82,12 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input CartItemManyRelationFilter {
+  every: CartItemWhereInput
+  some: CartItemWhereInput
+  none: CartItemWhereInput
+}
+
 input PasswordFilter {
   isSet: Boolean!
 }
@@ -113,16 +120,17 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  cart: CartItemRelateToOneForUpdateInput
+  cart: CartItemRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
 }
 
-input CartItemRelateToOneForUpdateInput {
-  create: CartItemCreateInput
-  connect: CartItemWhereUniqueInput
-  disconnect: Boolean
+input CartItemRelateToManyForUpdateInput {
+  disconnect: [CartItemWhereUniqueInput!]
+  set: [CartItemWhereUniqueInput!]
+  create: [CartItemCreateInput!]
+  connect: [CartItemWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -134,15 +142,15 @@ input UserCreateInput {
   name: String
   email: String
   password: String
-  cart: CartItemRelateToOneForCreateInput
+  cart: CartItemRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
 }
 
-input CartItemRelateToOneForCreateInput {
-  create: CartItemCreateInput
-  connect: CartItemWhereUniqueInput
+input CartItemRelateToManyForCreateInput {
+  create: [CartItemCreateInput!]
+  connect: [CartItemWhereUniqueInput!]
 }
 
 type Product {

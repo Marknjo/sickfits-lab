@@ -12,6 +12,13 @@ export const User = list({
     password: password({ validation: { isRequired: true } }),
 
     /// @TODO: Add roles, and orders
-    cart: relationship({ ref: 'CartItem.customer' }),
+    cart: relationship({
+      ref: 'CartItem.customer',
+      many: true,
+      ui: {
+        createView: { fieldMode: 'hidden' },
+        itemView: { fieldMode: 'read' },
+      },
+    }),
   },
 });

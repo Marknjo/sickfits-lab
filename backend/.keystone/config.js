@@ -49,7 +49,14 @@ var User = (0, import_core.list)({
     name: (0, import_fields.text)(),
     email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } }),
     password: (0, import_fields.password)({ validation: { isRequired: true } }),
-    cart: (0, import_fields.relationship)({ ref: "CartItem.customer" })
+    cart: (0, import_fields.relationship)({
+      ref: "CartItem.customer",
+      many: true,
+      ui: {
+        createView: { fieldMode: "hidden" },
+        itemView: { fieldMode: "read" }
+      }
+    })
   }
 });
 

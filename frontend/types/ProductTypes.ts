@@ -43,3 +43,14 @@ export enum ProductStatusesEnum {
   Unavailable = 'UNAVAILABLE',
   Draft = 'DRAFT',
 }
+
+export type CartItemProduct = Pick<
+  ProductInterface,
+  'id' | 'name' | 'price' | 'photo'
+>
+
+export type CartItem = {
+  id: string
+  quantity: number
+  product: CartItemProduct
+}

@@ -18,4 +18,6 @@ export type {
   SingleProductInterface,
   ProductFormOutputs,
   ProductStatusesEnum,
+  CartItemProduct,
+  CartItem,
 } from './ProductTypes'

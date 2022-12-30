@@ -13,11 +13,11 @@ generator client {
 }
 
 model User {
-  id                      String    @id @default(cuid())
-  name                    String    @default("")
-  email                   String    @unique @default("")
+  id                      String     @id @default(cuid())
+  name                    String     @default("")
+  email                   String     @unique @default("")
   password                String
-  cart                    CartItem? @relation("CartItem_customer")
+  cart                    CartItem[] @relation("CartItem_customer")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -51,7 +51,8 @@ model CartItem {
   product    Product? @relation("CartItem_product", fields: [productId], references: [id])
   productId  String?  @map("product")
   customer   User?    @relation("CartItem_customer", fields: [customerId], references: [id])
-  customerId String?  @unique @map("customer")
+  customerId String?  @map("customer")
 
   @@index([productId])
+  @@index([customerId])
 }
