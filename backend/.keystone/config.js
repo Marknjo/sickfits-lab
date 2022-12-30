@@ -423,6 +423,34 @@ async function addToCart(_root, { productId }, context) {
   });
 }
 
+// lib/graphql/mutations/reduceCartItems.ts
+async function reduceCartItems(_root, { productId }, context) {
+  const session2 = context.session;
+  const itemId = session2.itemId;
+  if (!session2.itemId) {
+    throw new Error("You must be logged in to do this!");
+  }
+  const allCartItems = await context.db.CartItem.findMany({
+    where: {
+      customer: { id: { equals: itemId } },
+      product: { id: { equals: productId } }
+    }
+  });
+  const [existingCartItem] = allCartItems;
+  if (existingCartItem) {
+    console.log(
+      `There are already ${existingCartItem.quantity}, increment by 1`
+    );
+    const id = existingCartItem.id;
+    const quantity = existingCartItem.quantity;
+    return await context.db.CartItem.updateOne({
+      where: { id },
+      data: { quantity: quantity - 1 }
+    });
+  }
+  return allCartItems;
+}
+
 // lib/graphql/index.ts
 var extendGraphqlSchema = (schema) => (0, import_schema.mergeSchemas)({
   schemas: [schema],
@@ -433,10 +461,15 @@ var extendGraphqlSchema = (schema) => (0, import_schema.mergeSchemas)({
         addToCart(productId: ID): CartItem
       }
 
+      """ Remove Items from the cart by reducing a specific product quantity """
+      type Mutation{
+        reduceCartItems(productId: ID): CartItem
+      }
   `,
   resolvers: {
     Mutation: {
-      addToCart
+      addToCart,
+      reduceCartItems
     },
     Query: {}
   }
