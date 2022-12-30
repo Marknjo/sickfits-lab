@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import styled from 'styled-components'
+import { calcTotalPrice } from '../../lib'
 import { formatMoney } from '../../lib/formatMoney'
 import { useUser } from '../../lib/graphql'
 import { CartItem as CartItemInterface } from '../../types'
@@ -62,7 +63,7 @@ export default function Cart() {
           ))}
       </ul>
       <footer>
-        <p>{formatMoney(2000)}</p>
+        <p>{formatMoney(calcTotalPrice(cart!))}</p>
       </footer>
     </CartStyles>
   )
