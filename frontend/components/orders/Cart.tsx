@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import styled from 'styled-components'
-import { calcTotalPrice } from '../../lib'
+import { calcTotalPrice, useCart } from '../../lib'
 import { formatMoney } from '../../lib/formatMoney'
 import { useUser } from '../../lib/graphql'
 import { CartItem as CartItemInterface } from '../../types'
-import { CartStyles, Supreme } from '../styles'
+import { CartStyles, CloseButton, Supreme } from '../styles'
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -46,17 +46,28 @@ function CartItem({ cartItem }: { cartItem: CartItemInterface }) {
 }
 
 export default function Cart() {
+  const { isOpen, closeCart } = useCart()
   const { user, loading } = useUser()
 
   const cart = user?.cart
 
   return (
-    <CartStyles open={true}>
+    <CartStyles open={isOpen}>
       <header>
         <Supreme>{user?.name}</Supreme>
-        {!cart || cart.length === 0 ? <p>No Items in your cart!</p> : ''}
+
+        <CloseButton onClick={closeCart} type='button'>
+          &times;
+        </CloseButton>
       </header>
       <ul>
+        {!cart || cart.length === 0 ? (
+          <li>
+            <p>No Items in your cart!</p>
+          </li>
+        ) : (
+          ''
+        )}
         {cart &&
           cart.map(cartItem => (
             <CartItem key={cartItem.id} cartItem={cartItem} />

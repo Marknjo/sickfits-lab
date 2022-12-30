@@ -8,6 +8,7 @@ import { Router } from 'next/router'
 import { useApollo } from '../lib/graphql/apolloClient'
 import '../components/styles/nprogress.css'
 import Page from '../components/layouts/Page'
+import { CartStateProvider } from '../lib'
 // import { NextPage, NextPageContext } from 'next'
 
 Router.events.on('routeChangeStart', () => nProgress.start())
@@ -19,9 +20,11 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <Page>
-        <Component {...pageProps} />
-      </Page>
+      <CartStateProvider>
+        <Page>
+          <Component {...pageProps} />
+        </Page>
+      </CartStateProvider>
     </ApolloProvider>
   )
 }
