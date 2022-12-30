@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useCart } from '../../lib'
 import { useUser } from '../../lib/graphql'
+import CartCount from '../orders/CartCount'
 import { NavStyles } from '../styles'
 import LogoutBtn from '../users/LogoutBtn'
 
@@ -16,6 +17,20 @@ export default function Nav() {
     return <p>Loading...</p>
   }
 
+  const cart = user?.cart
+
+  function CartCounter() {
+    if (!cart || cart.length === 0) {
+      return 0
+    }
+
+    // @ts-ignore
+    return user.cart.reduce(
+      (tally: any, cartItem: { quantity: any }) => tally + cartItem.quantity,
+      0
+    )
+  }
+
   return (
     <NavStyles>
       <Link href='/products'>Products</Link>
@@ -26,6 +41,7 @@ export default function Nav() {
           <Link href='/account'>Account</Link>
           <button type='button' onClick={openCart}>
             My Cart
+            <CartCount count={CartCounter()} />
           </button>
           <LogoutBtn />
         </>
