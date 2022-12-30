@@ -5,6 +5,7 @@ import { dbUrl } from './lib/buildDbUrl';
 import { session, withAuth } from './configs/auth';
 import { MyImageStorage } from './configs/storage';
 import { insertSeedData } from './seed-data';
+import { extendGraphqlSchema } from './lib/graphql';
 
 // import { randomBytes } from 'crypto';
 // console.log(randomBytes(32).toString('base64'));
@@ -39,6 +40,7 @@ export default config(
       my_images: MyImageStorage,
     },
     lists,
+    extendGraphqlSchema,
     session,
     ui: {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

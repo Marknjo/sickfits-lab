@@ -387,6 +387,28 @@ async function insertSeedData(ctx) {
   process.exit();
 }
 
+// lib/graphql/index.ts
+var import_schema = require("@graphql-tools/schema");
+var extendGraphqlSchema = (schema) => (0, import_schema.mergeSchemas)({
+  schemas: [schema],
+  typeDefs: `#graphql
+
+      """ Add To Cart Mutation """
+      type Mutation{
+        addToCart(productId: ID): CartItem
+      }
+
+  `,
+  resolvers: {
+    Mutation: {
+      addToCart() {
+        console.log("ADD TO CART!!!");
+      }
+    },
+    Query: {}
+  }
+});
+
 // keystone.ts
 var frontEndUrl2 = process.env.FRONTEND_URL;
 if (!frontEndUrl2) {
@@ -416,6 +438,7 @@ var keystone_default = (0, import_core5.config)(
       my_images: MyImageStorage
     },
     lists,
+    extendGraphqlSchema,
     session,
     ui: {
       isAccessAllowed: (context) => !!context.session?.data

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@babel/eslint-parser': ^7.19.1
+  '@graphql-tools/schema': ^9.0.12
   '@keystone-6/auth': ^6.0.0
   '@keystone-6/cloudinary': ^6.0.0
   '@keystone-6/core': ^4.0.1
@@ -26,6 +27,7 @@ specifiers:
   typescript: ^4.9.4
 
 dependencies:
+  '@graphql-tools/schema': 9.0.12_graphql@16.6.0
   '@keystone-6/auth': 6.0.0_wzmk43jbb4dogtfx4ym6xqz5ta
   '@keystone-6/cloudinary': 6.0.0_327xqlbaw6lnc7zz23qix6cuzm
   '@keystone-6/core': 4.0.1_b4eyluiibtzggrslc7q5mbsxbu
