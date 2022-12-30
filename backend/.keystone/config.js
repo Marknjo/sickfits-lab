@@ -389,6 +389,41 @@ async function insertSeedData(ctx) {
 
 // lib/graphql/index.ts
 var import_schema = require("@graphql-tools/schema");
+
+// lib/graphql/mutations/addToCart.ts
+async function addToCart(_root, { productId }, context) {
+  const session2 = context.session;
+  const itemId = session2.itemId;
+  if (!session2.itemId) {
+    throw new Error("You must be logged in to do this!");
+  }
+  const allCartItems = await context.db.CartItem.findMany({
+    where: {
+      customer: { id: { equals: itemId } },
+      product: { id: { equals: productId } }
+    }
+  });
+  const [existingCartItem] = allCartItems;
+  if (existingCartItem) {
+    console.log(
+      `There are already ${existingCartItem.quantity}, increment by 1`
+    );
+    const id = existingCartItem.id;
+    const quantity = existingCartItem.quantity;
+    return await context.db.CartItem.updateOne({
+      where: { id },
+      data: { quantity: quantity + 1 }
+    });
+  }
+  return await context.db.CartItem.createOne({
+    data: {
+      product: { connect: { id: productId } },
+      customer: { connect: { id: session2.itemId } }
+    }
+  });
+}
+
+// lib/graphql/index.ts
 var extendGraphqlSchema = (schema) => (0, import_schema.mergeSchemas)({
   schemas: [schema],
   typeDefs: `#graphql
@@ -401,9 +436,7 @@ var extendGraphqlSchema = (schema) => (0, import_schema.mergeSchemas)({
   `,
   resolvers: {
     Mutation: {
-      addToCart() {
-        console.log("ADD TO CART!!!");
-      }
+      addToCart
     },
     Query: {}
   }

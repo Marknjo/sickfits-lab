@@ -1,5 +1,6 @@
 import type { GraphQLSchema } from 'graphql';
 import { mergeSchemas } from '@graphql-tools/schema';
+import addToCart from './mutations/addToCart';
 
 export const extendGraphqlSchema = (schema: GraphQLSchema) =>
   mergeSchemas({
@@ -14,9 +15,7 @@ export const extendGraphqlSchema = (schema: GraphQLSchema) =>
   `,
     resolvers: {
       Mutation: {
-        addToCart() {
-          console.log('ADD TO CART!!!');
-        },
+        addToCart,
       },
       Query: {},
     },
