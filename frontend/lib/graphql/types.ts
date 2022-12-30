@@ -148,12 +148,24 @@ export const SIGNIN_USER_MUTATION = gql`
 `
 
 export const GET_USER_CREDENTIALS = gql`
+  ${PRODUCT_IMAGE_DETAILS_FRAGMENT}
+  ${SLIM_PRODUCT_DETAILS_FRAGMENT}
   query GetUserCredentials {
     authenticatedItem {
       ... on User {
         id
-        email
         name
+        email
+        cart {
+          id
+          quantity
+          product {
+            ...SlimProductDetails
+            photo {
+              ...ImageDetails
+            }
+          }
+        }
       }
     }
   }

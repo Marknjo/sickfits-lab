@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Supreme = styled.h3`
+export const Supreme = styled.h3`
   background: var(--red);
   color: white;
   display: inline-block;

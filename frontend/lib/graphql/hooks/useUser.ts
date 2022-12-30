@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client'
+import { ProductInterface } from '../../../types'
 import { GET_USER_CREDENTIALS } from '../types'
 
 interface AuthenticatedUser {
@@ -6,6 +7,12 @@ interface AuthenticatedUser {
     id: string
     email: string
     name: 'mark'
+
+    cart?: {
+      id: string
+      quantity: number
+      product: Pick<ProductInterface, 'id' | 'name' | 'price' | 'photo'>
+    }
   } | null
 }
 

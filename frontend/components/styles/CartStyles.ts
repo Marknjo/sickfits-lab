@@ -1,6 +1,10 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-const CartStyles = styled.div`
+interface CartStylesProps {
+  open: boolean
+}
+
+export const CartStyles = styled.div<CartStylesProps>`
   padding: 20px;
   position: relative;
   background: white;
@@ -14,10 +18,10 @@ const CartStyles = styled.div`
   transform: translateX(100%);
   transition: all 0.3s;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.2);
-  z-index: 5;
+  z-index: 10;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  ${(props) => props.open && `transform: translateX(0);`};
+  ${props => props.open && `transform: translateX(0);`};
   header {
     border-bottom: 5px solid var(--black);
     margin-bottom: 2rem;
@@ -42,6 +46,6 @@ const CartStyles = styled.div`
     list-style: none;
     overflow: scroll;
   }
-`;
+`
 
-export default CartStyles;
+export default CartStyles
