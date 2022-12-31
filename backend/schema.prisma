@@ -18,6 +18,7 @@ model User {
   email                   String     @unique @default("")
   password                String
   cart                    CartItem[] @relation("CartItem_customer")
+  orders                  Order?     @relation("Order_customer")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -35,14 +36,15 @@ model Product {
 }
 
 model ProductImage {
-  id              String   @id @default(cuid())
-  altText         String   @default("")
-  image_filesize  Int?
-  image_extension String?
-  image_width     Int?
-  image_height    Int?
-  image_id        String?
-  product         Product? @relation("Product_photo")
+  id                   String      @id @default(cuid())
+  altText              String      @default("")
+  image_filesize       Int?
+  image_extension      String?
+  image_width          Int?
+  image_height         Int?
+  image_id             String?
+  product              Product?    @relation("Product_photo")
+  from_OrderItem_photo OrderItem[] @relation("OrderItem_photo")
 }
 
 model CartItem {
@@ -55,4 +57,28 @@ model CartItem {
 
   @@index([productId])
   @@index([customerId])
+}
+
+model OrderItem {
+  id          String        @id @default(cuid())
+  name        String        @default("")
+  description String        @default("")
+  photo       ProductImage? @relation("OrderItem_photo", fields: [photoId], references: [id])
+  photoId     String?       @map("photo")
+  price       Int?
+  quantity    Int?
+  order       Order?        @relation("OrderItem_order", fields: [orderId], references: [id])
+  orderId     String?       @map("order")
+
+  @@index([photoId])
+  @@index([orderId])
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  total      Int?
+  items      OrderItem[] @relation("OrderItem_order")
+  customer   User?       @relation("Order_customer", fields: [customerId], references: [id])
+  customerId String?     @unique @map("customer")
+  charge     String      @default("")
 }

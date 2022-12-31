@@ -37,7 +37,7 @@ import_dotenv.default.config({
 });
 
 // keystone.ts
-var import_core5 = require("@keystone-6/core");
+var import_core7 = require("@keystone-6/core");
 
 // schemas/User.ts
 var import_core = require("@keystone-6/core");
@@ -56,7 +56,8 @@ var User = (0, import_core.list)({
         createView: { fieldMode: "hidden" },
         itemView: { fieldMode: "read" }
       }
-    })
+    }),
+    orders: (0, import_fields.relationship)({ ref: "Order.customer" })
   }
 });
 
@@ -151,12 +152,78 @@ var CartItem = (0, import_core4.list)({
   }
 });
 
+// schemas/Order.ts
+var import_core5 = require("@keystone-6/core");
+var import_access5 = require("@keystone-6/core/access");
+var import_fields5 = require("@keystone-6/core/fields");
+
+// lib/formatMoney.ts
+var formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD"
+});
+function formatMoney(cents) {
+  const dollars = cents / 100;
+  return formatter.format(dollars);
+}
+
+// schemas/Order.ts
+var Order = (0, import_core5.list)({
+  access: import_access5.allowAll,
+  fields: {
+    label: (0, import_fields5.virtual)({
+      field: import_core5.graphql.field({
+        type: import_core5.graphql.String,
+        resolve(item) {
+          return `${formatMoney(item.total)}`;
+        }
+      })
+    }),
+    total: (0, import_fields5.integer)(),
+    items: (0, import_fields5.relationship)({ ref: "OrderItem.order", many: true }),
+    customer: (0, import_fields5.relationship)({ ref: "User.orders" }),
+    charge: (0, import_fields5.text)()
+  }
+});
+
+// schemas/OrderItem.ts
+var import_core6 = require("@keystone-6/core");
+var import_access6 = require("@keystone-6/core/access");
+var import_fields6 = require("@keystone-6/core/fields");
+var OrderItem = (0, import_core6.list)({
+  access: import_access6.allowAll,
+  fields: {
+    name: (0, import_fields6.text)({ validation: { isRequired: true } }),
+    description: (0, import_fields6.text)({
+      ui: {
+        displayMode: "textarea"
+      }
+    }),
+    photo: (0, import_fields6.relationship)({
+      ref: "ProductImage",
+      ui: {
+        displayMode: "cards",
+        linkToItem: true,
+        inlineConnect: true,
+        cardFields: ["image", "altText"],
+        inlineCreate: { fields: ["image", "altText"] },
+        inlineEdit: { fields: ["image", "altText"] }
+      }
+    }),
+    price: (0, import_fields6.integer)(),
+    quantity: (0, import_fields6.integer)(),
+    order: (0, import_fields6.relationship)({ ref: "Order.items" })
+  }
+});
+
 // schemas/schema.ts
 var lists = {
   User,
   Product,
   ProductImage,
-  CartItem
+  CartItem,
+  OrderItem,
+  Order
 };
 
 // lib/buildDbUrl.ts
@@ -206,7 +273,7 @@ var transporter = (0, import_nodemailer.createTransport)({
     pass
   }
 });
-function makeNiceEmail(text4, from2) {
+function makeNiceEmail(text6, from2) {
   return `
     <div
       style="
@@ -226,7 +293,7 @@ function makeNiceEmail(text4, from2) {
             color: white;
             padding: 8px 15px;
           "
-          href="${frontEndUrl}/password-reset/${text4}" target="_blank"
+          href="${frontEndUrl}/password-reset/${text6}" target="_blank"
         >Reset</a>
       </p>
       <p><small>PS: Ignore this message if you did not send the request.</small></p>
@@ -482,7 +549,7 @@ if (!frontEndUrl2) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = (0, import_core5.config)(
+var keystone_default = (0, import_core7.config)(
   withAuth({
     server: {
       cors: {

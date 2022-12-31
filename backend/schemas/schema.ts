@@ -1,5 +1,5 @@
 import type { Lists } from '.keystone/types';
-import { User, Product, ProductImage, CartItem } from '.';
+import { User, Product, ProductImage, CartItem, Order, OrderItem } from '.';
 
 export const lists: Lists = {
   User,
@@ -8,4 +8,6 @@ export const lists: Lists = {
   // @ts-ignore
   ProductImage,
   CartItem,
+  OrderItem,
+  Order,
 };
