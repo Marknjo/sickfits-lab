@@ -5,6 +5,7 @@ import { formatMoney } from '../../lib/formatMoney'
 import { useUser } from '../../lib/graphql'
 import { CartItem as CartItemInterface } from '../../types'
 import { CartStyles, CloseButton, Supreme } from '../styles'
+import Checkout from './Checkout'
 import RemoveCartItemsBtn from './RemoveCartItemsBtn'
 
 const CartItemStyles = styled.li`
@@ -77,6 +78,8 @@ export default function Cart() {
       </ul>
       <footer>
         <p>{formatMoney(calcTotalPrice(cart!))}</p>
+
+        <Checkout />
       </footer>
     </CartStyles>
   )

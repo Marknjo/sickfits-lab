@@ -21,6 +21,8 @@ export const CartStyles = styled.div<CartStylesProps>`
   z-index: 10;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  overflow: scroll;
+
   ${props => props.open && `transform: translateX(0);`};
   header {
     border-bottom: 5px solid var(--black);
@@ -30,14 +32,13 @@ export const CartStyles = styled.div<CartStylesProps>`
   footer {
     border-top: 10px double var(--black);
     margin-top: 2rem;
+    padding-bottom: 4rem;
     padding-top: 2rem;
-    display: grid;
-    grid-template-columns: auto auto;
     align-items: center;
     font-size: 3rem;
     font-weight: 900;
     p {
-      margin: 0;
+      margin: 1rem 0;
     }
   }
   ul {
