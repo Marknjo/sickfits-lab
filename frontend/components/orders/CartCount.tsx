@@ -1,3 +1,4 @@
+import { forwardRef, ReactNode, useRef } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components'
 
@@ -43,19 +44,21 @@ const AnimationStyles = styled.span`
     transform: scale(4) rotateX(0.5turn);
   }
 `
+export default function CartCount({ count }: { count: number }, ref: any) {
+  const nodeRef = useRef(null)
 
-export default function CartCount({ count }: { count: number }) {
   return (
     <AnimationStyles>
       <TransitionGroup>
         <CSSTransition
+          {...nodeRef}
           unmountOnExit
           className='count'
           classNames='count'
           key={count}
           timeout={{ enter: 400, exit: 400 }}
         >
-          <Dot>
+          <Dot ref={nodeRef}>
             <p>{count}</p>
           </Dot>
         </CSSTransition>
@@ -63,3 +66,5 @@ export default function CartCount({ count }: { count: number }) {
     </AnimationStyles>
   )
 }
+
+forwardRef(CartCount)

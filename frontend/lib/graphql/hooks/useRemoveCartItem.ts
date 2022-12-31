@@ -1,18 +1,31 @@
-import { useMutation } from '@apollo/client'
-import { REMOVE_CART_ITEMS_MUTATION, GET_USER_CREDENTIALS } from '../types'
+import { DefaultContext, OperationVariables, useMutation } from '@apollo/client'
+import { REMOVE_CART_ITEMS_MUTATION } from '../types'
+
+function update(cache: DefaultContext, payload: OperationVariables) {
+  cache.evict(cache.identify(payload.data.deleteCartItem))
+
+  cache.gc({
+    resetResultCache: true,
+    resetResultIdentities: true,
+  })
+}
 
 export function useRemoveCartItem() {
   const [handleRemoveCartItems, { loading }] = useMutation(
-    REMOVE_CART_ITEMS_MUTATION,
-    {
-      refetchQueries: [{ query: GET_USER_CREDENTIALS }],
-    }
+    REMOVE_CART_ITEMS_MUTATION
   )
 
   async function removeCartItemsHandler(id: string, productName: string) {
     const res = await handleRemoveCartItems({
       variables: {
         id,
+      },
+      update,
+      optimisticResponse: {
+        deleteCartItem: {
+          __typename: 'CartItem',
+          id,
+        },
       },
     })
     const error = res.errors
