@@ -1,3 +1,4 @@
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components'
 
 const Dot = styled.div`
@@ -13,10 +14,52 @@ const Dot = styled.div`
   font-variant-numeric: tabular-nums;
 `
 
+const AnimationStyles = styled.span`
+  position: relative;
+
+  .count {
+    display: block;
+    position: relative;
+    transition: transform 0.4s;
+    backface-visibility: hidden;
+  }
+
+  .count-enter {
+    transform: scale(4) rotate(0.4turn);
+  }
+
+  .count-enter-active {
+    transform: rotateX(0);
+  }
+
+  .count-exit {
+    top: 0;
+    position: absolute;
+    transform: rotateX(0);
+  }
+
+  .count-exit-active {
+    background-color: pink;
+    transform: scale(4) rotateX(0.5turn);
+  }
+`
+
 export default function CartCount({ count }: { count: number }) {
   return (
-    <Dot>
-      <p>{count}</p>
-    </Dot>
+    <AnimationStyles>
+      <TransitionGroup>
+        <CSSTransition
+          unmountOnExit
+          className='count'
+          classNames='count'
+          key={count}
+          timeout={{ enter: 400, exit: 400 }}
+        >
+          <Dot>
+            <p>{count}</p>
+          </Dot>
+        </CSSTransition>
+      </TransitionGroup>
+    </AnimationStyles>
   )
 }
