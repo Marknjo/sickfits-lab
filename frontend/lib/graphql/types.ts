@@ -217,3 +217,11 @@ export const ADD_TO_CART_MUTATION = gql`
     }
   }
 `
+
+export const REMOVE_CART_ITEMS_MUTATION = gql`
+  mutation RemoveCartItem($id: ID) {
+    deleteCartItem(where: { id: $id }) {
+      id
+    }
+  }
+`

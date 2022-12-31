@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 import { formatMoney } from '../../lib/formatMoney'
+import { useAddToCart } from '../../lib/graphql'
 import { ProductInterface } from '../../types'
 import { SickButton } from '../styles'
 
@@ -56,7 +57,15 @@ const ActionBoxStyles = styled.div`
 `
 
 function SingleProduct({ product }: { product: ProductInterface }) {
-  const { photo, price, description, name } = product
+  const { id, photo, price, description, name } = product
+  const { addItemToCartHandler, loading, addedItem } = useAddToCart()
+
+  async function onClickHandler() {
+    const res = await addItemToCartHandler(id, name)
+
+    /// @TODO: Handle messages correctly
+    console.log(res)
+  }
 
   return (
     <ProductStyles>
@@ -75,10 +84,11 @@ function SingleProduct({ product }: { product: ProductInterface }) {
         <h2>{name}</h2>
         <p>{description}</p>
 
-        {/* @TODO: Add Order button */}
         <ActionBoxStyles>
           <MoneyBoxStyles>{formatMoney(price)}</MoneyBoxStyles>
-          <SickButton type='button'>Order Now</SickButton>
+          <SickButton type='button' onClick={onClickHandler}>
+            Order{loading && 'ing'} {loading || 'Now'}
+          </SickButton>
         </ActionBoxStyles>
       </div>
     </ProductStyles>

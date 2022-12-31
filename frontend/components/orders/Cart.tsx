@@ -5,9 +5,10 @@ import { formatMoney } from '../../lib/formatMoney'
 import { useUser } from '../../lib/graphql'
 import { CartItem as CartItemInterface } from '../../types'
 import { CartStyles, CloseButton, Supreme } from '../styles'
+import RemoveCartItemsBtn from './RemoveCartItemsBtn'
 
 const CartItemStyles = styled.li`
-  padding: 1rem 0;
+  padding: 1rem 2.4rem;
   border-bottom: 1px solid var(--lightGray);
 
   display: grid;
@@ -41,6 +42,7 @@ function CartItem({ cartItem }: { cartItem: CartItemInterface }) {
           </em>
         </p>
       </div>
+      <RemoveCartItemsBtn id={cartItem.id} name={product.name} />
     </CartItemStyles>
   )
 }
