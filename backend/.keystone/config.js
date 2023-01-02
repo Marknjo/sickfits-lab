@@ -170,6 +170,11 @@ function formatMoney(cents) {
 // schemas/Order.ts
 var Order = (0, import_core5.list)({
   access: import_access5.allowAll,
+  ui: {
+    listView: {
+      initialColumns: ["label", "customer", "charge", "total"]
+    }
+  },
   fields: {
     label: (0, import_fields5.virtual)({
       field: import_core5.graphql.field({
@@ -192,6 +197,11 @@ var import_access6 = require("@keystone-6/core/access");
 var import_fields6 = require("@keystone-6/core/fields");
 var OrderItem = (0, import_core6.list)({
   access: import_access6.allowAll,
+  ui: {
+    listView: {
+      initialColumns: ["name", "quantity", "price", "order", "description"]
+    }
+  },
   fields: {
     name: (0, import_fields6.text)({ validation: { isRequired: true } }),
     description: (0, import_fields6.text)({

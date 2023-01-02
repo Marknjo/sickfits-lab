@@ -6,6 +6,12 @@ import formatMoney from '../lib/formatMoney';
 
 export const Order = list({
   access: allowAll,
+  ui: {
+    listView: {
+      initialColumns: ['label', 'customer', 'charge', 'total'],
+    },
+  },
+
   fields: {
     label: virtual({
       field: graphql.field({

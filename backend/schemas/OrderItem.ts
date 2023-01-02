@@ -4,6 +4,11 @@ import { integer, relationship, text } from '@keystone-6/core/fields';
 
 export const OrderItem = list({
   access: allowAll,
+  ui: {
+    listView: {
+      initialColumns: ['name', 'quantity', 'price', 'order', 'description'],
+    },
+  },
   fields: {
     name: text({ validation: { isRequired: true } }),
     description: text({
