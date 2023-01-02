@@ -545,7 +545,6 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
-""" Remove Items from the cart by reducing a specific product quantity """
 type Mutation {
   createUser(data: UserCreateInput!): User
   createUsers(data: [UserCreateInput!]!): [User]
@@ -588,8 +587,15 @@ type Mutation {
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   sendUserPasswordResetLink(email: String!): Boolean!
   redeemUserPasswordResetToken(email: String!, token: String!, password: String!): RedeemUserPasswordResetTokenResult
+
+  """ Add To Cart Mutation """
   addToCart(productId: ID): CartItem
+
+  """ Remove Items from the cart by reducing a specific product quantity """
   reduceCartItems(productId: ID): CartItem
+
+  """ Checkout with Stripe """
+  checkout(token: String!): Order
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure

@@ -528,25 +528,96 @@ async function reduceCartItems(_root, { productId }, context) {
   return allCartItems;
 }
 
+// lib/stripe.ts
+var import_process2 = require("process");
+var import_stripe = __toESM(require("stripe"));
+var stripeKey = import_process2.env.STRIPE_SECRET;
+if (!stripeKey) {
+  throw new Error("STRIPE_KEY env variable missing");
+}
+var stripeConfig = new import_stripe.default(stripeKey, {
+  apiVersion: "2022-11-15"
+});
+var stripe_default = stripeConfig;
+
+// lib/graphql/mutations/checkout.ts
+async function checkout(_root, { token }, context) {
+  const session2 = context.session;
+  const userId = session2.data?.id;
+  console.log(userId);
+  if (!session2.itemId) {
+    throw new Error("You must be logged in to do this!");
+  }
+  const user2 = await context.query.User.findOne({
+    where: {
+      id: userId
+    },
+    query: `#graphql
+       id 
+       name 
+       email
+       cart{
+        id
+        quantity
+        product {
+          name
+          price
+          description
+          id
+          photo {
+            id
+            altText
+            image {
+              id
+              url
+            }
+          }
+        }
+       }
+    `
+  });
+  const cartItems = user2.cart.filter(
+    (cartItem) => cartItem.product
+  );
+  const amount = cartItems.reduce(
+    (tally, cartItem) => tally + cartItem.quantity * cartItem.product.price,
+    0
+  );
+  console.log(amount);
+  const stripe = await stripe_default.paymentIntents.create({
+    amount,
+    currency: "USD",
+    confirm: true,
+    payment_method: token
+  }).catch((err) => {
+    console.log(err);
+    throw new Error(err.message);
+  });
+  console.log(stripe);
+}
+
 // lib/graphql/index.ts
 var extendGraphqlSchema = (schema) => (0, import_schema.mergeSchemas)({
   schemas: [schema],
   typeDefs: `#graphql
 
-      """ Add To Cart Mutation """
       type Mutation{
+      """ Add To Cart Mutation """
         addToCart(productId: ID): CartItem
-      }
 
       """ Remove Items from the cart by reducing a specific product quantity """
-      type Mutation{
         reduceCartItems(productId: ID): CartItem
+
+      """ Checkout with Stripe """
+        checkout(token: String!): Order
       }
+
   `,
   resolvers: {
     Mutation: {
       addToCart,
-      reduceCartItems
+      reduceCartItems,
+      checkout
     },
     Query: {}
   }
