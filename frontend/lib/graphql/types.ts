@@ -239,6 +239,36 @@ export const GET_ORDER_QUERY = gql`
   }
 `
 
+export const GET_ALL_ORDERS_QUERY = gql`
+  query GetAllOrderById($id: ID) {
+    orders(where: { id: { equals: $id } }) {
+      id
+      total
+      itemsCount
+      customer {
+        id
+        name
+      }
+      charge
+      items {
+        id
+        name
+        description
+        quantity
+        price
+        photo {
+          id
+          altText
+          image {
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+`
+
 export const ADD_TO_CART_MUTATION = gql`
   mutation IncreaseCartItems($productId: ID) {
     addToCart(productId: $productId) {

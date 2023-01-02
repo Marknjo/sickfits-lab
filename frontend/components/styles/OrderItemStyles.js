@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const OrderItemStyles = styled.li`
+export const OrderItemStyles = styled.li`
   box-shadow: var(--bs);
   list-style: none;
   padding: 2rem;
@@ -25,8 +25,7 @@ const OrderItemStyles = styled.li`
   }
   .order-meta {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
-    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     grid-gap: 1rem;
     text-align: center;
     & > * {

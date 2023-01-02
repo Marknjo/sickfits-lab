@@ -22,4 +22,5 @@ export type {
   CartItem,
   OrderInterface,
   CheckoutInterface,
+  OrderItemsInterface,
 } from './ProductTypes'

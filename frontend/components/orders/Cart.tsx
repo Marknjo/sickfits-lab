@@ -49,8 +49,8 @@ function CartItem({ cartItem }: { cartItem: CartItemInterface }) {
 }
 
 export default function Cart() {
-  const { isOpen, closeCart } = useCart()
   const { user, loading } = useUser()
+  const { isOpen, closeCart } = useCart()
 
   const cart = user?.cart
 
