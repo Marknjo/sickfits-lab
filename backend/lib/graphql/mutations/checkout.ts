@@ -18,7 +18,6 @@ export default async function checkout(
 
   const userId = session.data?.id;
 
-  console.log(userId);
   if (!session.itemId) {
     throw new Error('You must be logged in to do this!');
   }
@@ -65,10 +64,8 @@ export default async function checkout(
     0
   );
 
-  console.log(amount);
-
   // 3. Create the payment with the stripe library
-  const stripe = await stripeConfig.paymentIntents
+  const charge = await stripeConfig.paymentIntents
     .create({
       amount,
       currency: 'USD',
@@ -80,9 +77,43 @@ export default async function checkout(
       throw new Error(err.message);
     });
 
-  console.log(stripe);
+  // 4. Convert the cartItems to OrderedItems
+  const orderedItems = cartItems.map(
+    (cartItem: {
+      product: { name: any; description: any; price: any; photo: { id: any } };
+      quantity: any;
+    }) => {
+      const orderItem = {
+        name: cartItem.product.name,
+        description: cartItem.product.description,
+        photo: { connect: { id: cartItem.product.photo.id } },
+        price: cartItem.product.price,
+        quantity: cartItem.quantity,
+        // customer: { connect: { id: userId } },
+      };
 
-  // 4. Convert the cartItems to OrderItems
+      return orderItem;
+    }
+  );
 
   // 5. Create the order and return it
+  const order = await context.db.Order.createOne({
+    data: {
+      total: charge.amount,
+      charge: charge.id,
+      items: { create: orderedItems },
+      customer: { connect: { id: userId } },
+    },
+  });
+
+  /// 6. Clean up any old cart items
+  const cartItemIds = cartItems.map((cartItem: any) => ({
+    id: cartItem.id,
+  })) as Array<{ id: string }>;
+
+  await context.db.CartItem.deleteMany({
+    where: cartItemIds,
+  });
+
+  return order;
 }

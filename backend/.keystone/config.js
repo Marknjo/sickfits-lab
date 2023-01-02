@@ -544,7 +544,6 @@ var stripe_default = stripeConfig;
 async function checkout(_root, { token }, context) {
   const session2 = context.session;
   const userId = session2.data?.id;
-  console.log(userId);
   if (!session2.itemId) {
     throw new Error("You must be logged in to do this!");
   }
@@ -583,8 +582,7 @@ async function checkout(_root, { token }, context) {
     (tally, cartItem) => tally + cartItem.quantity * cartItem.product.price,
     0
   );
-  console.log(amount);
-  const stripe = await stripe_default.paymentIntents.create({
+  const charge = await stripe_default.paymentIntents.create({
     amount,
     currency: "USD",
     confirm: true,
@@ -593,7 +591,33 @@ async function checkout(_root, { token }, context) {
     console.log(err);
     throw new Error(err.message);
   });
-  console.log(stripe);
+  const orderedItems = cartItems.map(
+    (cartItem) => {
+      const orderItem = {
+        name: cartItem.product.name,
+        description: cartItem.product.description,
+        photo: { connect: { id: cartItem.product.photo.id } },
+        price: cartItem.product.price,
+        quantity: cartItem.quantity
+      };
+      return orderItem;
+    }
+  );
+  const order = await context.db.Order.createOne({
+    data: {
+      total: charge.amount,
+      charge: charge.id,
+      items: { create: orderedItems },
+      customer: { connect: { id: userId } }
+    }
+  });
+  const cartItemIds = cartItems.map((cartItem) => ({
+    id: cartItem.id
+  }));
+  await context.db.CartItem.deleteMany({
+    where: cartItemIds
+  });
+  return order;
 }
 
 // lib/graphql/index.ts
