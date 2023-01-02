@@ -41,6 +41,13 @@ export const CartStyles = styled.div<CartStylesProps>`
       margin: 1rem 0;
     }
   }
+
+  .checkout-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--gray);
+  }
+
   ul {
     margin: 0;
     padding: 0;

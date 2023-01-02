@@ -79,7 +79,15 @@ export default function Cart() {
       <footer>
         <p>{formatMoney(calcTotalPrice(cart!))}</p>
 
-        <Checkout />
+        {!cart ||
+          (cart.length > 0 && (
+            <>
+              <p className='checkout-title'>
+                Enter Your Payments Details to Checkout
+              </p>
+              <Checkout />
+            </>
+          ))}
       </footer>
     </CartStyles>
   )
