@@ -225,3 +225,17 @@ export const REMOVE_CART_ITEMS_MUTATION = gql`
     }
   }
 `
+export const CART_CHECKOUT_MUTATION = gql`
+  mutation CartCheckout($token: String!) {
+    checkout(token: $token) {
+      id
+      total
+      charge
+      items {
+        id
+        name
+        quantity
+      }
+    }
+  }
+`

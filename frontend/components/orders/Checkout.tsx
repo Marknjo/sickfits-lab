@@ -9,6 +9,7 @@ import {
 import { SickButton } from '../styles'
 import { FormEvent, useState } from 'react'
 import { start, done } from 'nprogress'
+import { useCartCheckout } from '../../lib/graphql'
 
 const CheckoutFormStyles = styled.form`
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -42,6 +43,11 @@ function CheckoutForm() {
   const [loading, setLoading] = useState<boolean>()
   const stripe = useStripe()
   const elements = useElements()
+  const {
+    checkoutHandler,
+    checkErrors,
+    loading: checkoutLoading,
+  } = useCartCheckout()
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     try {
@@ -73,6 +79,14 @@ function CheckoutForm() {
 
       console.log(paymentMethod)
       // 4). Send the token from step 3 to our keystone server, via a custom mutation!
+      const order = await checkoutHandler(paymentMethod.id)
+
+      if (order?.status === 'error') {
+        throw new Error(JSON.stringify({ message: order.message }))
+      }
+
+      console.log(order?.orders)
+
       // 5). Change the page to view the order
       // 6). Close the cart
       // 7). Turn the loader off
