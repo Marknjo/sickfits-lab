@@ -20,4 +20,6 @@ export type {
   ProductStatusesEnum,
   CartItemProduct,
   CartItem,
+  OrderInterface,
+  CheckoutInterface,
 } from './ProductTypes'

@@ -209,6 +209,36 @@ export const PASSWORD_REDEEM_MUTATION = gql`
 `
 
 /// CART & Orders
+export const GET_ORDER_QUERY = gql`
+  query GetOrderById($id: ID) {
+    order(where: { id: $id }) {
+      id
+      total
+      itemsCount
+      customer {
+        id
+        name
+      }
+      charge
+      items {
+        id
+        name
+        description
+        quantity
+        price
+        photo {
+          id
+          altText
+          image {
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+`
+
 export const ADD_TO_CART_MUTATION = gql`
   mutation IncreaseCartItems($productId: ID) {
     addToCart(productId: $productId) {

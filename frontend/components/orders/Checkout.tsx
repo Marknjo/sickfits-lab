@@ -93,9 +93,9 @@ function CheckoutForm() {
         throw new Error(JSON.stringify({ message: order.message }))
       }
 
-      if (order?.orders) {
+      if (order && order.orders) {
         // 5). Change the page to view the order
-        router.replace('/orders')
+        router.replace(`/orders/${order.orders.id}`)
         // 6). Close the cart
         closeCart()
         // 7). Turn the loader off

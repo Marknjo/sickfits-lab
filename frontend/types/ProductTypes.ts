@@ -54,3 +54,37 @@ export type CartItem = {
   quantity: number
   product: CartItemProduct
 }
+
+export interface OrderInterface {
+  id: string
+  label: string
+  total: number
+  items: [
+    {
+      id: string
+      name: string
+      description: string
+      photo: {
+        id: string
+        altText: string
+        image: {
+          id: string
+          url: string
+        }
+      }
+      price: number
+      quantity: number
+    }
+  ]
+  itemsCount: number
+  customer: {
+    id: string
+    name: string
+    email: string
+  }
+  charge: string
+}
+
+export interface CheckoutInterface {
+  checkout: OrderInterface
+}
