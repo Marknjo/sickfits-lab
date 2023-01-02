@@ -1,5 +1,14 @@
-import { useMutation } from '@apollo/client'
+import { DefaultContext, OperationVariables, useMutation } from '@apollo/client'
 import { CART_CHECKOUT_MUTATION } from '../types'
+
+function update(cache: DefaultContext, payload: OperationVariables) {
+  cache.evict(cache.identify(payload.data.checkout))
+
+  cache.gc({
+    resetResultCache: true,
+    resetResultIdentities: true,
+  })
+}
 
 export function useCartCheckout() {
   const [handleCheckout, { error, loading, data }] = useMutation(
@@ -11,6 +20,7 @@ export function useCartCheckout() {
       variables: {
         token,
       },
+      update,
     })
 
     /// test is successful
