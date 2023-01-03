@@ -1,15 +1,23 @@
 import { graphql, list } from '@keystone-6/core';
-import { allowAll } from '@keystone-6/core/access';
 import { integer, relationship, text, virtual } from '@keystone-6/core/fields';
 import { BaseItem } from '@keystone-6/core/types';
+import { isAdmin, isSignedIn } from '../lib/access';
 import formatMoney from '../lib/formatMoney';
 
 export const Order = list({
-  access: allowAll,
+  access: {
+    operation: {
+      create: isSignedIn,
+      query: isSignedIn,
+      update: isAdmin,
+      delete: isAdmin,
+    },
+  },
   ui: {
     listView: {
       initialColumns: ['label', 'customer', 'charge', 'total'],
     },
+    hideDelete: (args) => !isAdmin(args),
   },
 
   fields: {

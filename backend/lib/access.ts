@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable */
 /// Check if user is signed or not
 
 import {
@@ -20,6 +20,10 @@ export function noRestrictions(
   }
 ) {
   return true;
+}
+
+export function isAdmin({ session }: ListAccessArgs) {
+  return session?.data.role?.name === 'Admin';
 }
 
 /// Permission based Access controls
@@ -44,7 +48,8 @@ export const rules = {
     if (permissions.canManageProducts({ session })) {
       return true;
     }
-    return { user: { id: session?.itemId } };
+
+    return { user: { id: { equals: session?.itemId } } };
   },
   canReadProducts({
     session,
@@ -58,5 +63,29 @@ export const rules = {
     return {
       status: { equals: 'AVAILABLE' },
     };
+  },
+
+  // Handle Orders Rules
+  canOrder: ({ session }: ListAccessArgs) => {
+    if (permissions.canManageProducts({ session })) {
+      return true;
+    }
+    return { customer: { id: { equals: session?.itemId } } };
+  },
+
+  canManageOrders: ({ session }: ListAccessArgs) => {
+    if (permissions.canManageProducts({ session })) {
+      return true;
+    }
+
+    return { order: { customer: { id: { equals: session?.itemId } } } };
+  },
+
+  // Handle user roles
+  canManageUsers({ session }: ListAccessArgs) {
+    if (permissions.canManageUsers({ session })) {
+      return true;
+    }
+    return { id: { equals: session?.itemId } };
   },
 };

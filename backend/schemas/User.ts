@@ -1,9 +1,25 @@
+/* eslint-disable */
+
 import { list } from '@keystone-6/core';
-import { allowAll } from '@keystone-6/core/access';
+import { allOperations, allowAll } from '@keystone-6/core/access';
 import { password, relationship, text } from '@keystone-6/core/fields';
+import { isAdmin, isSignedIn, permissions, rules } from '../lib/access';
+import { permissionFields } from './fields';
 
 export const User = list({
-  access: allowAll,
+  access: {
+    operation: {
+      ...allOperations(isSignedIn),
+      delete: permissions.canManageUsers,
+    },
+    filter: {
+      query: rules.canManageUsers,
+    },
+  },
+  ui: {
+    hideCreate: (args) => !permissions.canManageUsers(args),
+    hideDelete: (args) => !permissions.canManageUsers(args),
+  },
   fields: {
     name: text(),
     email: text({ isIndexed: 'unique', validation: { isRequired: true } }),
@@ -24,6 +40,11 @@ export const User = list({
     role: relationship({
       ref: 'Role.assignedTo',
       /// @TODO: Add access control
+      access: {
+        update: permissions.canManageUsers,
+        create: permissions.canManageUsers,
+        read: permissions.canManageRoles,
+      },
     }),
 
     products: relationship({

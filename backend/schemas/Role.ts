@@ -1,12 +1,12 @@
 import { list } from '@keystone-6/core';
 import { relationship, text } from '@keystone-6/core/fields';
-import { permissions } from '../lib/access';
+import { isSignedIn, permissions } from '../lib/access';
 import { permissionFields } from './fields';
 
 export const Role = list({
   access: {
     operation: {
-      query: permissions.canManageRoles,
+      query: isSignedIn,
       create: permissions.canManageRoles,
       update: permissions.canManageRoles,
       delete: permissions.canManageRoles,

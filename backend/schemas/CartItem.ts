@@ -1,9 +1,20 @@
 import { list } from '@keystone-6/core';
-import { allowAll } from '@keystone-6/core/access';
 import { integer, relationship } from '@keystone-6/core/fields';
+import { isSignedIn, rules } from '../lib/access';
 
 export const CartItem = list({
-  access: allowAll,
+  access: {
+    operation: {
+      create: isSignedIn,
+      query: isSignedIn,
+      update: isSignedIn,
+      delete: isSignedIn,
+    },
+    filter: {
+      update: rules.canOrder,
+      delete: rules.canOrder,
+    },
+  },
   ui: {
     listView: {
       initialColumns: ['product', 'quantity', 'customer'],

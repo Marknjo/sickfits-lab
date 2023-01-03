@@ -7,6 +7,7 @@ import { session, withAuth } from './configs/auth';
 import { MyImageStorage } from './configs/storage';
 import { insertSeedData } from './seed-data';
 import { extendGraphqlSchema } from './lib/graphql';
+import { isAdmin } from './lib/access';
 
 // import { randomBytes } from 'crypto';
 // console.log(randomBytes(32).toString('base64'));
@@ -44,7 +45,9 @@ export default config(
     extendGraphqlSchema,
     session,
     ui: {
-      isAccessAllowed: (context) => !!context.session?.data,
+      isAccessAllowed: (context) => {
+        return !!context.session?.data;
+      },
     },
   })
 );

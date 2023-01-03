@@ -15,7 +15,7 @@ export const { withAuth } = createAuth({
   listKey: 'User',
   identityField: 'email',
   secretField: 'password',
-  sessionData: `name id email role { ${permissionsList.join(' ')} }`,
+  sessionData: `name id email role { name ${permissionsList.join(' ')} }`,
   initFirstItem: {
     fields: ['name', 'email', 'password'],
     skipKeystoneWelcome: true,

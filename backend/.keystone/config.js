@@ -42,60 +42,32 @@ var import_core8 = require("@keystone-6/core");
 // schemas/User.ts
 var import_core = require("@keystone-6/core");
 var import_access = require("@keystone-6/core/access");
-var import_fields = require("@keystone-6/core/fields");
-var User = (0, import_core.list)({
-  access: import_access.allowAll,
-  fields: {
-    name: (0, import_fields.text)(),
-    email: (0, import_fields.text)({ isIndexed: "unique", validation: { isRequired: true } }),
-    password: (0, import_fields.password)({ validation: { isRequired: true } }),
-    cart: (0, import_fields.relationship)({
-      ref: "CartItem.customer",
-      many: true,
-      ui: {
-        createView: { fieldMode: "hidden" },
-        itemView: { fieldMode: "read" }
-      }
-    }),
-    orders: (0, import_fields.relationship)({ ref: "Order.customer", many: true }),
-    role: (0, import_fields.relationship)({
-      ref: "Role.assignedTo"
-    }),
-    products: (0, import_fields.relationship)({
-      ref: "Product.user",
-      many: true
-    })
-  }
-});
-
-// schemas/Product.ts
-var import_core2 = require("@keystone-6/core");
-var import_fields4 = require("@keystone-6/core/fields");
+var import_fields3 = require("@keystone-6/core/fields");
 
 // schemas/fields.ts
-var import_fields2 = require("@keystone-6/core/fields");
+var import_fields = require("@keystone-6/core/fields");
 var permissionFields = {
-  canManageProducts: (0, import_fields2.checkbox)({
+  canManageProducts: (0, import_fields.checkbox)({
     defaultValue: false,
     label: "User can Update and delete any product"
   }),
-  canSeeOtherUsers: (0, import_fields2.checkbox)({
+  canSeeOtherUsers: (0, import_fields.checkbox)({
     defaultValue: false,
     label: "User can query other users"
   }),
-  canManageUsers: (0, import_fields2.checkbox)({
+  canManageUsers: (0, import_fields.checkbox)({
     defaultValue: false,
     label: "User can Edit other users"
   }),
-  canManageRoles: (0, import_fields2.checkbox)({
+  canManageRoles: (0, import_fields.checkbox)({
     defaultValue: false,
     label: "User can CRUD roles"
   }),
-  canManageCart: (0, import_fields2.checkbox)({
+  canManageCart: (0, import_fields.checkbox)({
     defaultValue: false,
     label: "User can see and manage cart and cart items"
   }),
-  canManageOrders: (0, import_fields2.checkbox)({
+  canManageOrders: (0, import_fields.checkbox)({
     defaultValue: false,
     label: "User can see and manage orders"
   })
@@ -110,6 +82,9 @@ function isSignedIn({ session: session2 }) {
 }
 function noRestrictions(_args) {
   return true;
+}
+function isAdmin({ session: session2 }) {
+  return session2?.data.role?.name === "Admin";
 }
 var generatePermissions = Object.fromEntries(
   permissionsList.map((permission) => [
@@ -127,7 +102,7 @@ var rules = {
     if (permissions.canManageProducts({ session: session2 })) {
       return true;
     }
-    return { user: { id: session2?.itemId } };
+    return { user: { id: { equals: session2?.itemId } } };
   },
   canReadProducts({
     session: session2
@@ -138,10 +113,73 @@ var rules = {
     return {
       status: { equals: "AVAILABLE" }
     };
+  },
+  canOrder: ({ session: session2 }) => {
+    if (permissions.canManageProducts({ session: session2 })) {
+      return true;
+    }
+    return { customer: { id: { equals: session2?.itemId } } };
+  },
+  canManageOrders: ({ session: session2 }) => {
+    if (permissions.canManageProducts({ session: session2 })) {
+      return true;
+    }
+    return { order: { customer: { id: { equals: session2?.itemId } } } };
+  },
+  canManageUsers({ session: session2 }) {
+    if (permissions.canManageUsers({ session: session2 })) {
+      return true;
+    }
+    return { id: { equals: session2?.itemId } };
   }
 };
 
+// schemas/User.ts
+var User = (0, import_core.list)({
+  access: {
+    operation: {
+      ...(0, import_access.allOperations)(isSignedIn),
+      delete: permissions.canManageUsers
+    },
+    filter: {
+      query: rules.canManageUsers
+    }
+  },
+  ui: {
+    hideCreate: (args) => !permissions.canManageUsers(args),
+    hideDelete: (args) => !permissions.canManageUsers(args)
+  },
+  fields: {
+    name: (0, import_fields3.text)(),
+    email: (0, import_fields3.text)({ isIndexed: "unique", validation: { isRequired: true } }),
+    password: (0, import_fields3.password)({ validation: { isRequired: true } }),
+    cart: (0, import_fields3.relationship)({
+      ref: "CartItem.customer",
+      many: true,
+      ui: {
+        createView: { fieldMode: "hidden" },
+        itemView: { fieldMode: "read" }
+      }
+    }),
+    orders: (0, import_fields3.relationship)({ ref: "Order.customer", many: true }),
+    role: (0, import_fields3.relationship)({
+      ref: "Role.assignedTo",
+      access: {
+        update: permissions.canManageUsers,
+        create: permissions.canManageUsers,
+        read: permissions.canManageRoles
+      }
+    }),
+    products: (0, import_fields3.relationship)({
+      ref: "Product.user",
+      many: true
+    })
+  }
+});
+
 // schemas/Product.ts
+var import_core2 = require("@keystone-6/core");
+var import_fields4 = require("@keystone-6/core/fields");
 var Product = (0, import_core2.list)({
   access: {
     operation: {
@@ -213,10 +251,10 @@ var Product = (0, import_core2.list)({
 
 // schemas/ProductImage.ts
 var import_core3 = require("@keystone-6/core");
-var import_access3 = require("@keystone-6/core/access");
+var import_access4 = require("@keystone-6/core/access");
 var import_fields5 = require("@keystone-6/core/fields");
 var ProductImage = (0, import_core3.list)({
-  access: import_access3.allowAll,
+  access: import_access4.allowAll,
   fields: {
     altText: (0, import_fields5.text)({ validation: { isRequired: true } }),
     image: (0, import_fields5.image)({ storage: "my_images", label: "Source" }),
@@ -235,10 +273,20 @@ var ProductImage = (0, import_core3.list)({
 
 // schemas/CartItem.ts
 var import_core4 = require("@keystone-6/core");
-var import_access4 = require("@keystone-6/core/access");
 var import_fields6 = require("@keystone-6/core/fields");
 var CartItem = (0, import_core4.list)({
-  access: import_access4.allowAll,
+  access: {
+    operation: {
+      create: isSignedIn,
+      query: isSignedIn,
+      update: isSignedIn,
+      delete: isSignedIn
+    },
+    filter: {
+      update: rules.canOrder,
+      delete: rules.canOrder
+    }
+  },
   ui: {
     listView: {
       initialColumns: ["product", "quantity", "customer"]
@@ -266,7 +314,6 @@ var CartItem = (0, import_core4.list)({
 
 // schemas/Order.ts
 var import_core5 = require("@keystone-6/core");
-var import_access5 = require("@keystone-6/core/access");
 var import_fields7 = require("@keystone-6/core/fields");
 
 // lib/formatMoney.ts
@@ -281,11 +328,19 @@ function formatMoney(cents) {
 
 // schemas/Order.ts
 var Order = (0, import_core5.list)({
-  access: import_access5.allowAll,
+  access: {
+    operation: {
+      create: isSignedIn,
+      query: isSignedIn,
+      update: isAdmin,
+      delete: isAdmin
+    }
+  },
   ui: {
     listView: {
       initialColumns: ["label", "customer", "charge", "total"]
-    }
+    },
+    hideDelete: (args) => !isAdmin(args)
   },
   fields: {
     label: (0, import_fields7.virtual)({
@@ -305,10 +360,19 @@ var Order = (0, import_core5.list)({
 
 // schemas/OrderItem.ts
 var import_core6 = require("@keystone-6/core");
-var import_access6 = require("@keystone-6/core/access");
 var import_fields8 = require("@keystone-6/core/fields");
 var OrderItem = (0, import_core6.list)({
-  access: import_access6.allowAll,
+  access: {
+    operation: {
+      query: isSignedIn,
+      create: isSignedIn,
+      update: isSignedIn,
+      delete: isAdmin
+    },
+    filter: {
+      query: rules.canManageOrders
+    }
+  },
   ui: {
     listView: {
       initialColumns: ["name", "quantity", "price", "order", "description"]
@@ -344,7 +408,7 @@ var import_fields9 = require("@keystone-6/core/fields");
 var Role = (0, import_core7.list)({
   access: {
     operation: {
-      query: permissions.canManageRoles,
+      query: isSignedIn,
       create: permissions.canManageRoles,
       update: permissions.canManageRoles,
       delete: permissions.canManageRoles
@@ -474,7 +538,7 @@ var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   identityField: "email",
   secretField: "password",
-  sessionData: `name id email role { ${permissionsList.join(" ")} }`,
+  sessionData: `name id email role { name ${permissionsList.join(" ")} }`,
   initFirstItem: {
     fields: ["name", "email", "password"],
     skipKeystoneWelcome: true
@@ -822,7 +886,9 @@ var keystone_default = (0, import_core8.config)(
     extendGraphqlSchema,
     session,
     ui: {
-      isAccessAllowed: (context) => !!context.session?.data
+      isAccessAllowed: (context) => {
+        return !!context.session?.data;
+      }
     }
   })
 );
