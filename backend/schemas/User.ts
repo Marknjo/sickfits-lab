@@ -20,6 +20,6 @@ export const User = list({
         itemView: { fieldMode: 'read' },
       },
     }),
-    orders: relationship({ ref: 'Order.customer' }),
+    orders: relationship({ ref: 'Order.customer', many: true }),
   },
 });

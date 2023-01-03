@@ -57,7 +57,7 @@ var User = (0, import_core.list)({
         itemView: { fieldMode: "read" }
       }
     }),
-    orders: (0, import_fields.relationship)({ ref: "Order.customer" })
+    orders: (0, import_fields.relationship)({ ref: "Order.customer", many: true })
   }
 });
 
