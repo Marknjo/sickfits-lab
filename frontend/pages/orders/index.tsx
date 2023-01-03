@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { OrderItemStyles } from '../../components/styles'
@@ -67,6 +68,18 @@ export default function OrdersPage() {
                   {order.items.length === 1 ? '' : 's'}
                 </p>
                 <p>{formatMoney(order.total)}</p>
+              </div>
+              <div className='images'>
+                {order.items.map(item => (
+                  <Image
+                    key={item.photo.image.id}
+                    src={item.photo.image.url}
+                    alt={item.photo.altText}
+                    height={120}
+                    width={120}
+                    quality={70}
+                  />
+                ))}
               </div>
             </Link>
           </OrderItemStyles>
