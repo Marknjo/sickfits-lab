@@ -1,10 +1,18 @@
 import { list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
 import { integer, relationship, select, text } from '@keystone-6/core/fields';
+import { isSignedIn } from '../lib/access';
 
 export const Product = list({
   /// @TODO: Add Access control
-  access: allowAll,
+  access: {
+    operation: {
+      create: isSignedIn,
+      query: isSignedIn,
+      update: isSignedIn,
+      delete: isSignedIn,
+    },
+  },
   fields: {
     name: text({ validation: { isRequired: true } }),
     description: text({

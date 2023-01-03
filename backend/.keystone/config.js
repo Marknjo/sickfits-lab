@@ -66,18 +66,74 @@ var User = (0, import_core.list)({
 
 // schemas/Product.ts
 var import_core2 = require("@keystone-6/core");
-var import_access2 = require("@keystone-6/core/access");
+var import_fields4 = require("@keystone-6/core/fields");
+
+// schemas/fields.ts
 var import_fields2 = require("@keystone-6/core/fields");
+var permissionFields = {
+  canManageProducts: (0, import_fields2.checkbox)({
+    defaultValue: false,
+    label: "User can Update and delete any product"
+  }),
+  canSeeOtherUsers: (0, import_fields2.checkbox)({
+    defaultValue: false,
+    label: "User can query other users"
+  }),
+  canManageUsers: (0, import_fields2.checkbox)({
+    defaultValue: false,
+    label: "User can Edit other users"
+  }),
+  canManageRoles: (0, import_fields2.checkbox)({
+    defaultValue: false,
+    label: "User can CRUD roles"
+  }),
+  canManageCart: (0, import_fields2.checkbox)({
+    defaultValue: false,
+    label: "User can see and manage cart and cart items"
+  }),
+  canManageOrders: (0, import_fields2.checkbox)({
+    defaultValue: false,
+    label: "User can see and manage orders"
+  })
+};
+var permissionsList = Object.keys(
+  permissionFields
+);
+
+// lib/access.ts
+function isSignedIn({ session: session2 }) {
+  return !!session2;
+}
+var generatePermissions = Object.fromEntries(
+  permissionsList.map((permission) => [
+    permission,
+    function({ session: session2 }) {
+      return !!session2?.data.role?.[permission];
+    }
+  ])
+);
+var permissions = {
+  ...generatePermissions
+};
+
+// schemas/Product.ts
 var Product = (0, import_core2.list)({
-  access: import_access2.allowAll,
+  access: {
+    operation: {
+      create: isSignedIn,
+      query: isSignedIn,
+      update: isSignedIn,
+      delete: isSignedIn
+    }
+  },
   fields: {
-    name: (0, import_fields2.text)({ validation: { isRequired: true } }),
-    description: (0, import_fields2.text)({
+    name: (0, import_fields4.text)({ validation: { isRequired: true } }),
+    description: (0, import_fields4.text)({
       ui: {
         displayMode: "textarea"
       }
     }),
-    status: (0, import_fields2.select)({
+    status: (0, import_fields4.select)({
       options: [
         { label: "Draft", value: "DRAFT" },
         { label: "Available", value: "AVAILABLE" },
@@ -89,8 +145,8 @@ var Product = (0, import_core2.list)({
         createView: { fieldMode: "hidden" }
       }
     }),
-    price: (0, import_fields2.integer)({ validation: { isRequired: true } }),
-    photo: (0, import_fields2.relationship)({
+    price: (0, import_fields4.integer)({ validation: { isRequired: true } }),
+    photo: (0, import_fields4.relationship)({
       ref: "ProductImage.product",
       ui: {
         displayMode: "cards",
@@ -105,13 +161,13 @@ var Product = (0, import_core2.list)({
 // schemas/ProductImage.ts
 var import_core3 = require("@keystone-6/core");
 var import_access3 = require("@keystone-6/core/access");
-var import_fields3 = require("@keystone-6/core/fields");
+var import_fields5 = require("@keystone-6/core/fields");
 var ProductImage = (0, import_core3.list)({
   access: import_access3.allowAll,
   fields: {
-    altText: (0, import_fields3.text)({ validation: { isRequired: true } }),
-    image: (0, import_fields3.image)({ storage: "my_images", label: "Source" }),
-    product: (0, import_fields3.relationship)({ ref: "Product.photo" })
+    altText: (0, import_fields5.text)({ validation: { isRequired: true } }),
+    image: (0, import_fields5.image)({ storage: "my_images", label: "Source" }),
+    product: (0, import_fields5.relationship)({ ref: "Product.photo" })
   },
   ui: {
     listView: {
@@ -127,7 +183,7 @@ var ProductImage = (0, import_core3.list)({
 // schemas/CartItem.ts
 var import_core4 = require("@keystone-6/core");
 var import_access4 = require("@keystone-6/core/access");
-var import_fields4 = require("@keystone-6/core/fields");
+var import_fields6 = require("@keystone-6/core/fields");
 var CartItem = (0, import_core4.list)({
   access: import_access4.allowAll,
   ui: {
@@ -136,17 +192,17 @@ var CartItem = (0, import_core4.list)({
     }
   },
   fields: {
-    quantity: (0, import_fields4.integer)({
+    quantity: (0, import_fields6.integer)({
       defaultValue: 1,
       validation: { isRequired: true, min: 1 }
     }),
-    product: (0, import_fields4.relationship)({
+    product: (0, import_fields6.relationship)({
       ref: "Product",
       ui: {
         hideCreate: true
       }
     }),
-    customer: (0, import_fields4.relationship)({
+    customer: (0, import_fields6.relationship)({
       ref: "User.cart",
       ui: {
         hideCreate: true
@@ -158,7 +214,7 @@ var CartItem = (0, import_core4.list)({
 // schemas/Order.ts
 var import_core5 = require("@keystone-6/core");
 var import_access5 = require("@keystone-6/core/access");
-var import_fields5 = require("@keystone-6/core/fields");
+var import_fields7 = require("@keystone-6/core/fields");
 
 // lib/formatMoney.ts
 var formatter = new Intl.NumberFormat("en-US", {
@@ -179,7 +235,7 @@ var Order = (0, import_core5.list)({
     }
   },
   fields: {
-    label: (0, import_fields5.virtual)({
+    label: (0, import_fields7.virtual)({
       field: import_core5.graphql.field({
         type: import_core5.graphql.String,
         resolve(item) {
@@ -187,17 +243,17 @@ var Order = (0, import_core5.list)({
         }
       })
     }),
-    total: (0, import_fields5.integer)(),
-    items: (0, import_fields5.relationship)({ ref: "OrderItem.order", many: true }),
-    customer: (0, import_fields5.relationship)({ ref: "User.orders" }),
-    charge: (0, import_fields5.text)()
+    total: (0, import_fields7.integer)(),
+    items: (0, import_fields7.relationship)({ ref: "OrderItem.order", many: true }),
+    customer: (0, import_fields7.relationship)({ ref: "User.orders" }),
+    charge: (0, import_fields7.text)()
   }
 });
 
 // schemas/OrderItem.ts
 var import_core6 = require("@keystone-6/core");
 var import_access6 = require("@keystone-6/core/access");
-var import_fields6 = require("@keystone-6/core/fields");
+var import_fields8 = require("@keystone-6/core/fields");
 var OrderItem = (0, import_core6.list)({
   access: import_access6.allowAll,
   ui: {
@@ -206,13 +262,13 @@ var OrderItem = (0, import_core6.list)({
     }
   },
   fields: {
-    name: (0, import_fields6.text)({ validation: { isRequired: true } }),
-    description: (0, import_fields6.text)({
+    name: (0, import_fields8.text)({ validation: { isRequired: true } }),
+    description: (0, import_fields8.text)({
       ui: {
         displayMode: "textarea"
       }
     }),
-    photo: (0, import_fields6.relationship)({
+    photo: (0, import_fields8.relationship)({
       ref: "ProductImage",
       ui: {
         displayMode: "cards",
@@ -223,56 +279,22 @@ var OrderItem = (0, import_core6.list)({
         inlineEdit: { fields: ["image", "altText"] }
       }
     }),
-    price: (0, import_fields6.integer)(),
-    quantity: (0, import_fields6.integer)(),
-    order: (0, import_fields6.relationship)({ ref: "Order.items" })
+    price: (0, import_fields8.integer)(),
+    quantity: (0, import_fields8.integer)(),
+    order: (0, import_fields8.relationship)({ ref: "Order.items" })
   }
 });
 
 // schemas/Role.ts
 var import_core7 = require("@keystone-6/core");
 var import_access7 = require("@keystone-6/core/access");
-var import_fields8 = require("@keystone-6/core/fields");
-
-// schemas/fields.ts
-var import_fields7 = require("@keystone-6/core/fields");
-var permissionFields = {
-  canManageProducts: (0, import_fields7.checkbox)({
-    defaultValue: false,
-    label: "User can Update and delete any product"
-  }),
-  canSeeOtherUsers: (0, import_fields7.checkbox)({
-    defaultValue: false,
-    label: "User can query other users"
-  }),
-  canManageUsers: (0, import_fields7.checkbox)({
-    defaultValue: false,
-    label: "User can Edit other users"
-  }),
-  canManageRoles: (0, import_fields7.checkbox)({
-    defaultValue: false,
-    label: "User can CRUD roles"
-  }),
-  canManageCart: (0, import_fields7.checkbox)({
-    defaultValue: false,
-    label: "User can see and manage cart and cart items"
-  }),
-  canManageOrders: (0, import_fields7.checkbox)({
-    defaultValue: false,
-    label: "User can see and manage orders"
-  })
-};
-var permissionsList = Object.keys(
-  permissionFields
-);
-
-// schemas/Role.ts
+var import_fields9 = require("@keystone-6/core/fields");
 var Role = (0, import_core7.list)({
   access: import_access7.allowAll,
   fields: {
-    name: (0, import_fields8.text)(),
+    name: (0, import_fields9.text)(),
     ...permissionFields,
-    assignedTo: (0, import_fields8.relationship)({
+    assignedTo: (0, import_fields9.relationship)({
       ref: "User.role",
       many: true,
       ui: {
