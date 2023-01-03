@@ -11,7 +11,6 @@ export const User = list({
     // @TODO: Add validation.rejectCommon: true
     password: password({ validation: { isRequired: true } }),
 
-    /// @TODO: Add roles
     cart: relationship({
       ref: 'CartItem.customer',
       many: true,
@@ -21,5 +20,10 @@ export const User = list({
       },
     }),
     orders: relationship({ ref: 'Order.customer', many: true }),
+
+    role: relationship({
+      ref: 'Role.assignedTo',
+      /// @TODO: Add access control
+    }),
   },
 });

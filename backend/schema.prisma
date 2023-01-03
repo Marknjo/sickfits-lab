@@ -18,10 +18,14 @@ model User {
   email                   String     @unique @default("")
   password                String
   cart                    CartItem[] @relation("CartItem_customer")
-  orders                  Order?     @relation("Order_customer")
+  orders                  Order[]    @relation("Order_customer")
+  role                    Role?      @relation("User_role", fields: [roleId], references: [id])
+  roleId                  String?    @map("role")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
+
+  @@index([roleId])
 }
 
 model Product {
@@ -79,6 +83,14 @@ model Order {
   total      Int?
   items      OrderItem[] @relation("OrderItem_order")
   customer   User?       @relation("Order_customer", fields: [customerId], references: [id])
-  customerId String?     @unique @map("customer")
+  customerId String?     @map("customer")
   charge     String      @default("")
+
+  @@index([customerId])
+}
+
+model Role {
+  id         String @id @default(cuid())
+  name       String @default("")
+  assignedTo User[] @relation("User_role")
 }

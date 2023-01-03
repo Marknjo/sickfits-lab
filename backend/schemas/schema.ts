@@ -1,5 +1,13 @@
 import type { Lists } from '.keystone/types';
-import { User, Product, ProductImage, CartItem, Order, OrderItem } from '.';
+import {
+  User,
+  Product,
+  ProductImage,
+  CartItem,
+  Order,
+  OrderItem,
+  Role,
+} from '.';
 
 export const lists: Lists = {
   User,
@@ -10,4 +18,5 @@ export const lists: Lists = {
   CartItem,
   OrderItem,
   Order,
+  Role,
 };

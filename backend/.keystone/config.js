@@ -37,7 +37,7 @@ import_dotenv.default.config({
 });
 
 // keystone.ts
-var import_core7 = require("@keystone-6/core");
+var import_core8 = require("@keystone-6/core");
 
 // schemas/User.ts
 var import_core = require("@keystone-6/core");
@@ -57,7 +57,10 @@ var User = (0, import_core.list)({
         itemView: { fieldMode: "read" }
       }
     }),
-    orders: (0, import_fields.relationship)({ ref: "Order.customer", many: true })
+    orders: (0, import_fields.relationship)({ ref: "Order.customer", many: true }),
+    role: (0, import_fields.relationship)({
+      ref: "Role.assignedTo"
+    })
   }
 });
 
@@ -226,6 +229,24 @@ var OrderItem = (0, import_core6.list)({
   }
 });
 
+// schemas/Role.ts
+var import_core7 = require("@keystone-6/core");
+var import_access7 = require("@keystone-6/core/access");
+var import_fields7 = require("@keystone-6/core/fields");
+var Role = (0, import_core7.list)({
+  access: import_access7.allowAll,
+  fields: {
+    name: (0, import_fields7.text)(),
+    assignedTo: (0, import_fields7.relationship)({
+      ref: "User.role",
+      many: true,
+      ui: {
+        itemView: { fieldMode: "read" }
+      }
+    })
+  }
+});
+
 // schemas/schema.ts
 var lists = {
   User,
@@ -233,7 +254,8 @@ var lists = {
   ProductImage,
   CartItem,
   OrderItem,
-  Order
+  Order,
+  Role
 };
 
 // lib/buildDbUrl.ts
@@ -283,7 +305,7 @@ var transporter = (0, import_nodemailer.createTransport)({
     pass
   }
 });
-function makeNiceEmail(text6, from2) {
+function makeNiceEmail(text7, from2) {
   return `
     <div
       style="
@@ -303,7 +325,7 @@ function makeNiceEmail(text6, from2) {
             color: white;
             padding: 8px 15px;
           "
-          href="${frontEndUrl}/password-reset/${text6}" target="_blank"
+          href="${frontEndUrl}/password-reset/${text7}" target="_blank"
         >Reset</a>
       </p>
       <p><small>PS: Ignore this message if you did not send the request.</small></p>
@@ -654,7 +676,7 @@ if (!frontEndUrl2) {
     "CONFIG ERROR: Must Provide a FRONTEND_URL environmental variable"
   );
 }
-var keystone_default = (0, import_core7.config)(
+var keystone_default = (0, import_core8.config)(
   withAuth({
     server: {
       cors: {
