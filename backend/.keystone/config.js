@@ -232,12 +232,47 @@ var OrderItem = (0, import_core6.list)({
 // schemas/Role.ts
 var import_core7 = require("@keystone-6/core");
 var import_access7 = require("@keystone-6/core/access");
+var import_fields8 = require("@keystone-6/core/fields");
+
+// schemas/fields.ts
 var import_fields7 = require("@keystone-6/core/fields");
+var permissionFields = {
+  canManageProducts: (0, import_fields7.checkbox)({
+    defaultValue: false,
+    label: "User can Update and delete any product"
+  }),
+  canSeeOtherUsers: (0, import_fields7.checkbox)({
+    defaultValue: false,
+    label: "User can query other users"
+  }),
+  canManageUsers: (0, import_fields7.checkbox)({
+    defaultValue: false,
+    label: "User can Edit other users"
+  }),
+  canManageRoles: (0, import_fields7.checkbox)({
+    defaultValue: false,
+    label: "User can CRUD roles"
+  }),
+  canManageCart: (0, import_fields7.checkbox)({
+    defaultValue: false,
+    label: "User can see and manage cart and cart items"
+  }),
+  canManageOrders: (0, import_fields7.checkbox)({
+    defaultValue: false,
+    label: "User can see and manage orders"
+  })
+};
+var permissionsList = Object.keys(
+  permissionFields
+);
+
+// schemas/Role.ts
 var Role = (0, import_core7.list)({
   access: import_access7.allowAll,
   fields: {
-    name: (0, import_fields7.text)(),
-    assignedTo: (0, import_fields7.relationship)({
+    name: (0, import_fields8.text)(),
+    ...permissionFields,
+    assignedTo: (0, import_fields8.relationship)({
       ref: "User.role",
       many: true,
       ui: {
