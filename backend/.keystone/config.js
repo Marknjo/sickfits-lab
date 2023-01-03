@@ -251,10 +251,16 @@ var Product = (0, import_core2.list)({
 
 // schemas/ProductImage.ts
 var import_core3 = require("@keystone-6/core");
-var import_access4 = require("@keystone-6/core/access");
 var import_fields5 = require("@keystone-6/core/fields");
 var ProductImage = (0, import_core3.list)({
-  access: import_access4.allowAll,
+  access: {
+    operation: {
+      query: () => true,
+      create: isSignedIn,
+      update: permissions.canManageProducts,
+      delete: permissions.canManageProducts
+    }
+  },
   fields: {
     altText: (0, import_fields5.text)({ validation: { isRequired: true } }),
     image: (0, import_fields5.image)({ storage: "my_images", label: "Source" }),
