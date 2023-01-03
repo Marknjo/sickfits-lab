@@ -3,6 +3,7 @@ import { randomBytes } from 'crypto';
 import { statelessSessions } from '@keystone-6/core/session';
 import { createAuth } from '@keystone-6/auth';
 import { sendPasswordResetEmail } from '../lib/emailHandler';
+import { permissionsList } from '../schemas/fields';
 
 const sessionMaxDuration =
   process.env.SESSION_MAX_DURATION || 60 * 60 * 24 * 30; // 3o days
@@ -14,7 +15,7 @@ export const { withAuth } = createAuth({
   listKey: 'User',
   identityField: 'email',
   secretField: 'password',
-  sessionData: 'name id email',
+  sessionData: `name id email role { ${permissionsList.join(' ')} }`,
   initFirstItem: {
     fields: ['name', 'email', 'password'],
     skipKeystoneWelcome: true,

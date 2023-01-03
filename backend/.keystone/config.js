@@ -388,7 +388,7 @@ var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   identityField: "email",
   secretField: "password",
-  sessionData: "name id email",
+  sessionData: `name id email role { ${permissionsList.join(" ")} }`,
   initFirstItem: {
     fields: ["name", "email", "password"],
     skipKeystoneWelcome: true
