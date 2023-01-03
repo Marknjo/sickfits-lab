@@ -11,6 +11,8 @@ type User {
   orders(where: OrderWhereInput! = {}, orderBy: [OrderOrderByInput!]! = [], take: Int, skip: Int! = 0): [Order!]
   ordersCount(where: OrderWhereInput! = {}): Int
   role: Role
+  products(where: ProductWhereInput! = {}, orderBy: [ProductOrderByInput!]! = [], take: Int, skip: Int! = 0): [Product!]
+  productsCount(where: ProductWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -37,6 +39,7 @@ input UserWhereInput {
   cart: CartItemManyRelationFilter
   orders: OrderManyRelationFilter
   role: RoleWhereInput
+  products: ProductManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -99,6 +102,12 @@ input OrderManyRelationFilter {
   none: OrderWhereInput
 }
 
+input ProductManyRelationFilter {
+  every: ProductWhereInput
+  some: ProductWhereInput
+  none: ProductWhereInput
+}
+
 input PasswordFilter {
   isSet: Boolean!
 }
@@ -134,6 +143,7 @@ input UserUpdateInput {
   cart: CartItemRelateToManyForUpdateInput
   orders: OrderRelateToManyForUpdateInput
   role: RoleRelateToOneForUpdateInput
+  products: ProductRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -159,6 +169,13 @@ input RoleRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
+input ProductRelateToManyForUpdateInput {
+  disconnect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
 input UserUpdateArgs {
   where: UserWhereUniqueInput!
   data: UserUpdateInput!
@@ -171,6 +188,7 @@ input UserCreateInput {
   cart: CartItemRelateToManyForCreateInput
   orders: OrderRelateToManyForCreateInput
   role: RoleRelateToOneForCreateInput
+  products: ProductRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -191,6 +209,11 @@ input RoleRelateToOneForCreateInput {
   connect: RoleWhereUniqueInput
 }
 
+input ProductRelateToManyForCreateInput {
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
 type Product {
   id: ID!
   name: String
@@ -198,6 +221,7 @@ type Product {
   status: String
   price: Int
   photo: ProductImage
+  user: User
 }
 
 input ProductWhereUniqueInput {
@@ -214,6 +238,7 @@ input ProductWhereInput {
   status: StringNullableFilter
   price: IntFilter
   photo: ProductImageWhereInput
+  user: UserWhereInput
 }
 
 input StringNullableFilter {
@@ -270,11 +295,18 @@ input ProductUpdateInput {
   status: String
   price: Int
   photo: ProductImageRelateToOneForUpdateInput
+  user: UserRelateToOneForUpdateInput
 }
 
 input ProductImageRelateToOneForUpdateInput {
   create: ProductImageCreateInput
   connect: ProductImageWhereUniqueInput
+  disconnect: Boolean
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
   disconnect: Boolean
 }
 
@@ -289,11 +321,17 @@ input ProductCreateInput {
   status: String
   price: Int
   photo: ProductImageRelateToOneForCreateInput
+  user: UserRelateToOneForCreateInput
 }
 
 input ProductImageRelateToOneForCreateInput {
   create: ProductImageCreateInput
   connect: ProductImageWhereUniqueInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 type ProductImage {
@@ -404,12 +442,6 @@ input CartItemUpdateInput {
   customer: UserRelateToOneForUpdateInput
 }
 
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-}
-
 input CartItemUpdateArgs {
   where: CartItemWhereUniqueInput!
   data: CartItemUpdateInput!
@@ -419,11 +451,6 @@ input CartItemCreateInput {
   quantity: Int
   product: ProductRelateToOneForCreateInput
   customer: UserRelateToOneForCreateInput
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
 }
 
 type OrderItem {

@@ -60,6 +60,10 @@ var User = (0, import_core.list)({
     orders: (0, import_fields.relationship)({ ref: "Order.customer", many: true }),
     role: (0, import_fields.relationship)({
       ref: "Role.assignedTo"
+    }),
+    products: (0, import_fields.relationship)({
+      ref: "Product.user",
+      many: true
     })
   }
 });
@@ -104,6 +108,9 @@ var permissionsList = Object.keys(
 function isSignedIn({ session: session2 }) {
   return !!session2;
 }
+function noRestrictions(_args) {
+  return true;
+}
 var generatePermissions = Object.fromEntries(
   permissionsList.map((permission) => [
     permission,
@@ -115,16 +122,44 @@ var generatePermissions = Object.fromEntries(
 var permissions = {
   ...generatePermissions
 };
+var rules = {
+  canManageProducts: ({ session: session2 }) => {
+    if (permissions.canManageProducts({ session: session2 })) {
+      return true;
+    }
+    return { user: { id: session2?.itemId } };
+  },
+  canReadProducts({
+    session: session2
+  }) {
+    if (permissions.canManageProducts({ session: session2 })) {
+      return true;
+    }
+    return {
+      status: { equals: "AVAILABLE" }
+    };
+  }
+};
 
 // schemas/Product.ts
 var Product = (0, import_core2.list)({
   access: {
     operation: {
       create: isSignedIn,
-      query: isSignedIn,
+      query: noRestrictions,
       update: isSignedIn,
       delete: isSignedIn
+    },
+    filter: {
+      query: rules.canReadProducts,
+      update: rules.canManageProducts,
+      delete: rules.canManageProducts
     }
+  },
+  ui: {
+    hideCreate: (args) => !permissions.canManageProducts(args),
+    hideDelete: (args) => !permissions.canManageProducts(args),
+    isHidden: (args) => !permissions.canManageProducts(args)
   },
   fields: {
     name: (0, import_fields4.text)({ validation: { isRequired: true } }),
@@ -152,7 +187,25 @@ var Product = (0, import_core2.list)({
         displayMode: "cards",
         cardFields: ["image", "altText"],
         inlineCreate: { fields: ["image", "altText"] },
-        inlineEdit: { fields: ["image", "altText"] }
+        inlineEdit: { fields: ["image", "altText"] },
+        linkToItem: true,
+        inlineConnect: true
+      }
+    }),
+    user: (0, import_fields4.relationship)({
+      ref: "User.products",
+      ui: {
+        createView: {
+          fieldMode: "hidden"
+        }
+      },
+      hooks: {
+        resolveInput: ({ resolvedData, context, operation }) => {
+          if (context.session?.data && operation === "create") {
+            return { connect: { id: context.session.data.id } };
+          }
+          return resolvedData.user;
+        }
       }
     })
   }
@@ -287,10 +340,21 @@ var OrderItem = (0, import_core6.list)({
 
 // schemas/Role.ts
 var import_core7 = require("@keystone-6/core");
-var import_access7 = require("@keystone-6/core/access");
 var import_fields9 = require("@keystone-6/core/fields");
 var Role = (0, import_core7.list)({
-  access: import_access7.allowAll,
+  access: {
+    operation: {
+      query: permissions.canManageRoles,
+      create: permissions.canManageRoles,
+      update: permissions.canManageRoles,
+      delete: permissions.canManageRoles
+    }
+  },
+  ui: {
+    hideCreate: (args) => !permissions.canManageRoles(args),
+    hideDelete: (args) => !permissions.canManageRoles(args),
+    isHidden: (args) => !permissions.canManageRoles(args)
+  },
   fields: {
     name: (0, import_fields9.text)(),
     ...permissionFields,

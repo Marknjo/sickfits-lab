@@ -1,3 +1,4 @@
+/* eslint-disable */
 import './configs/dotenv.config';
 import { config } from '@keystone-6/core';
 import { lists } from './schemas/schema';
@@ -43,7 +44,6 @@ export default config(
     extendGraphqlSchema,
     session,
     ui: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       isAccessAllowed: (context) => !!context.session?.data,
     },
   })
