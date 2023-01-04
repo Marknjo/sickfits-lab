@@ -33,8 +33,6 @@ export default function UserAppAccessPage() {
 
   /// Set default form type
   useEffect(() => {
-    console.log({ requestedFormType })
-
     let defaultTypes = requestedFormType
 
     const types = [FormType.SIGNIN, FormType.SIGNUP]
@@ -74,8 +72,6 @@ export default function UserAppAccessPage() {
       ? 'Sickfits | Sign In'
       : 'Sickfits | Sign Up'
   const isLoginRequest = userFormType.type === FormType.SIGNIN ? true : false
-
-  console.log({ isLoginRequest })
 
   return (
     <>

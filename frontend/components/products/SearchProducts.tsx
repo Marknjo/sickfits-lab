@@ -32,8 +32,6 @@ export default function SearchProducts() {
     },
     onSelectedItemChange({ selectedItem }) {
       if (selectedItem) router.push(`/products/${selectedItem.id}`)
-
-      console.log('Selected Item change!')
     },
     itemToString: () => '',
   })

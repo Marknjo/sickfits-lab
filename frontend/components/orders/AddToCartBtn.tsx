@@ -13,7 +13,6 @@ export default function AddToCartBtn({
     const res = await addItemToCartHandler(productId, productName)
 
     /// @TODO: Handle messages correctly
-    console.log(res)
   }
 
   return (

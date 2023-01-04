@@ -23,7 +23,6 @@ export default function RemoveCartItemsBtn({
   async function onClickHandler() {
     /// Handle messages
     const resMessage = await removeCartItemsHandler(id, name)
-    console.log(resMessage)
   }
 
   return (

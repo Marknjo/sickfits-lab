@@ -64,7 +64,6 @@ function SingleProduct({ product }: { product: ProductInterface }) {
     const res = await addItemToCartHandler(id, name)
 
     /// @TODO: Handle messages correctly
-    console.log(res)
   }
 
   return (
