@@ -23,7 +23,7 @@ export default function SingleOrderPage() {
   const orderedItems = order.items
 
   return (
-    <PleaseSignIn>
+    <PleaseSignIn isAdminOnly={false}>
       <OrderStyles>
         <Head>
           <meta name='description' content={`Successful order`} />

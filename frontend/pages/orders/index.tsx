@@ -52,7 +52,7 @@ export default function OrdersPage() {
 
   return (
     <main>
-      <PleaseSignIn>
+      <PleaseSignIn isAdminOnly={false}>
         <OrdersHeader>
           <h2>Your Orders</h2>
           <p>So far you've ordered {orders!.length} products from our store</p>

@@ -4,7 +4,7 @@ import PleaseSignIn from '../../components/users/PleaseSignIn'
 export default function SellPage() {
   return (
     <main>
-      <PleaseSignIn>
+      <PleaseSignIn isAdminOnly={true}>
         <CreateProduct />
       </PleaseSignIn>
     </main>

@@ -31,7 +31,7 @@ function UpdateProductPage() {
 
   return (
     <main>
-      <PleaseSignIn>
+      <PleaseSignIn isAdminOnly={true}>
         <Head>
           <meta name='description' content={product.description} />
           <title>Sick Fits | Update {product.name}</title>
