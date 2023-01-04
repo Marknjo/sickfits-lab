@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import UpdateProduct from '../../../components/sell/UpdateProduct'
 import { DisplayError } from '../../../components/ui'
+import PleaseSignIn from '../../../components/users/PleaseSignIn'
 import { useProduct } from '../../../lib/graphql'
 
 function UpdateProductPage() {
@@ -30,12 +31,14 @@ function UpdateProductPage() {
 
   return (
     <main>
-      <Head>
-        <meta name='description' content={product.description} />
-        <title>Sick Fits | Update {product.name}</title>
-      </Head>
-      <h2>Update {product.name}</h2>
-      <UpdateProduct product={product} />
+      <PleaseSignIn>
+        <Head>
+          <meta name='description' content={product.description} />
+          <title>Sick Fits | Update {product.name}</title>
+        </Head>
+        <h2>Update {product.name}</h2>
+        <UpdateProduct product={product} />
+      </PleaseSignIn>
     </main>
   )
 }
