@@ -31,14 +31,19 @@ export default function Nav() {
     )
   }
 
+  let canSellLink: JSX.Element = <></>
+  if (user?.role.name === 'Admin' || user?.role.name === 'Editor') {
+    canSellLink = <Link href='/sell'>Sell</Link>
+  }
+
   return (
     <NavStyles>
       <Link href='/products'>Products</Link>
       {user && (
         <>
-          <Link href='/sell'>Sell</Link>
+          {canSellLink}
           <Link href='/orders'>Orders</Link>
-          <Link href='/account'>Account</Link>
+          {/* <Link href='/account'>Account</Link> */}
           <button type='button' onClick={openCart}>
             My Cart
             <CartCount count={CartCounter()} />
