@@ -166,6 +166,10 @@ export const GET_USER_CREDENTIALS = gql`
             }
           }
         }
+        role {
+          id
+          name
+        }
       }
     }
   }

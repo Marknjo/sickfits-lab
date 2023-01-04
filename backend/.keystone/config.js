@@ -167,7 +167,7 @@ var User = (0, import_core.list)({
       access: {
         update: permissions.canManageUsers,
         create: permissions.canManageUsers,
-        read: permissions.canManageRoles
+        read: isSignedIn
       }
     }),
     products: (0, import_fields3.relationship)({

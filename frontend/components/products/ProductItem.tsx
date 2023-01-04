@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { formatMoney } from '../../lib/formatMoney'
+import { useUser } from '../../lib/graphql'
 import { ProductInterface } from '../../types'
 import AddToCartBtn from '../orders/AddToCartBtn'
 import { Item, PriceTag, Title } from '../styles'
@@ -25,29 +26,12 @@ const TitleBoxStyle = styled.div`
   z-index: 5;
 `
 
-const Product = ({ id, name, photo, price }: ProductInterface) => (
-  <Item key={id}>
-    <ImageBoxStyle>
-      <Image
-        src={photo.image.url}
-        alt={photo.altText}
-        // quality={75}
-        sizes='(max-width: 768px) 100vw,
-        (max-width: 1200px) 50vw,
-        33vw'
-        fill={true}
-        priority
-      />
-    </ImageBoxStyle>
+const Product = ({ id, name, photo, price }: ProductInterface) => {
+  const { user } = useUser()
 
-    <TitleBoxStyle>
-      <Title>
-        <Link href={`/products/${id}`}>{name}</Link>
-      </Title>
-    </TitleBoxStyle>
-    <PriceTag>{formatMoney(price)}</PriceTag>
-
-    <div className='button-list'>
+  let canEditBtn: JSX.Element = <></>
+  if (user?.role.name === 'Admin' || user?.role.name === 'Editor') {
+    canEditBtn = (
       <div>
         <Link
           href={{
@@ -57,14 +41,51 @@ const Product = ({ id, name, photo, price }: ProductInterface) => (
           Edit ✏️
         </Link>
       </div>
-      <div>
-        <AddToCartBtn productId={id} productName={name} />
-      </div>
+    )
+  }
+
+  let canDeleteBtn: JSX.Element = <></>
+  if (user?.role.name === 'Admin' || user?.role.name === 'Editor') {
+    canDeleteBtn = (
       <div>
         <DeleteProductBtn id={id} />
       </div>
-    </div>
-  </Item>
-)
+    )
+  }
+
+  return (
+    <Item key={id}>
+      <ImageBoxStyle>
+        <Image
+          src={photo.image.url}
+          alt={photo.altText}
+          // quality={75}
+          sizes='(max-width: 768px) 100vw,
+      (max-width: 1200px) 50vw,
+      33vw'
+          fill={true}
+          priority
+        />
+      </ImageBoxStyle>
+
+      <TitleBoxStyle>
+        <Title>
+          <Link href={`/products/${id}`}>{name}</Link>
+        </Title>
+      </TitleBoxStyle>
+      <PriceTag>{formatMoney(price)}</PriceTag>
+
+      {user && (
+        <div className='button-list'>
+          {canEditBtn}
+          <div>
+            <AddToCartBtn productId={id} productName={name} />
+          </div>
+          {canDeleteBtn}
+        </div>
+      )}
+    </Item>
+  )
+}
 
 export default Product

@@ -43,7 +43,7 @@ export const User = list({
       access: {
         update: permissions.canManageUsers,
         create: permissions.canManageUsers,
-        read: permissions.canManageRoles,
+        read: isSignedIn,
       },
     }),
 

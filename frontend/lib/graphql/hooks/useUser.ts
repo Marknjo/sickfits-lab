@@ -10,6 +10,7 @@ interface AuthenticatedUser {
     name: 'mark'
     orders: [OrderInterface]
     cart: CartItem[] | []
+    role: { name: string }
   } | null
 }
 
