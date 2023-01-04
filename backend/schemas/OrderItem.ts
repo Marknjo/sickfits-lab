@@ -1,6 +1,6 @@
 import { list } from '@keystone-6/core';
 import { integer, relationship, text } from '@keystone-6/core/fields';
-import { isAdmin, isSignedIn, rules } from '../lib/access';
+import { isSignedIn, permissions } from '../lib/access';
 
 export const OrderItem = list({
   access: {
@@ -8,11 +8,11 @@ export const OrderItem = list({
       query: isSignedIn,
       create: isSignedIn,
       update: isSignedIn,
-      delete: isAdmin,
+      delete: permissions.canManageProducts,
     },
-    filter: {
-      query: rules.canManageOrders,
-    },
+    // filter: {
+    //   query: rules.canManageOrders,
+    // },
   },
   ui: {
     listView: {

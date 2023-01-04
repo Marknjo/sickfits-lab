@@ -373,10 +373,7 @@ var OrderItem = (0, import_core6.list)({
       query: isSignedIn,
       create: isSignedIn,
       update: isSignedIn,
-      delete: isAdmin
-    },
-    filter: {
-      query: rules.canManageOrders
+      delete: permissions.canManageProducts
     }
   },
   ui: {

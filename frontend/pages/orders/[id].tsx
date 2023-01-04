@@ -22,6 +22,8 @@ export default function SingleOrderPage() {
 
   const orderedItems = order.items
 
+  console.log(order)
+
   return (
     <PleaseSignIn isAdminOnly={false}>
       <OrderStyles>
